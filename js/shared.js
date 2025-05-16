@@ -29,6 +29,19 @@ async function loadSidebarAndInit(currentPageName) {
 
     // Now that sidebar is loaded (or attempted to load), proceed with other initializations
     setupCommonPageFunctionality(currentPageName);
+
+    // Restore sidebar scroll position
+    restoreSidebarScrollPosition();
+
+    // Special handling for the webhook page
+    if (currentPageName === 'webhook.html') {
+        setTimeout(() => {
+            const webhookLink = document.querySelector('#sidebar a[href="webhook.html"]');
+            if (webhookLink) {
+                webhookLink.scrollIntoView({ block: 'center' });
+            }
+        }, 100);
+    }
 }
 
 // Function to set up common functionalities after sidebar is loaded
@@ -37,6 +50,11 @@ function setupCommonPageFunctionality(currentPageName) {
 
     window.onscroll = scrollFunction;
     scrollFunction(); // Call once for initial state of back-to-top button
+
+    // Add event listener to save sidebar scroll position before navigating
+    document.querySelectorAll('#sidebar-placeholder a').forEach(anchor => {
+        anchor.addEventListener('click', saveSidebarScrollPosition);
+    });
 
     // Smooth scroll for anchor links on index.html (e.g., from sidebar to main content sections)
     // This targets links within the loaded sidebar that point to anchors on index.html
@@ -62,6 +80,25 @@ function setupCommonPageFunctionality(currentPageName) {
             // and its onload event will call loadSidebarAndInit -> setActiveLink.
         });
     });
+}
+
+// Save sidebar scroll position to localStorage
+function saveSidebarScrollPosition() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        localStorage.setItem('sidebarScrollPosition', sidebar.scrollTop);
+    }
+}
+
+// Restore sidebar scroll position from localStorage
+function restoreSidebarScrollPosition() {
+    const savedPosition = localStorage.getItem('sidebarScrollPosition');
+    if (savedPosition !== null) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.scrollTop = parseInt(savedPosition);
+        }
+    }
 }
 
 // Active link functionality (globally available)

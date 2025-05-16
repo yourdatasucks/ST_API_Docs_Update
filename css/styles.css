@@ -16,7 +16,7 @@ body {
     background: #333;
     color: #fff;
     padding: 20px;
-    height: 100vh;
+    height: calc(100vh - 40px);
     position: fixed;
     top: 0;
     left: 0;
