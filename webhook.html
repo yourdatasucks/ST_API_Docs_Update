@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('webhook.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Webhook">Webhook</h1>
+        <p>The Webhook object represents an integration point that allows external systems to receive real-time
+            notifications about events occurring within ServiceTrade. Webhooks enable automated workflows by
+            sending HTTP requests to specified endpoints when triggered by system events like job creation,
+            status changes, or invoice processing. This allows for seamless integration with third-party systems
+            without requiring constant polling of the ServiceTrade API.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the webhook.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the webhook.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>url</code></td>
+                    <td>string</td>
+                    <td>Target URL where webhook notifications will be sent.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the webhook's purpose.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether the webhook is currently active.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>events</code></td>
+                    <td>array</td>
+                    <td>Array of event types this webhook subscribes to.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>secret</code></td>
+                    <td>string</td>
+                    <td>Secret key used to sign webhook payloads for verification.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>format</code></td>
+                    <td>string</td>
+                    <td>Format of the webhook payload (e.g., "JSON", "XML").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contentType</code></td>
+                    <td>string</td>
+                    <td>Content type of the webhook payload (e.g., "application/json").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>headers</code></td>
+                    <td>object</td>
+                    <td>Custom HTTP headers to include with webhook requests.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>filters</code></td>
+                    <td>object</td>
+                    <td>Filters to apply to events before sending notifications.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customPayload</code></td>
+                    <td>boolean</td>
+                    <td>Whether to use a custom payload format instead of the default.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>payloadTemplate</code></td>
+                    <td>string</td>
+                    <td>Template for customizing the webhook payload format.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>retryEnabled</code></td>
+                    <td>boolean</td>
+                    <td>Whether to retry failed webhook deliveries.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>retryCount</code></td>
+                    <td>integer</td>
+                    <td>Maximum number of retry attempts for failed deliveries.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>retryInterval</code></td>
+                    <td>integer</td>
+                    <td>Interval in seconds between retry attempts.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>successResponseCodes</code></td>
+                    <td>array</td>
+                    <td>HTTP response codes considered successful (default: [200]).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastDeliveryStatus</code></td>
+                    <td>string</td>
+                    <td>Status of the most recent webhook delivery attempt.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastDeliveryTime</code></td>
+                    <td>datetime</td>
+                    <td>Timestamp of the most recent webhook delivery attempt.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastResponseCode</code></td>
+                    <td>integer</td>
+                    <td>HTTP response code from the most recent delivery attempt.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastResponseBody</code></td>
+                    <td>string</td>
+                    <td>Response body from the most recent delivery attempt.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>successCount</code></td>
+                    <td>integer</td>
+                    <td>Count of successful webhook deliveries.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>failureCount</code></td>
+                    <td>integer</td>
+                    <td>Count of failed webhook deliveries.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this webhook.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this webhook was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this webhook.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this webhook was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /webhooks</h3>
+        <p>Retrieves a list of webhooks. Supports filtering by active status, event types, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/webhooks?isActive=true&eventType=job.created
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 101,
+            "name": "Job Creation Notification",
+            "url": "https://example.com/webhook/jobs",
+            "isActive": true,
+            "events": ["job.created", "job.updated", "job.completed"],
+            "format": "JSON",
+            "lastDeliveryStatus": "Success",
+            "lastDeliveryTime": "2023-07-15T14:30:22Z",
+            "successCount": 1287,
+            "failureCount": 14
+        },
+        {
+            "id": 102,
+            "name": "Invoice Integration",
+            "url": "https://accounting.example.com/api/invoices/import",
+            "isActive": true,
+            "events": ["invoice.created", "invoice.updated", "invoice.approved"],
+            "format": "JSON",
+            "lastDeliveryStatus": "Success",
+            "lastDeliveryTime": "2023-07-15T15:45:10Z",
+            "successCount": 542,
+            "failureCount": 8
+        },
+        {
+            "id": 103,
+            "name": "Customer CRM Sync",
+            "url": "https://crm.example.com/api/customers",
+            "isActive": true,
+            "events": ["customer.created", "customer.updated", "location.created", "location.updated"],
+            "format": "JSON",
+            "lastDeliveryStatus": "Success",
+            "lastDeliveryTime": "2023-07-14T09:22:15Z",
+            "successCount": 326,
+            "failureCount": 5
+        }
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /webhooks/{id}</h3>
+        <p>Retrieves a specific webhook by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/webhooks/101
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 101,
+    "name": "Job Creation Notification",
+    "url": "https://example.com/webhook/jobs",
+    "description": "Sends notifications when jobs are created, updated, or completed",
+    "isActive": true,
+    "events": ["job.created", "job.updated", "job.completed"],
+    "secret": "wh_abcdef123456",
+    "format": "JSON",
+    "contentType": "application/json",
+    "headers": {
+        "X-API-Source": "ServiceTrade",
+        "X-Custom-Header": "CustomValue"
+    },
+    "filters": {
+        "job.type": ["Repair", "Maintenance"],
+        "job.priority": ["High", "Medium"]
+    },
+    "customPayload": false,
+    "retryEnabled": true,
+    "retryCount": 5,
+    "retryInterval": 60,
+    "successResponseCodes": [200, 201, 202],
+    "lastDeliveryStatus": "Success",
+    "lastDeliveryTime": "2023-07-15T14:30:22Z",
+    "lastResponseCode": 200,
+    "lastResponseBody": "{\"status\":\"received\",\"message\":\"Event processed successfully\"}",
+    "successCount": 1287,
+    "failureCount": 14,
+    "createdBy": 45,
+    "createdDate": "2022-03-15T09:30:00Z",
+    "lastModifiedBy": 45,
+    "lastModifiedDate": "2023-05-22T11:15:00Z"
+}</code></pre>
+
+        <h3>POST /webhooks</h3>
+        <p>Creates a new webhook.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Schedule Change Notification",
+    "url": "https://dispatch.example.com/api/schedule-updates",
+    "description": "Notifies dispatch system of schedule changes and appointments",
+    "isActive": true,
+    "events": ["appointment.created", "appointment.updated", "appointment.canceled"],
+    "format": "JSON",
+    "contentType": "application/json",
+    "headers": {
+        "X-API-Key": "dispatcher-api-key-12345",
+        "X-Source": "ServiceTrade"
+    },
+    "filters": {
+        "appointment.type": ["Installation", "Service Call"]
+    },
+    "retryEnabled": true,
+    "retryCount": 3,
+    "retryInterval": 300
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created webhook (HTTP 201 Created).</p>
+
+        <h3>PUT /webhooks/{id}</h3>
+        <p>Updates an existing webhook.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Schedule Change Notification",
+    "url": "https://dispatch-v2.example.com/api/schedule-updates",
+    "description": "Notifies dispatch system of schedule changes and appointments (updated endpoint)",
+    "events": ["appointment.created", "appointment.updated", "appointment.canceled", "appointment.rescheduled"],
+    "headers": {
+        "X-API-Key": "dispatcher-api-key-67890",
+        "X-Source": "ServiceTrade",
+        "X-Account-ID": "ACC123456"
+    },
+    "retryCount": 5,
+    "retryInterval": 180
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated webhook.</p>
+
+        <h3>DELETE /webhooks/{id}</h3>
+        <p>Deletes a webhook.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /webhooks/{id}/deactivate</h3>
+        <p>Deactivates a webhook without deleting it.</p>
+        <h4>Response</h4>
+        <p>Returns the deactivated webhook with updated status.</p>
+
+        <h3>POST /webhooks/{id}/activate</h3>
+        <p>Activates a previously deactivated webhook.</p>
+        <h4>Response</h4>
+        <p>Returns the activated webhook with updated status.</p>
+
+        <h3>GET /webhooks/{id}/deliveries</h3>
+        <p>Retrieves delivery history for a specific webhook.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/webhooks/101/deliveries?limit=10&status=Failed
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 7865,
+            "webhookId": 101,
+            "eventType": "job.updated",
+            "eventId": "evt_987654",
+            "deliveryTime": "2023-07-14T11:30:22Z",
+            "requestUrl": "https://example.com/webhook/jobs",
+            "requestHeaders": {
+                "Content-Type": "application/json",
+                "X-API-Source": "ServiceTrade",
+                "X-Custom-Header": "CustomValue",
+                "X-Webhook-Signature": "sha256=abcdef123456"
+            },
+            "requestBody": "{ ... request payload ... }",
+            "responseCode": 500,
+            "responseBody": "Internal Server Error",
+            "status": "Failed",
+            "retryCount": 5,
+            "nextRetryTime": null,
+            "duration": 1250
+        },
+        {
+            "id": 7843,
+            "webhookId": 101,
+            "eventType": "job.updated",
+            "eventId": "evt_987600",
+            "deliveryTime": "2023-07-13T16:45:10Z",
+            "requestUrl": "https://example.com/webhook/jobs",
+            "requestHeaders": {
+                "Content-Type": "application/json",
+                "X-API-Source": "ServiceTrade",
+                "X-Custom-Header": "CustomValue",
+                "X-Webhook-Signature": "sha256=ghijkl789012"
+            },
+            "requestBody": "{ ... request payload ... }",
+            "responseCode": 502,
+            "responseBody": "Bad Gateway",
+            "status": "Failed",
+            "retryCount": 5,
+            "nextRetryTime": null,
+            "duration": 2100
+        }
+    ],
+    "totalResults": 14,
+    "itemsPerPage": 10,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>POST /webhooks/{id}/test</h3>
+        <p>Sends a test webhook delivery to verify the configuration.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "eventType": "job.created",
+    "testPayload": {
+        "jobId": 12345,
+        "customerId": 789,
+        "locationId": 456,
+        "jobType": "Repair",
+        "priority": "High",
+        "status": "Scheduled"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "success": true,
+    "deliveryId": 8901,
+    "requestUrl": "https://example.com/webhook/jobs",
+    "responseCode": 200,
+    "responseBody": "{\"status\":\"received\",\"message\":\"Test event processed successfully\"}",
+    "deliveryTime": "2023-07-15T16:22:35Z",
+    "duration": 850
+}</code></pre>
+
+        <h3>GET /webhooks/events</h3>
+        <p>Retrieves a list of all available webhook event types.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/webhooks/events
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "job.created",
+            "description": "Triggered when a new job is created",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "job.updated",
+            "description": "Triggered when a job is updated",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "job.completed",
+            "description": "Triggered when a job is marked as completed",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "job.canceled",
+            "description": "Triggered when a job is canceled",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "invoice.created",
+            "description": "Triggered when a new invoice is created",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "invoice.updated",
+            "description": "Triggered when an invoice is updated",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "invoice.approved",
+            "description": "Triggered when an invoice is approved",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "payment.received",
+            "description": "Triggered when a payment is received",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "customer.created",
+            "description": "Triggered when a new customer is created",
+            "payloadSchema": { ... }
+        },
+        {
+            "name": "customer.updated",
+            "description": "Triggered when a customer is updated",
+            "payloadSchema": { ... }
+        }
+    ],
+    "totalResults": 10
+}</code></pre>
+
+        <h3>GET /webhooks/event-logs</h3>
+        <p>Retrieves logs of events that triggered webhooks.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/webhooks/event-logs?startDate=2023-07-01&endDate=2023-07-15&eventType=job.created
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of event logs.</p>
+
+        <h3>POST /webhooks/rotate-secret/{id}</h3>
+        <p>Rotates the secret key for a webhook for security purposes.</p>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 101,
+    "previousSecret": "wh_abcdef123456",
+    "newSecret": "wh_mnopqr789012",
+    "effectiveDate": "2023-07-15T17:00:00Z",
+    "expirationDate": "2023-07-22T17:00:00Z"
+}</code></pre>
+
+        <h3>POST /webhooks/batch</h3>
+        <p>Creates multiple webhooks in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "webhooks": [
+        {
+            "name": "Customer CRM Update",
+            "url": "https://crm-system.example.com/api/customers",
+            "events": ["customer.created", "customer.updated"],
+            "isActive": true
+        },
+        {
+            "name": "Quote Notification",
+            "url": "https://sales-system.example.com/api/quotes",
+            "events": ["quote.created", "quote.updated", "quote.approved"],
+            "isActive": true
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created webhooks.</p>
+
+        <h3>GET /webhooks/status</h3>
+        <p>Retrieves overall status information about configured webhooks.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/webhooks/status
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalWebhooks": 15,
+    "activeWebhooks": 12,
+    "inactiveWebhooks": 3,
+    "deliveryStats": {
+        "totalDeliveries": 25687,
+        "successfulDeliveries": 25242,
+        "failedDeliveries": 445,
+        "successRate": 98.3,
+        "averageResponseTime": 425
+    },
+    "eventStats": {
+        "mostTriggeredEvents": [
+            {"eventType": "job.updated", "count": 12453},
+            {"eventType": "job.created", "count": 5621},
+            {"eventType": "invoice.created", "count": 3245}
+        ]
+    },
+    "healthStatus": "Healthy"
+}</code></pre>
+
+        <h3>GET /webhooks/deliveries</h3>
+        <p>Retrieves webhook delivery history across all webhooks.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/webhooks/deliveries?startDate=2023-07-01&endDate=2023-07-15&status=Failed
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of webhook delivery attempts.</p>
+
+        <h3>POST /webhooks/import</h3>
+        <p>Imports webhook configurations from a file.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "source": "JSON",
+    "data": "{...webhook configurations...}",
+    "overwriteExisting": false
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the imported webhooks.</p>
+
+        <h3>POST /webhooks/export</h3>
+        <p>Exports webhook configurations to a file.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "format": "JSON",
+    "webhookIds": [101, 102, 103],
+    "includeDeliveryStats": false
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a download URL for the exported webhook configurations.</p>
+
+        <h2>Webhook Payload Example</h2>
+        <p>Below is an example of a webhook payload for a job.created event:</p>
+        <pre><code class="language-json">{
+    "id": "evt_123456789",
+    "eventType": "job.created",
+    "createdAt": "2023-07-15T10:30:00Z",
+    "data": {
+        "job": {
+            "id": 5001,
+            "uri": "/job/5001",
+            "customer": {
+                "id": 301,
+                "uri": "/customer/301",
+                "name": "ABC Corporation"
+            },
+            "location": {
+                "id": 401,
+                "uri": "/location/401",
+                "name": "ABC Corp Headquarters"
+            },
+            "jobType": "Repair",
+            "priority": "High",
+            "status": "Scheduled",
+            "description": "Emergency HVAC repair",
+            "createdDate": "2023-07-15T10:29:45Z",
+            "scheduledDate": "2023-07-16T09:00:00Z"
+        }
+    },
+    "accountId": "acc_123456",
+    "deliveryAttempt": 1
+}</code></pre>
+
+        <h2>Webhook Security</h2>
+        <p>Webhook requests include a signature header (<code>X-Webhook-Signature</code>) that allows you to verify
+            the authenticity of the webhook. The signature is generated using HMAC-SHA256 with your webhook secret:</p>
+        <pre><code class="language-javascript">// Example signature verification in Node.js
+const crypto = require('crypto');
+
+function verifyWebhookSignature(payload, signature, secret) {
+    const expectedSignature = crypto
+        .createHmac('sha256', secret)
+        .update(JSON.stringify(payload))
+        .digest('hex');
+    
+    return crypto.timingSafeEqual(
+        Buffer.from(signature.replace('sha256=', '')),
+        Buffer.from(expectedSignature)
+    );
+}
+
+// In your webhook handler:
+const isValid = verifyWebhookSignature(
+    req.body,
+    req.headers['x-webhook-signature'],
+    webhookSecret
+);
+
+if (!isValid) {
+    return res.status(401).send('Invalid signature');
+}
+</code></pre>
+
+        <h2>Related Resources</h2>
+        <ul>
+            <li><a href="job.html">Job</a></li>
+            <li><a href="invoice.html">Invoice</a></li>
+            <li><a href="customer.html">Customer</a></li>
+            <li><a href="auth.html">Authentication</a></li>
+        </ul>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

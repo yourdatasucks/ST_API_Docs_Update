@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('user.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="User">User</h1>
+        <p>The User object represents an individual who has access to the ServiceTrade system. Users can be
+            technicians, office staff, managers, administrators, or other personnel. Each user has specific
+            permissions defined by their assigned <a href="role.html">Roles</a>, determining what actions they
+            can perform and what data they can access. User accounts contain personal information, contact details,
+            credentials, preferences, and system-specific settings required for authentication and proper system
+            operation.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the user.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>username</code></td>
+                    <td>string</td>
+                    <td>Username for login (must be unique).</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>email</code></td>
+                    <td>string</td>
+                    <td>Email address of the user (must be unique).</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>firstName</code></td>
+                    <td>string</td>
+                    <td>First name of the user.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>lastName</code></td>
+                    <td>string</td>
+                    <td>Last name of the user.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>displayName</code></td>
+                    <td>string</td>
+                    <td>Formatted display name (typically firstName + lastName).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether the user account is currently active.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>phone</code></td>
+                    <td>string</td>
+                    <td>Phone number of the user.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>mobile</code></td>
+                    <td>string</td>
+                    <td>Mobile phone number of the user.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobTitle</code></td>
+                    <td>string</td>
+                    <td>Job title or position within the company.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>department</code></td>
+                    <td>string</td>
+                    <td>Department the user belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>employeeId</code></td>
+                    <td>string</td>
+                    <td>Employee identification number.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>roles</code></td>
+                    <td>array</td>
+                    <td>Array of role IDs assigned to the user.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>languagePreference</code></td>
+                    <td>string</td>
+                    <td>Preferred language code (e.g., "en-US", "es-MX").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>timeZone</code></td>
+                    <td>string</td>
+                    <td>Preferred time zone (e.g., "America/New_York").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>dateFormat</code></td>
+                    <td>string</td>
+                    <td>Preferred date format (e.g., "MM/DD/YYYY").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>timeFormat</code></td>
+                    <td>string</td>
+                    <td>Preferred time format (e.g., "12-hour", "24-hour").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>profileImageUrl</code></td>
+                    <td>string</td>
+                    <td>URL to the user's profile image.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastLoginDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time of the user's last login.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isLocked</code></td>
+                    <td>boolean</td>
+                    <td>Whether the user account is locked due to security policy.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>failedLoginAttempts</code></td>
+                    <td>integer</td>
+                    <td>Number of consecutive failed login attempts.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>passwordLastChanged</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the password was last changed.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>passwordExpirationDate</code></td>
+                    <td>datetime</td>
+                    <td>Date when the current password expires.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>userType</code></td>
+                    <td>string</td>
+                    <td>Type of user (e.g., "Employee", "Contractor", "Administrator").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>address</code></td>
+                    <td>object</td>
+                    <td>Address information for the user.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>rate</code></td>
+                    <td>decimal</td>
+                    <td>Standard billing rate for the user's time.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>cost</code></td>
+                    <td>decimal</td>
+                    <td>Standard cost rate for the user's time.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>skills</code></td>
+                    <td>array</td>
+                    <td>Array of skills or certifications the user possesses.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>regions</code></td>
+                    <td>array</td>
+                    <td>Array of regions the user is assigned to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notificationPreferences</code></td>
+                    <td>object</td>
+                    <td>Notification settings for different system events.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isMobileEnabled</code></td>
+                    <td>boolean</td>
+                    <td>Whether the user has access to mobile applications.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this user account.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this user account was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this user account.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this user account was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /users</h3>
+        <p>Retrieves a list of users. Supports filtering by various criteria including active status, roles, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users?isActive=true&roleId=3
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 101,
+            "username": "jsmith",
+            "email": "jsmith@example.com",
+            "firstName": "John",
+            "lastName": "Smith",
+            "displayName": "John Smith",
+            "isActive": true,
+            "phone": "555-123-4567",
+            "mobile": "555-987-6543",
+            "jobTitle": "Service Technician",
+            "roles": [3],
+            "userType": "Employee"
+        },
+        {
+            "id": 102,
+            "username": "mjohnson",
+            "email": "mjohnson@example.com",
+            "firstName": "Mary",
+            "lastName": "Johnson",
+            "displayName": "Mary Johnson",
+            "isActive": true,
+            "phone": "555-234-5678",
+            "mobile": "555-876-5432",
+            "jobTitle": "Service Technician",
+            "roles": [3],
+            "userType": "Employee"
+        },
+        {
+            "id": 103,
+            "username": "rwilliams",
+            "email": "rwilliams@example.com",
+            "firstName": "Robert",
+            "lastName": "Williams",
+            "displayName": "Robert Williams",
+            "isActive": true,
+            "phone": "555-345-6789",
+            "mobile": "555-765-4321",
+            "jobTitle": "Service Technician",
+            "roles": [3],
+            "userType": "Employee"
+        }
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /users/{id}</h3>
+        <p>Retrieves a specific user by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/101
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 101,
+    "username": "jsmith",
+    "email": "jsmith@example.com",
+    "firstName": "John",
+    "lastName": "Smith",
+    "displayName": "John Smith",
+    "isActive": true,
+    "phone": "555-123-4567",
+    "mobile": "555-987-6543",
+    "jobTitle": "Service Technician",
+    "department": "Field Service",
+    "employeeId": "EMP001",
+    "roles": [3],
+    "languagePreference": "en-US",
+    "timeZone": "America/New_York",
+    "dateFormat": "MM/DD/YYYY",
+    "timeFormat": "12-hour",
+    "profileImageUrl": "https://assets.servicetrade.com/users/101/profile.jpg",
+    "lastLoginDate": "2023-07-05T08:15:30Z",
+    "isLocked": false,
+    "failedLoginAttempts": 0,
+    "passwordLastChanged": "2023-05-15T10:30:00Z",
+    "passwordExpirationDate": "2023-08-15T10:30:00Z",
+    "userType": "Employee",
+    "address": {
+        "street": "123 Main Street",
+        "city": "Raleigh",
+        "state": "NC",
+        "postalCode": "27601",
+        "country": "US"
+    },
+    "rate": 125.00,
+    "cost": 45.00,
+    "skills": [
+        "HVAC Certification",
+        "EPA 608",
+        "Electrical",
+        "Preventive Maintenance"
+    ],
+    "regions": [
+        {
+            "id": 1,
+            "name": "Eastern Region"
+        }
+    ],
+    "notificationPreferences": {
+        "email": {
+            "jobAssigned": true,
+            "jobRescheduled": true,
+            "jobCanceled": true,
+            "dailySummary": true
+        },
+        "sms": {
+            "jobAssigned": true,
+            "jobRescheduled": true,
+            "jobCanceled": true,
+            "dailySummary": false
+        },
+        "inApp": {
+            "jobAssigned": true,
+            "jobRescheduled": true,
+            "jobCanceled": true,
+            "messages": true,
+            "comments": true
+        }
+    },
+    "isMobileEnabled": true,
+    "createdBy": 1,
+    "createdDate": "2022-01-10T09:00:00Z",
+    "lastModifiedBy": 1,
+    "lastModifiedDate": "2023-06-01T14:30:00Z",
+    "customFields": {
+        "vehicleId": "VAN-1234",
+        "certificationExpiration": "2024-06-30",
+        "emergencyContact": "Jane Smith (555-111-2222)",
+        "homeBase": "Raleigh Office"
+    }
+}</code></pre>
+
+        <h3>POST /users</h3>
+        <p>Creates a new user.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "username": "dthomas",
+    "email": "dthomas@example.com",
+    "firstName": "David",
+    "lastName": "Thomas",
+    "phone": "555-456-7890",
+    "mobile": "555-654-3210",
+    "jobTitle": "Service Technician",
+    "department": "Field Service",
+    "employeeId": "EMP004",
+    "roles": [3],
+    "languagePreference": "en-US",
+    "timeZone": "America/Chicago",
+    "userType": "Employee",
+    "address": {
+        "street": "456 Oak Avenue",
+        "city": "Dallas",
+        "state": "TX",
+        "postalCode": "75201",
+        "country": "US"
+    },
+    "rate": 125.00,
+    "cost": 45.00,
+    "skills": [
+        "HVAC Certification",
+        "EPA 608",
+        "Refrigeration"
+    ],
+    "regions": [
+        {
+            "id": 2,
+            "name": "Central Region"
+        }
+    ],
+    "isMobileEnabled": true,
+    "customFields": {
+        "vehicleId": "VAN-5678",
+        "certificationExpiration": "2024-08-31",
+        "homeBase": "Dallas Office"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created user (HTTP 201 Created).</p>
+
+        <h3>PUT /users/{id}</h3>
+        <p>Updates an existing user.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "email": "dthomas@example.com",
+    "phone": "555-456-7891",
+    "mobile": "555-654-3211",
+    "jobTitle": "Senior Service Technician",
+    "roles": [3, 9],
+    "skills": [
+        "HVAC Certification",
+        "EPA 608",
+        "Refrigeration",
+        "Building Automation Systems"
+    ],
+    "customFields": {
+        "vehicleId": "VAN-5678",
+        "certificationExpiration": "2024-08-31",
+        "homeBase": "Dallas Office",
+        "specialtyEquipment": "BAS Diagnostics Kit"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated user.</p>
+
+        <h3>DELETE /users/{id}</h3>
+        <p>Deletes a user. This operation is typically restricted and may be disallowed or replaced with deactivation.
+        </p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /users/{id}/deactivate</h3>
+        <p>Deactivates a user without deleting their account.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "reason": "Employee no longer with company",
+    "revokeAllTokens": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the deactivated user with updated status.</p>
+
+        <h3>POST /users/{id}/activate</h3>
+        <p>Activates a previously deactivated user.</p>
+        <h4>Response</h4>
+        <p>Returns the activated user with updated status.</p>
+
+        <h3>POST /users/{id}/resetPassword</h3>
+        <p>Initiates a password reset for a user.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "sendResetEmail": true,
+    "expirationHours": 24
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns confirmation of the password reset initiation.</p>
+
+        <h3>POST /users/{id}/setPassword</h3>
+        <p>Sets a new password for a user (typically used by administrators).</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "password": "newSecurePassword123!",
+    "requireChange": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns confirmation of the password change.</p>
+
+        <h3>POST /users/{id}/unlock</h3>
+        <p>Unlocks a user account that has been locked due to security policies.</p>
+        <h4>Response</h4>
+        <p>Returns the unlocked user with updated status.</p>
+
+        <h3>GET /users/{id}/roles</h3>
+        <p>Retrieves the roles assigned to a specific user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/101/roles
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 3,
+            "name": "Service Technician",
+            "description": "Field service technician with mobile access"
+        }
+    ],
+    "totalResults": 1
+}</code></pre>
+
+        <h3>POST /users/{id}/roles</h3>
+        <p>Assigns roles to a user.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "roleIds": [3, 9]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated list of roles assigned to the user.</p>
+
+        <h3>DELETE /users/{id}/roles/{roleId}</h3>
+        <p>Removes a specific role from a user.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful removal.</p>
+
+        <h3>GET /users/{id}/permissions</h3>
+        <p>Retrieves the effective permissions for a specific user based on their assigned roles.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/101/permissions
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of effective permissions for the user.</p>
+
+        <h3>GET /users/{id}/schedule</h3>
+        <p>Retrieves the schedule for a specific user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/101/schedule?startDate=2023-07-01&endDate=2023-07-07
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of schedule entries for the specified user.</p>
+
+        <h3>GET /users/{id}/jobs</h3>
+        <p>Retrieves jobs assigned to a specific user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/101/jobs?status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of jobs assigned to the specified user.</p>
+
+        <h3>GET /users/current</h3>
+        <p>Retrieves information about the currently authenticated user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/current
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the current user similar to the GET /users/{id} response.</p>
+
+        <h3>PUT /users/current/preferences</h3>
+        <p>Updates preferences for the currently authenticated user.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "languagePreference": "es-MX",
+    "timeZone": "America/Chicago",
+    "dateFormat": "DD/MM/YYYY",
+    "timeFormat": "24-hour",
+    "notificationPreferences": {
+        "email": {
+            "jobAssigned": true,
+            "jobRescheduled": true,
+            "jobCanceled": true,
+            "dailySummary": false
+        },
+        "sms": {
+            "jobAssigned": true,
+            "jobRescheduled": true,
+            "jobCanceled": true,
+            "dailySummary": false
+        }
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated user preferences.</p>
+
+        <h3>POST /users/current/changePassword</h3>
+        <p>Changes the password for the currently authenticated user.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "currentPassword": "oldPassword123!",
+    "newPassword": "newSecurePassword456!"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns confirmation of the password change.</p>
+
+        <h3>POST /users/current/uploadProfileImage</h3>
+        <p>Uploads a new profile image for the currently authenticated user.</p>
+        <h4>Request</h4>
+        <p>Multipart form data containing the image file.</p>
+        <h4>Response</h4>
+        <p>Returns the URL of the uploaded profile image.</p>
+
+        <h3>GET /users/search</h3>
+        <p>Searches for users based on various criteria.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/search?query=smith&skill=HVAC
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns users matching the search criteria.</p>
+
+        <h3>GET /users/skills</h3>
+        <p>Retrieves a list of all skills defined in the system.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/skills
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "HVAC Certification",
+            "count": 25
+        },
+        {
+            "name": "EPA 608",
+            "count": 22
+        },
+        {
+            "name": "Electrical",
+            "count": 18
+        },
+        {
+            "name": "Plumbing",
+            "count": 15
+        },
+        {
+            "name": "Refrigeration",
+            "count": 20
+        },
+        {
+            "name": "Building Automation Systems",
+            "count": 8
+        },
+        {
+            "name": "Fire Protection",
+            "count": 12
+        }
+    ],
+    "totalResults": 7
+}</code></pre>
+
+        <h3>POST /users/skills</h3>
+        <p>Creates a new skill in the system.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Smart Building Integration",
+    "description": "Expertise in integrating HVAC, lighting, and security systems with smart building platforms",
+    "category": "Building Technology"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created skill.</p>
+
+        <h3>POST /users/batch</h3>
+        <p>Creates multiple users in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "users": [
+        {
+            "username": "agarcia",
+            "email": "agarcia@example.com",
+            "firstName": "Anna",
+            "lastName": "Garcia",
+            "phone": "555-567-8901",
+            "jobTitle": "Service Technician",
+            "roles": [3]
+        },
+        {
+            "username": "bchen",
+            "email": "bchen@example.com",
+            "firstName": "Ben",
+            "lastName": "Chen",
+            "phone": "555-678-9012",
+            "jobTitle": "Service Technician",
+            "roles": [3]
+        }
+    ],
+    "sendWelcomeEmail": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created users.</p>
+
+        <h3>POST /users/import</h3>
+        <p>Imports users from a file or external system.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "source": "CSV",
+    "data": "base64-encoded-csv-content",
+    "mappings": {
+        "username": "Username",
+        "email": "Email",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "phone": "Phone",
+        "jobTitle": "Job Title"
+    },
+    "defaultRole": 3,
+    "updateExisting": true,
+    "identifyBy": "email",
+    "sendWelcomeEmail": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the imported users.</p>
+
+        <h3>GET /users/availability</h3>
+        <p>Checks availability of users for scheduling.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/availability?date=2023-07-15&skillRequired=HVAC
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns availability information for users with the required skills.</p>
+
+        <h3>GET /users/stats</h3>
+        <p>Retrieves statistics about user activity and performance.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/stats?period=last30days&userIds=101,102,103
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns performance statistics for the specified users.</p>
+
+        <h3>GET /users/{id}/activity</h3>
+        <p>Retrieves activity history for a specific user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/101/activity?startDate=2023-07-01&endDate=2023-07-07
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a log of activities for the specified user.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

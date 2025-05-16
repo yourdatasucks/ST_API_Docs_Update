@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Group Label API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('usergrouplabel.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="UserGroupLabel">User Group Label</h1>
+        <p>The User Group Label object represents a tag or categorization that can be applied to users for
+            organizational
+            purposes. These labels help with filtering, grouping, and managing users based on common attributes such as
+            departments, skills, certifications, geographical regions, or any other business-specific categorization.
+            User Group Labels facilitate efficient team management and resource allocation by enabling administrators to
+            create logical groupings of users.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the user group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the user group label.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the user group label and its purpose.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>color</code></td>
+                    <td>string</td>
+                    <td>Color code (hex) used for visual representation of the label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the label was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>modifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the label was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether the label is currently active and available for use.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>userCount</code></td>
+                    <td>integer</td>
+                    <td>Number of users currently associated with this label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>List User Group Labels</h3>
+        <p>Returns a list of user group labels.</p>
+
+        <h4>Request</h4>
+        <pre><code>GET /usergrouplabel</code></pre>
+
+        <h5>Query Parameters</h5>
+        <table>
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>limit</code></td>
+                    <td>integer</td>
+                    <td>Maximum number of records to return (default: 100, max: 1000).</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>offset</code></td>
+                    <td>integer</td>
+                    <td>Number of records to skip (default: 0).</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sort</code></td>
+                    <td>string</td>
+                    <td>Field to sort by (e.g., "name", "createdDate").</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>order</code></td>
+                    <td>string</td>
+                    <td>Sort order, either "asc" or "desc" (default: "asc").</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Filter by active status.</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Response</h4>
+        <p>Returns an array of user group label objects.</p>
+
+        <pre><code>{
+  "data": [
+    {
+      "id": 123,
+      "name": "Field Technicians",
+      "description": "All field-based service technicians",
+      "color": "#4287f5",
+      "createdDate": "2023-04-15T14:30:00Z",
+      "modifiedDate": "2023-08-22T09:15:27Z",
+      "isActive": true,
+      "userCount": 42
+    },
+    {
+      "id": 124,
+      "name": "HVAC Certified",
+      "description": "Users with HVAC certification",
+      "color": "#f5a742",
+      "createdDate": "2023-05-02T11:20:15Z",
+      "modifiedDate": "2023-05-02T11:20:15Z",
+      "isActive": true,
+      "userCount": 18
+    }
+  ],
+  "metadata": {
+    "resultCount": 2,
+    "offset": 0,
+    "limit": 100,
+    "totalCount": 2
+  }
+}</code></pre>
+
+        <h3>Get User Group Label</h3>
+        <p>Returns a specific user group label by ID.</p>
+
+        <h4>Request</h4>
+        <pre><code>GET /usergrouplabel/{id}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the requested user group label object.</p>
+
+        <pre><code>{
+  "data": {
+    "id": 123,
+    "name": "Field Technicians",
+    "description": "All field-based service technicians",
+    "color": "#4287f5",
+    "createdDate": "2023-04-15T14:30:00Z",
+    "modifiedDate": "2023-08-22T09:15:27Z",
+    "isActive": true,
+    "userCount": 42
+  }
+}</code></pre>
+
+        <h3>Create User Group Label</h3>
+        <p>Creates a new user group label.</p>
+
+        <h4>Request</h4>
+        <pre><code>POST /usergrouplabel</code></pre>
+
+        <h5>Request Body</h5>
+        <pre><code>{
+  "name": "Remote Workers",
+  "description": "Employees who primarily work remotely",
+  "color": "#42f587",
+  "isActive": true
+}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the newly created user group label object.</p>
+
+        <pre><code>{
+  "data": {
+    "id": 125,
+    "name": "Remote Workers",
+    "description": "Employees who primarily work remotely",
+    "color": "#42f587",
+    "createdDate": "2023-09-01T10:45:33Z",
+    "modifiedDate": "2023-09-01T10:45:33Z",
+    "isActive": true,
+    "userCount": 0
+  }
+}</code></pre>
+
+        <h3>Update User Group Label</h3>
+        <p>Updates an existing user group label.</p>
+
+        <h4>Request</h4>
+        <pre><code>PUT /usergrouplabel/{id}</code></pre>
+
+        <h5>Request Body</h5>
+        <pre><code>{
+  "name": "Remote Workforce",
+  "description": "Employees who primarily work remotely or from home",
+  "color": "#42f5e0",
+  "isActive": true
+}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the updated user group label object.</p>
+
+        <pre><code>{
+  "data": {
+    "id": 125,
+    "name": "Remote Workforce",
+    "description": "Employees who primarily work remotely or from home",
+    "color": "#42f5e0",
+    "createdDate": "2023-09-01T10:45:33Z",
+    "modifiedDate": "2023-09-01T12:20:15Z",
+    "isActive": true,
+    "userCount": 0
+  }
+}</code></pre>
+
+        <h3>Delete User Group Label</h3>
+        <p>Removes a user group label.</p>
+
+        <h4>Request</h4>
+        <pre><code>DELETE /usergrouplabel/{id}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns a success message upon successful deletion.</p>
+
+        <pre><code>{
+  "success": true,
+  "message": "User group label successfully deleted"
+}</code></pre>
+
+        <h3>Assign Users to Group Label</h3>
+        <p>Assigns multiple users to a group label.</p>
+
+        <h4>Request</h4>
+        <pre><code>POST /usergrouplabel/{id}/users</code></pre>
+
+        <h5>Request Body</h5>
+        <pre><code>{
+  "userIds": [101, 102, 103]
+}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the updated user count and success status.</p>
+
+        <pre><code>{
+  "success": true,
+  "userCount": 3,
+  "message": "Users successfully assigned to group label"
+}</code></pre>
+
+        <h3>Remove Users from Group Label</h3>
+        <p>Removes users from a group label.</p>
+
+        <h4>Request</h4>
+        <pre><code>DELETE /usergrouplabel/{id}/users</code></pre>
+
+        <h5>Request Body</h5>
+        <pre><code>{
+  "userIds": [103]
+}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the updated user count and success status.</p>
+
+        <pre><code>{
+  "success": true,
+  "userCount": 2,
+  "message": "Users successfully removed from group label"
+}</code></pre>
+
+        <h3>List Users by Group Label</h3>
+        <p>Returns a list of users assigned to a specific group label.</p>
+
+        <h4>Request</h4>
+        <pre><code>GET /usergrouplabel/{id}/users</code></pre>
+
+        <h5>Query Parameters</h5>
+        <table>
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>limit</code></td>
+                    <td>integer</td>
+                    <td>Maximum number of records to return (default: 100, max: 1000).</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>offset</code></td>
+                    <td>integer</td>
+                    <td>Number of records to skip (default: 0).</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Response</h4>
+        <p>Returns an array of user objects assigned to the group label.</p>
+
+        <pre><code>{
+  "data": [
+    {
+      "id": 101,
+      "username": "jsmith",
+      "firstName": "John",
+      "lastName": "Smith",
+      "email": "jsmith@example.com",
+      "displayName": "John Smith",
+      "isActive": true
+    },
+    {
+      "id": 102,
+      "username": "mjohnson",
+      "firstName": "Mary",
+      "lastName": "Johnson",
+      "email": "mjohnson@example.com",
+      "displayName": "Mary Johnson",
+      "isActive": true
+    }
+  ],
+  "metadata": {
+    "resultCount": 2,
+    "offset": 0,
+    "limit": 100,
+    "totalCount": 2
+  }
+}</code></pre>
+
+        <h2>Related Resources</h2>
+        <ul>
+            <li><a href="user.html">User</a></li>
+            <li><a href="grouplabel.html">Group Label</a></li>
+            <li><a href="jobtypegrouplabel.html">Job Type Group Label</a></li>
+        </ul>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Value API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('uservalue.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="UserValue">User Value</h1>
+        <p>The User Value object represents custom data fields associated with user accounts. These customizable fields
+            allow
+            for storing additional user information that isn't covered by standard user properties. User Values can
+            include certifications, skills, training dates, license numbers, equipment qualifications, or any other
+            user-specific attributes relevant to the organization's operational needs. This extensibility enables
+            businesses
+            to adapt the user management system to their specific requirements without modifying the core system.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the user value.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>userId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user this value is associated with.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name/key of the custom field.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>value</code></td>
+                    <td>string</td>
+                    <td>Value stored in the custom field.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>dataType</code></td>
+                    <td>string</td>
+                    <td>Type of data (e.g., "string", "number", "date", "boolean").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>category</code></td>
+                    <td>string</td>
+                    <td>Category for grouping related user values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isPublic</code></td>
+                    <td>boolean</td>
+                    <td>Whether the value is visible to regular users (not just admins).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the user value was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>modifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the user value was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>expirationDate</code></td>
+                    <td>datetime</td>
+                    <td>Optional date when this value expires (e.g., for certifications).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>List User Values</h3>
+        <p>Returns a list of user values for a specific user.</p>
+
+        <h4>Request</h4>
+        <pre><code>GET /user/{userId}/values</code></pre>
+
+        <h5>Query Parameters</h5>
+        <table>
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>category</code></td>
+                    <td>string</td>
+                    <td>Filter by category.</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Filter by field name.</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>dataType</code></td>
+                    <td>string</td>
+                    <td>Filter by data type.</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isPublic</code></td>
+                    <td>boolean</td>
+                    <td>Filter by public visibility.</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Response</h4>
+        <p>Returns an array of user value objects.</p>
+
+        <pre><code>{
+  "data": [
+    {
+      "id": 501,
+      "userId": 101,
+      "name": "hvacCertification",
+      "value": "Level 2",
+      "dataType": "string",
+      "category": "Certifications",
+      "isPublic": true,
+      "createdDate": "2023-03-15T09:30:00Z",
+      "modifiedDate": "2023-03-15T09:30:00Z",
+      "expirationDate": "2025-03-15T00:00:00Z"
+    },
+    {
+      "id": 502,
+      "userId": 101,
+      "name": "fleetVehicleId",
+      "value": "F-150-22",
+      "dataType": "string",
+      "category": "Equipment",
+      "isPublic": true,
+      "createdDate": "2023-01-10T14:25:00Z",
+      "modifiedDate": "2023-07-22T11:30:15Z",
+      "expirationDate": null
+    },
+    {
+      "id": 503,
+      "userId": 101,
+      "name": "isFirstAidTrained",
+      "value": "true",
+      "dataType": "boolean",
+      "category": "Safety",
+      "isPublic": true,
+      "createdDate": "2023-02-05T10:15:30Z",
+      "modifiedDate": "2023-02-05T10:15:30Z",
+      "expirationDate": "2024-02-05T00:00:00Z"
+    }
+  ],
+  "metadata": {
+    "resultCount": 3,
+    "totalCount": 3
+  }
+}</code></pre>
+
+        <h3>Get User Value</h3>
+        <p>Returns a specific user value by ID.</p>
+
+        <h4>Request</h4>
+        <pre><code>GET /uservalue/{id}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the requested user value object.</p>
+
+        <pre><code>{
+  "data": {
+    "id": 501,
+    "userId": 101,
+    "name": "hvacCertification",
+    "value": "Level 2",
+    "dataType": "string",
+    "category": "Certifications",
+    "isPublic": true,
+    "createdDate": "2023-03-15T09:30:00Z",
+    "modifiedDate": "2023-03-15T09:30:00Z",
+    "expirationDate": "2025-03-15T00:00:00Z"
+  }
+}</code></pre>
+
+        <h3>Create User Value</h3>
+        <p>Creates a new user value.</p>
+
+        <h4>Request</h4>
+        <pre><code>POST /uservalue</code></pre>
+
+        <h5>Request Body</h5>
+        <pre><code>{
+  "userId": 101,
+  "name": "electricalLicense",
+  "value": "EL-2023-4582",
+  "dataType": "string",
+  "category": "Licenses",
+  "isPublic": true,
+  "expirationDate": "2024-12-31T00:00:00Z"
+}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the newly created user value object.</p>
+
+        <pre><code>{
+  "data": {
+    "id": 504,
+    "userId": 101,
+    "name": "electricalLicense",
+    "value": "EL-2023-4582",
+    "dataType": "string",
+    "category": "Licenses",
+    "isPublic": true,
+    "createdDate": "2023-09-10T15:20:33Z",
+    "modifiedDate": "2023-09-10T15:20:33Z",
+    "expirationDate": "2024-12-31T00:00:00Z"
+  }
+}</code></pre>
+
+        <h3>Update User Value</h3>
+        <p>Updates an existing user value.</p>
+
+        <h4>Request</h4>
+        <pre><code>PUT /uservalue/{id}</code></pre>
+
+        <h5>Request Body</h5>
+        <pre><code>{
+  "value": "EL-2023-7890",
+  "isPublic": true,
+  "expirationDate": "2025-12-31T00:00:00Z"
+}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the updated user value object.</p>
+
+        <pre><code>{
+  "data": {
+    "id": 504,
+    "userId": 101,
+    "name": "electricalLicense",
+    "value": "EL-2023-7890",
+    "dataType": "string",
+    "category": "Licenses",
+    "isPublic": true,
+    "createdDate": "2023-09-10T15:20:33Z",
+    "modifiedDate": "2023-09-10T16:45:22Z",
+    "expirationDate": "2025-12-31T00:00:00Z"
+  }
+}</code></pre>
+
+        <h3>Delete User Value</h3>
+        <p>Removes a user value.</p>
+
+        <h4>Request</h4>
+        <pre><code>DELETE /uservalue/{id}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns a success message upon successful deletion.</p>
+
+        <pre><code>{
+  "success": true,
+  "message": "User value successfully deleted"
+}</code></pre>
+
+        <h3>Batch Create User Values</h3>
+        <p>Creates multiple user values in a single operation.</p>
+
+        <h4>Request</h4>
+        <pre><code>POST /user/{userId}/values/batch</code></pre>
+
+        <h5>Request Body</h5>
+        <pre><code>{
+  "values": [
+    {
+      "name": "safetyTraining",
+      "value": "2023-08-15",
+      "dataType": "date",
+      "category": "Training",
+      "isPublic": true,
+      "expirationDate": "2024-08-15T00:00:00Z"
+    },
+    {
+      "name": "equipmentQualification",
+      "value": "Forklift",
+      "dataType": "string",
+      "category": "Equipment",
+      "isPublic": true,
+      "expirationDate": "2025-01-01T00:00:00Z"
+    }
+  ]
+}</code></pre>
+
+        <h4>Response</h4>
+        <p>Returns the newly created user value objects.</p>
+
+        <pre><code>{
+  "data": [
+    {
+      "id": 505,
+      "userId": 101,
+      "name": "safetyTraining",
+      "value": "2023-08-15",
+      "dataType": "date",
+      "category": "Training",
+      "isPublic": true,
+      "createdDate": "2023-09-10T17:30:45Z",
+      "modifiedDate": "2023-09-10T17:30:45Z",
+      "expirationDate": "2024-08-15T00:00:00Z"
+    },
+    {
+      "id": 506,
+      "userId": 101,
+      "name": "equipmentQualification",
+      "value": "Forklift",
+      "dataType": "string",
+      "category": "Equipment",
+      "isPublic": true,
+      "createdDate": "2023-09-10T17:30:45Z",
+      "modifiedDate": "2023-09-10T17:30:45Z",
+      "expirationDate": "2025-01-01T00:00:00Z"
+    }
+  ],
+  "success": true,
+  "count": 2
+}</code></pre>
+
+        <h3>Search User Values</h3>
+        <p>Searches for user values across all users.</p>
+
+        <h4>Request</h4>
+        <pre><code>GET /uservalue/search</code></pre>
+
+        <h5>Query Parameters</h5>
+        <table>
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Search by field name.</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>value</code></td>
+                    <td>string</td>
+                    <td>Search by field value.</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>category</code></td>
+                    <td>string</td>
+                    <td>Filter by category.</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>expiringBefore</code></td>
+                    <td>date</td>
+                    <td>Find values expiring before the specified date.</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>limit</code></td>
+                    <td>integer</td>
+                    <td>Maximum number of records to return (default: 100, max: 1000).</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>offset</code></td>
+                    <td>integer</td>
+                    <td>Number of records to skip (default: 0).</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Response</h4>
+        <p>Returns an array of matching user value objects.</p>
+
+        <pre><code>{
+  "data": [
+    {
+      "id": 501,
+      "userId": 101,
+      "name": "hvacCertification",
+      "value": "Level 2",
+      "dataType": "string",
+      "category": "Certifications",
+      "isPublic": true,
+      "createdDate": "2023-03-15T09:30:00Z",
+      "modifiedDate": "2023-03-15T09:30:00Z",
+      "expirationDate": "2025-03-15T00:00:00Z",
+      "user": {
+        "id": 101,
+        "displayName": "John Smith"
+      }
+    },
+    {
+      "id": 601,
+      "userId": 102,
+      "name": "hvacCertification",
+      "value": "Level 3",
+      "dataType": "string",
+      "category": "Certifications",
+      "isPublic": true,
+      "createdDate": "2023-02-10T11:20:00Z",
+      "modifiedDate": "2023-02-10T11:20:00Z",
+      "expirationDate": "2026-02-10T00:00:00Z",
+      "user": {
+        "id": 102,
+        "displayName": "Mary Johnson"
+      }
+    }
+  ],
+  "metadata": {
+    "resultCount": 2,
+    "offset": 0,
+    "limit": 100,
+    "totalCount": 2
+  }
+}</code></pre>
+
+        <h2>Related Resources</h2>
+        <ul>
+            <li><a href="user.html">User</a></li>
+            <li><a href="usergrouplabel.html">User Group Label</a></li>
+            <li><a href="userabsence.html">User Absence</a></li>
+        </ul>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

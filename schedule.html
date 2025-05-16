@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('schedule.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Schedule">Schedule</h1>
+        <p>The Schedule object represents time allocations for technicians and other resources within ServiceTrade.
+            It includes appointments, job allocations, time blocks for service calls, travel time, and other
+            scheduled activities. The schedule system allows for effective resource management, ensuring that
+            technicians and equipment are assigned efficiently while avoiding conflicts. The Schedule API enables
+            integration with external calendar systems, dispatch tools, and workforce management platforms.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the schedule entry.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>title</code></td>
+                    <td>string</td>
+                    <td>Title or name of the scheduled activity.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the scheduled activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of schedule entry (e.g., "Job", "Travel", "Meeting", "Break", "Training", "PTO").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>startTime</code></td>
+                    <td>datetime</td>
+                    <td>Start date and time of the scheduled activity.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>endTime</code></td>
+                    <td>datetime</td>
+                    <td>End date and time of the scheduled activity.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>duration</code></td>
+                    <td>integer</td>
+                    <td>Duration in minutes of the scheduled activity.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>allDay</code></td>
+                    <td>boolean</td>
+                    <td>Whether the scheduled item spans an entire day.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>resourceId</code></td>
+                    <td>integer</td>
+                    <td>ID of the resource being scheduled (typically a technician/user ID).</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>resourceType</code></td>
+                    <td>string</td>
+                    <td>Type of resource being scheduled (e.g., "User", "Equipment", "Vehicle").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>jobId</code></td>
+                    <td>integer</td>
+                    <td>ID of the associated job, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>locationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the location where the activity will take place.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the customer associated with the scheduled activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the schedule (e.g., "Confirmed", "Tentative", "Canceled", "Completed").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>priority</code></td>
+                    <td>string</td>
+                    <td>Priority level (e.g., "High", "Medium", "Low").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>recurrence</code></td>
+                    <td>object</td>
+                    <td>Recurrence pattern information for recurring schedules.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isRecurring</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a recurring schedule entry.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>parentScheduleId</code></td>
+                    <td>integer</td>
+                    <td>For recurring instances, the ID of the parent schedule template.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>color</code></td>
+                    <td>string</td>
+                    <td>Color code for visual representation in calendars.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isPrivate</code></td>
+                    <td>boolean</td>
+                    <td>Whether the schedule entry is private to the resource.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes or instructions for the scheduled activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>estimatedTravelTime</code></td>
+                    <td>integer</td>
+                    <td>Estimated travel time in minutes to reach the location.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>estimatedServiceTime</code></td>
+                    <td>integer</td>
+                    <td>Estimated time in minutes to complete the service work.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notifications</code></td>
+                    <td>array</td>
+                    <td>Array of notification settings for this schedule.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this schedule entry.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this schedule entry was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this schedule entry.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this schedule entry was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /schedules</h3>
+        <p>Retrieves a list of schedule entries. Supports filtering by date range, resource, job, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/schedules?startTime=2023-07-01T00:00:00Z&endTime=2023-07-07T23:59:59Z&resourceType=User
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 12001,
+            "title": "AC Maintenance for Smith Co.",
+            "type": "Job",
+            "startTime": "2023-07-03T09:00:00Z",
+            "endTime": "2023-07-03T11:00:00Z",
+            "duration": 120,
+            "allDay": false,
+            "resourceId": 501,
+            "resourceType": "User",
+            "jobId": 5001,
+            "locationId": 1201,
+            "customerId": 301,
+            "status": "Confirmed",
+            "color": "#4CAF50",
+            "estimatedTravelTime": 30,
+            "estimatedServiceTime": 90
+        },
+        {
+            "id": 12002,
+            "title": "Travel to Johnson Industries",
+            "type": "Travel",
+            "startTime": "2023-07-03T11:30:00Z",
+            "endTime": "2023-07-03T12:30:00Z",
+            "duration": 60,
+            "allDay": false,
+            "resourceId": 501,
+            "resourceType": "User",
+            "jobId": 5002,
+            "locationId": 1202,
+            "customerId": 302,
+            "status": "Confirmed",
+            "color": "#FFC107"
+        },
+        {
+            "id": 12003,
+            "title": "Boiler Inspection - Johnson Industries",
+            "type": "Job",
+            "startTime": "2023-07-03T12:30:00Z",
+            "endTime": "2023-07-03T15:30:00Z",
+            "duration": 180,
+            "allDay": false,
+            "resourceId": 501,
+            "resourceType": "User",
+            "jobId": 5002,
+            "locationId": 1202,
+            "customerId": 302,
+            "status": "Confirmed",
+            "color": "#4CAF50",
+            "estimatedServiceTime": 180
+        },
+        {
+            "id": 12004,
+            "title": "Team Meeting",
+            "type": "Meeting",
+            "startTime": "2023-07-04T08:00:00Z",
+            "endTime": "2023-07-04T09:00:00Z",
+            "duration": 60,
+            "allDay": false,
+            "resourceId": 501,
+            "resourceType": "User",
+            "status": "Confirmed",
+            "color": "#2196F3"
+        },
+        {
+            "id": 12005,
+            "title": "Training - New Equipment Certification",
+            "type": "Training",
+            "startTime": "2023-07-05T00:00:00Z",
+            "endTime": "2023-07-05T23:59:59Z",
+            "duration": 1440,
+            "allDay": true,
+            "resourceId": 501,
+            "resourceType": "User",
+            "status": "Confirmed",
+            "color": "#9C27B0"
+        }
+    ],
+    "totalResults": 5,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /schedules/{id}</h3>
+        <p>Retrieves a specific schedule entry by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/schedules/12003
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 12003,
+    "title": "Boiler Inspection - Johnson Industries",
+    "description": "Annual boiler inspection and maintenance service, including safety checks and efficiency testing.",
+    "type": "Job",
+    "startTime": "2023-07-03T12:30:00Z",
+    "endTime": "2023-07-03T15:30:00Z",
+    "duration": 180,
+    "allDay": false,
+    "resourceId": 501,
+    "resourceType": "User",
+    "jobId": 5002,
+    "locationId": 1202,
+    "customerId": 302,
+    "status": "Confirmed",
+    "priority": "Medium",
+    "isRecurring": false,
+    "color": "#4CAF50",
+    "isPrivate": false,
+    "notes": "Customer requests technician to check water quality and perform descaling if necessary. Front desk sign-in required.",
+    "estimatedTravelTime": 0,
+    "estimatedServiceTime": 180,
+    "notifications": [
+        {
+            "type": "Email",
+            "recipient": "customer",
+            "timing": "1 day before",
+            "isEnabled": true
+        },
+        {
+            "type": "SMS",
+            "recipient": "technician",
+            "timing": "1 hour before",
+            "isEnabled": true
+        }
+    ],
+    "createdBy": 101,
+    "createdDate": "2023-06-25T14:15:00Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2023-06-26T09:30:00Z",
+    "customFields": {
+        "equipmentNeeded": "Boiler testing kit, water quality analyzer",
+        "estimatedParts": "None",
+        "parkingInstructions": "Employee lot, visitor section"
+    }
+}</code></pre>
+
+        <h3>POST /schedules</h3>
+        <p>Creates a new schedule entry.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "title": "Emergency Chiller Repair",
+    "description": "Respond to chiller failure at XYZ Corporation headquarters.",
+    "type": "Job",
+    "startTime": "2023-07-08T10:00:00Z",
+    "endTime": "2023-07-08T14:00:00Z",
+    "resourceId": 502,
+    "resourceType": "User",
+    "jobId": 5010,
+    "locationId": 1210,
+    "customerId": 310,
+    "status": "Confirmed",
+    "priority": "High",
+    "color": "#F44336",
+    "notes": "Customer reports complete failure of primary chiller. Bring replacement parts for model CT-5000.",
+    "estimatedTravelTime": 45,
+    "estimatedServiceTime": 195,
+    "notifications": [
+        {
+            "type": "Email",
+            "recipient": "customer",
+            "timing": "when scheduled",
+            "isEnabled": true
+        },
+        {
+            "type": "SMS",
+            "recipient": "technician",
+            "timing": "when scheduled",
+            "isEnabled": true
+        }
+    ],
+    "customFields": {
+        "equipmentNeeded": "CT-5000 diagnostic tools, common replacement parts",
+        "isPriority": "true",
+        "callAheadRequired": "true"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created schedule entry (HTTP 201 Created).</p>
+
+        <h3>PUT /schedules/{id}</h3>
+        <p>Updates an existing schedule entry.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "title": "Emergency Chiller Repair - XYZ Corp",
+    "startTime": "2023-07-08T09:00:00Z",
+    "endTime": "2023-07-08T14:00:00Z",
+    "resourceId": 503,
+    "status": "Confirmed",
+    "notes": "Customer reports complete failure of primary chiller. Dispatching senior technician with replacement parts for model CT-5000. Building engineer will meet technician at loading dock entrance.",
+    "estimatedTravelTime": 30,
+    "estimatedServiceTime": 240,
+    "notifications": [
+        {
+            "type": "Email",
+            "recipient": "customer",
+            "timing": "when updated",
+            "isEnabled": true
+        },
+        {
+            "type": "SMS",
+            "recipient": "technician",
+            "timing": "when updated",
+            "isEnabled": true
+        },
+        {
+            "type": "Email",
+            "recipient": "serviceManager",
+            "timing": "when updated",
+            "isEnabled": true
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated schedule entry.</p>
+
+        <h3>DELETE /schedules/{id}</h3>
+        <p>Deletes a schedule entry.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /schedules/{id}/cancel</h3>
+        <p>Cancels a schedule entry without deleting it.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "reason": "Customer requested cancellation",
+    "notifyResource": true,
+    "notifyCustomer": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the canceled schedule entry with updated status.</p>
+
+        <h3>POST /schedules/{id}/reschedule</h3>
+        <p>Reschedules an existing schedule entry.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "startTime": "2023-07-10T13:00:00Z",
+    "endTime": "2023-07-10T17:00:00Z",
+    "reason": "Technician unavailable due to illness",
+    "notifyResource": true,
+    "notifyCustomer": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the rescheduled entry.</p>
+
+        <h3>GET /resources/{id}/schedule</h3>
+        <p>Retrieves the schedule for a specific resource (user, equipment, etc.).</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/resources/501/schedule?startTime=2023-07-01T00:00:00Z&endTime=2023-07-31T23:59:59Z
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of schedule entries for the specified resource.</p>
+
+        <h3>GET /jobs/{id}/schedule</h3>
+        <p>Retrieves all schedule entries associated with a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/5001/schedule
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of schedule entries for the specified job.</p>
+
+        <h3>POST /schedules/availability</h3>
+        <p>Checks availability of resources within a time period.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "resourceIds": [501, 502, 503, 504],
+    "resourceType": "User",
+    "startTime": "2023-07-15T00:00:00Z",
+    "endTime": "2023-07-16T23:59:59Z",
+    "duration": 180,
+    "locationId": 1220,
+    "skills": ["HVAC", "Chiller"],
+    "priority": "Medium"
+}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "availableSlots": [
+        {
+            "resourceId": 501,
+            "availableWindows": [
+                {
+                    "startTime": "2023-07-15T08:00:00Z",
+                    "endTime": "2023-07-15T12:00:00Z",
+                    "duration": 240
+                },
+                {
+                    "startTime": "2023-07-15T13:00:00Z",
+                    "endTime": "2023-07-15T17:00:00Z",
+                    "duration": 240
+                }
+            ],
+            "estimatedTravelTime": 25
+        },
+        {
+            "resourceId": 503,
+            "availableWindows": [
+                {
+                    "startTime": "2023-07-16T09:00:00Z",
+                    "endTime": "2023-07-16T15:00:00Z",
+                    "duration": 360
+                }
+            ],
+            "estimatedTravelTime": 30
+        }
+    ],
+    "unavailableResources": [
+        {
+            "resourceId": 502,
+            "unavailabilityReason": "Fully booked"
+        },
+        {
+            "resourceId": 504,
+            "unavailabilityReason": "PTO"
+        }
+    ]
+}</code></pre>
+
+        <h3>POST /schedules/recurring</h3>
+        <p>Creates a recurring schedule entry pattern.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "title": "Quarterly Preventive Maintenance",
+    "description": "Regular quarterly maintenance service for HVAC equipment",
+    "type": "Job",
+    "firstStartTime": "2023-08-01T09:00:00Z",
+    "duration": 240,
+    "resourceId": 501,
+    "resourceType": "User",
+    "customerId": 305,
+    "locationId": 1205,
+    "recurrencePattern": {
+        "frequency": "Monthly",
+        "interval": 3,
+        "dayOfMonth": 1,
+        "endAfter": 4,
+        "endDate": "2024-05-31T23:59:59Z"
+    },
+    "status": "Tentative",
+    "createJobsAutomatically": true,
+    "jobTemplateId": 102
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created recurring schedule template and the first few instances.</p>
+
+        <h3>GET /schedules/recurring/{id}</h3>
+        <p>Retrieves a recurring schedule pattern and its instances.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/schedules/recurring/5001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the recurring schedule template and its instances.</p>
+
+        <h3>PUT /schedules/recurring/{id}</h3>
+        <p>Updates a recurring schedule pattern.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "title": "Quarterly Preventive Maintenance - Premium",
+    "description": "Enhanced quarterly maintenance service for HVAC equipment",
+    "duration": 300,
+    "recurrencePattern": {
+        "frequency": "Monthly",
+        "interval": 3,
+        "dayOfMonth": 1,
+        "endAfter": 8
+    },
+    "updateMode": "AllInstances"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated recurring schedule template.</p>
+
+        <h3>DELETE /schedules/recurring/{id}</h3>
+        <p>Deletes a recurring schedule pattern and optionally its instances.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">DELETE /v1.0/schedules/recurring/5001?deleteInstances=true
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /schedules/batch</h3>
+        <p>Creates multiple schedule entries in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "schedules": [
+        {
+            "title": "Maintenance Visit - Site A",
+            "type": "Job",
+            "startTime": "2023-07-20T09:00:00Z",
+            "endTime": "2023-07-20T12:00:00Z",
+            "resourceId": 501,
+            "resourceType": "User",
+            "jobId": 5020,
+            "locationId": 1230,
+            "customerId": 330
+        },
+        {
+            "title": "Maintenance Visit - Site B",
+            "type": "Job",
+            "startTime": "2023-07-20T13:00:00Z",
+            "endTime": "2023-07-20T16:00:00Z",
+            "resourceId": 501,
+            "resourceType": "User",
+            "jobId": 5021,
+            "locationId": 1231,
+            "customerId": 331
+        },
+        {
+            "title": "Travel: Site A to Site B",
+            "type": "Travel",
+            "startTime": "2023-07-20T12:00:00Z",
+            "endTime": "2023-07-20T13:00:00Z",
+            "resourceId": 501,
+            "resourceType": "User"
+        }
+    ],
+    "validateConflicts": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created schedule entries.</p>
+
+        <h3>GET /resources/{id}/calendar</h3>
+        <p>Retrieves a calendar view of a resource's schedule.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/resources/501/calendar?year=2023&month=7
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns calendar data for the specified resource.</p>
+
+        <h3>POST /schedules/conflicts</h3>
+        <p>Checks for scheduling conflicts based on proposed schedule entries.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "proposedSchedules": [
+        {
+            "resourceId": 501,
+            "startTime": "2023-07-25T09:00:00Z",
+            "endTime": "2023-07-25T12:00:00Z"
+        },
+        {
+            "resourceId": 502,
+            "startTime": "2023-07-25T14:00:00Z",
+            "endTime": "2023-07-25T16:00:00Z"
+        }
+    ],
+    "ignoreIds": [12050, 12051]
+}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "hasConflicts": true,
+    "conflicts": [
+        {
+            "resourceId": 501,
+            "conflictingScheduleId": 12055,
+            "conflictingScheduleTitle": "Team Training Session",
+            "conflictingStartTime": "2023-07-25T08:00:00Z",
+            "conflictingEndTime": "2023-07-25T10:30:00Z",
+            "overlapMinutes": 90
+        }
+    ],
+    "noConflicts": [
+        {
+            "resourceId": 502,
+            "proposedStartTime": "2023-07-25T14:00:00Z",
+            "proposedEndTime": "2023-07-25T16:00:00Z"
+        }
+    ]
+}</code></pre>
+
+        <h3>GET /schedules/dashboard</h3>
+        <p>Retrieves a summary dashboard of scheduled activities.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/schedules/dashboard?date=2023-07-15
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a summary dashboard of scheduled activities for the specified date.</p>
+
+        <h3>POST /schedules/optimize</h3>
+        <p>Optimizes scheduling based on various criteria like travel time, technician skills, and priority.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "jobIds": [5025, 5026, 5027, 5028, 5029],
+    "resourceIds": [501, 502, 503, 504],
+    "dateRange": {
+        "startDate": "2023-07-15",
+        "endDate": "2023-07-16"
+    },
+    "optimizationCriteria": {
+        "minimizeTravelTime": true,
+        "prioritizeUrgent": true,
+        "balanceWorkload": true,
+        "matchSkills": true
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns proposed optimized schedule assignments.</p>
+
+        <h3>POST /schedules/{id}/checkin</h3>
+        <p>Records a resource's check-in to a scheduled activity.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "timestamp": "2023-07-03T12:25:00Z",
+    "latitude": 35.7806,
+    "longitude": -78.6389,
+    "notes": "Arrived on site, met with building manager"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated schedule entry with check-in information.</p>
+
+        <h3>POST /schedules/{id}/checkout</h3>
+        <p>Records a resource's check-out from a scheduled activity.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "timestamp": "2023-07-03T15:15:00Z",
+    "latitude": 35.7806,
+    "longitude": -78.6389,
+    "notes": "Service completed, all systems operational",
+    "actualServiceTime": 170
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated schedule entry with check-out information.</p>
+
+        <h3>GET /schedules/sync</h3>
+        <p>Retrieves schedule entries that have changed since a specific date.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/schedules/sync?since=2023-07-01T00:00:00Z
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns schedule entries that have been created, updated, or deleted since the specified date.</p>
+
+        <h3>POST /schedules/import</h3>
+        <p>Imports schedule entries from an external system.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "source": "Google Calendar",
+    "schedules": [
+        {
+            "externalId": "evt_12345",
+            "title": "Client Meeting",
+            "startTime": "2023-07-20T10:00:00Z",
+            "endTime": "2023-07-20T11:00:00Z",
+            "resourceId": 501,
+            "resourceType": "User"
+        },
+        {
+            "externalId": "evt_12346",
+            "title": "Site Survey",
+            "startTime": "2023-07-21T14:00:00Z",
+            "endTime": "2023-07-21T16:00:00Z",
+            "resourceId": 502,
+            "resourceType": "User"
+        }
+    ],
+    "createMissingResources": false,
+    "updateExisting": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the imported schedules.</p>
+
+        <h3>POST /schedules/export</h3>
+        <p>Exports schedule entries to a file or external system.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "format": "iCalendar",
+    "startDate": "2023-07-01",
+    "endDate": "2023-07-31",
+    "resourceIds": [501, 502],
+    "includePrivate": false,
+    "destination": "File"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a download URL for the exported schedule.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

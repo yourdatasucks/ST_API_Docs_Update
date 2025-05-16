@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('service.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Service">Service</h1>
+        <p>The Service object represents a specific type of work or service offered by a company to its customers.
+            Services define standardized offerings that can be added to <a href="job.html">Jobs</a>, <a
+                href="quote.html">Quotes</a>,
+            and <a href="invoice.html">Invoices</a>. Each service typically includes standard pricing, description, time
+            estimates,
+            and other attributes that help maintain consistency in service delivery and financial operations.
+            Services may be grouped into service lines or categories for organizational and reporting purposes.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the service.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the service.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>code</code></td>
+                    <td>string</td>
+                    <td>Unique code or SKU for the service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>category</code></td>
+                    <td>string</td>
+                    <td>Category the service belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceLine</code></td>
+                    <td>string</td>
+                    <td>Service line the service belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether the service is currently active and available for use.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>defaultRate</code></td>
+                    <td>decimal</td>
+                    <td>Default rate charged for the service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>defaultRateType</code></td>
+                    <td>string</td>
+                    <td>Type of rate (e.g., "Per Hour", "Per Unit", "Flat").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>defaultCost</code></td>
+                    <td>decimal</td>
+                    <td>Default cost of providing the service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>defaultCostType</code></td>
+                    <td>string</td>
+                    <td>Type of cost (e.g., "Per Hour", "Per Unit", "Flat").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>estimatedDuration</code></td>
+                    <td>integer</td>
+                    <td>Estimated duration in minutes to complete the service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxable</code></td>
+                    <td>boolean</td>
+                    <td>Whether the service is subject to taxation.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxCode</code></td>
+                    <td>string</td>
+                    <td>Tax code applicable to the service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxRate</code></td>
+                    <td>decimal</td>
+                    <td>Default tax rate applicable to the service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>defaultQuantity</code></td>
+                    <td>decimal</td>
+                    <td>Default quantity of the service when added to a job, quote, or invoice.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>unit</code></td>
+                    <td>string</td>
+                    <td>Unit of measure for the service (e.g., "Hours", "Units", "Days").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>skillsRequired</code></td>
+                    <td>array</td>
+                    <td>Array of skills required to perform this service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>equipmentRequired</code></td>
+                    <td>array</td>
+                    <td>Array of equipment required to perform this service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>associatedParts</code></td>
+                    <td>array</td>
+                    <td>Array of parts or materials typically associated with this service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>requiredTests</code></td>
+                    <td>array</td>
+                    <td>Array of tests that must be performed during this service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>requiredForms</code></td>
+                    <td>array</td>
+                    <td>Array of forms that must be completed during this service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>procedureSteps</code></td>
+                    <td>array</td>
+                    <td>Array of steps or procedures to follow when performing this service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>glAccountCode</code></td>
+                    <td>string</td>
+                    <td>General ledger account code for revenue from this service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>glCostAccountCode</code></td>
+                    <td>string</td>
+                    <td>General ledger account code for costs associated with this service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isRecurring</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a recurring service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>recurringFrequency</code></td>
+                    <td>string</td>
+                    <td>Frequency of recurring service (e.g., "Monthly", "Quarterly", "Annually").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>imageUrl</code></td>
+                    <td>string</td>
+                    <td>URL to an image representing the service.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>priority</code></td>
+                    <td>string</td>
+                    <td>Priority level of the service (e.g., "High", "Medium", "Low").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this service.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this service was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this service.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this service was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /services</h3>
+        <p>Retrieves a list of services. Supports filtering by name, category, active status, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services?isActive=true&category=HVAC
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 1001,
+            "name": "Preventive Maintenance - HVAC",
+            "description": "Standard preventive maintenance for HVAC systems",
+            "code": "SVC-HVAC-PM",
+            "category": "HVAC",
+            "serviceLine": "Maintenance",
+            "isActive": true,
+            "defaultRate": 150.00,
+            "defaultRateType": "Per Hour",
+            "estimatedDuration": 120,
+            "taxable": true
+        },
+        {
+            "id": 1002,
+            "name": "Air Filter Replacement",
+            "description": "Replacement of air filters in HVAC systems",
+            "code": "SVC-HVAC-FLTR",
+            "category": "HVAC",
+            "serviceLine": "Maintenance",
+            "isActive": true,
+            "defaultRate": 75.00,
+            "defaultRateType": "Flat",
+            "estimatedDuration": 30,
+            "taxable": true
+        },
+        {
+            "id": 1003,
+            "name": "HVAC System Inspection",
+            "description": "Comprehensive inspection of HVAC systems",
+            "code": "SVC-HVAC-INSP",
+            "category": "HVAC",
+            "serviceLine": "Inspection",
+            "isActive": true,
+            "defaultRate": 125.00,
+            "defaultRateType": "Flat",
+            "estimatedDuration": 45,
+            "taxable": true
+        },
+        {
+            "id": 1004,
+            "name": "Emergency HVAC Repair",
+            "description": "Emergency repair services for HVAC systems",
+            "code": "SVC-HVAC-EMRG",
+            "category": "HVAC",
+            "serviceLine": "Repair",
+            "isActive": true,
+            "defaultRate": 200.00,
+            "defaultRateType": "Per Hour",
+            "estimatedDuration": 180,
+            "taxable": true
+        },
+        {
+            "id": 1005,
+            "name": "HVAC System Tune-Up",
+            "description": "Seasonal tune-up of HVAC systems",
+            "code": "SVC-HVAC-TUNE",
+            "category": "HVAC",
+            "serviceLine": "Maintenance",
+            "isActive": true,
+            "defaultRate": 175.00,
+            "defaultRateType": "Flat",
+            "estimatedDuration": 90,
+            "taxable": true
+        }
+    ],
+    "totalResults": 5,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /services/{id}</h3>
+        <p>Retrieves a specific service by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services/1001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 1001,
+    "name": "Preventive Maintenance - HVAC",
+    "description": "Standard preventive maintenance for HVAC systems, including inspection, cleaning, and testing of all major components to ensure optimal performance and energy efficiency.",
+    "code": "SVC-HVAC-PM",
+    "category": "HVAC",
+    "serviceLine": "Maintenance",
+    "isActive": true,
+    "defaultRate": 150.00,
+    "defaultRateType": "Per Hour",
+    "defaultCost": 75.00,
+    "defaultCostType": "Per Hour",
+    "estimatedDuration": 120,
+    "taxable": true,
+    "taxCode": "ST01",
+    "taxRate": 8.25,
+    "defaultQuantity": 2.0,
+    "unit": "Hours",
+    "skillsRequired": [
+        "HVAC Certification",
+        "Preventive Maintenance"
+    ],
+    "equipmentRequired": [
+        "Refrigerant Gauge",
+        "Multimeter",
+        "Air Flow Meter",
+        "General Hand Tools"
+    ],
+    "associatedParts": [
+        {
+            "id": 2001,
+            "name": "Air Filter - Standard",
+            "quantity": 1
+        },
+        {
+            "id": 2002,
+            "name": "Lubricant",
+            "quantity": 0.25
+        },
+        {
+            "id": 2003,
+            "name": "Cleaning Solution",
+            "quantity": 0.5
+        }
+    ],
+    "requiredTests": [
+        "Refrigerant Level Test",
+        "Airflow Test",
+        "Electrical Load Test",
+        "Temperature Differential Test"
+    ],
+    "requiredForms": [
+        "HVAC Maintenance Checklist",
+        "System Performance Report"
+    ],
+    "procedureSteps": [
+        "Inspect all electrical connections and tighten as needed",
+        "Clean condenser and evaporator coils",
+        "Check refrigerant levels and pressure",
+        "Inspect and clean blower components",
+        "Replace air filter",
+        "Lubricate all moving parts",
+        "Check thermostat operation and calibration",
+        "Inspect condensate drain",
+        "Check system operation through complete cycle",
+        "Document findings and recommendations"
+    ],
+    "glAccountCode": "4100",
+    "glCostAccountCode": "5100",
+    "isRecurring": true,
+    "recurringFrequency": "Quarterly",
+    "imageUrl": "https://assets.servicetrade.com/services/hvac-pm.jpg",
+    "priority": "Medium",
+    "createdBy": 101,
+    "createdDate": "2022-01-15T10:30:00Z",
+    "lastModifiedBy": 102,
+    "lastModifiedDate": "2023-03-21T09:15:00Z",
+    "customFields": {
+        "serviceType": "Planned",
+        "typicalSystemTypes": "Split System, Packaged Unit, Rooftop",
+        "certifications": "EPA 608",
+        "averageCompletionTime": "1.8 hours"
+    }
+}</code></pre>
+
+        <h3>POST /services</h3>
+        <p>Creates a new service.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Annual Fire Extinguisher Inspection",
+    "description": "Comprehensive annual inspection of portable fire extinguishers to ensure compliance with fire safety codes and regulations.",
+    "code": "SVC-FIRE-EXT",
+    "category": "Fire Protection",
+    "serviceLine": "Inspection",
+    "isActive": true,
+    "defaultRate": 15.00,
+    "defaultRateType": "Per Unit",
+    "defaultCost": 7.50,
+    "defaultCostType": "Per Unit",
+    "estimatedDuration": 5,
+    "taxable": true,
+    "taxCode": "ST01",
+    "taxRate": 8.25,
+    "defaultQuantity": 1.0,
+    "unit": "Units",
+    "skillsRequired": [
+        "Fire Extinguisher Certification",
+        "NICET Level II"
+    ],
+    "equipmentRequired": [
+        "Inspection Tags",
+        "Pressure Gauge",
+        "Scale",
+        "General Hand Tools"
+    ],
+    "requiredTests": [
+        "Visual Inspection",
+        "Pressure Test",
+        "Weight Check"
+    ],
+    "requiredForms": [
+        "Fire Extinguisher Inspection Form",
+        "Compliance Certificate"
+    ],
+    "procedureSteps": [
+        "Check for physical damage or corrosion",
+        "Ensure pressure gauge is in operating range",
+        "Verify fullness by weighing or lifting",
+        "Check that tamper seal is intact",
+        "Ensure access is not blocked",
+        "Check the inspection tag and update",
+        "Document any deficiencies",
+        "Affix new inspection tag"
+    ],
+    "glAccountCode": "4200",
+    "glCostAccountCode": "5200",
+    "isRecurring": true,
+    "recurringFrequency": "Annually",
+    "priority": "High",
+    "customFields": {
+        "serviceType": "Required",
+        "complianceCode": "NFPA 10",
+        "inspectionInterval": "12 months",
+        "recertificationPeriod": "6 years"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created service (HTTP 201 Created).</p>
+
+        <h3>PUT /services/{id}</h3>
+        <p>Updates an existing service.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Annual Fire Extinguisher Inspection & Certification",
+    "description": "Comprehensive annual inspection of portable fire extinguishers with certification to ensure compliance with fire safety codes and regulations including NFPA 10.",
+    "defaultRate": 18.50,
+    "defaultRateType": "Per Unit",
+    "estimatedDuration": 6,
+    "procedureSteps": [
+        "Check for physical damage or corrosion",
+        "Ensure pressure gauge is in operating range",
+        "Verify fullness by weighing or lifting",
+        "Check that tamper seal is intact",
+        "Ensure access is not blocked",
+        "Check the inspection tag and update",
+        "Document any deficiencies",
+        "Affix new inspection tag",
+        "Provide digital certification report"
+    ],
+    "customFields": {
+        "serviceType": "Required",
+        "complianceCode": "NFPA 10, IFC 906",
+        "inspectionInterval": "12 months",
+        "recertificationPeriod": "6 years",
+        "digitalReporting": "true"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated service.</p>
+
+        <h3>DELETE /services/{id}</h3>
+        <p>Deletes a service.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /services/{id}/deactivate</h3>
+        <p>Deactivates a service without deleting it.</p>
+        <h4>Response</h4>
+        <p>Returns the deactivated service with updated status.</p>
+
+        <h3>POST /services/{id}/activate</h3>
+        <p>Activates a previously deactivated service.</p>
+        <h4>Response</h4>
+        <p>Returns the activated service with updated status.</p>
+
+        <h3>GET /services/categories</h3>
+        <p>Retrieves a list of all service categories.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services/categories
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "HVAC",
+            "count": 12
+        },
+        {
+            "name": "Plumbing",
+            "count": 8
+        },
+        {
+            "name": "Electrical",
+            "count": 10
+        },
+        {
+            "name": "Fire Protection",
+            "count": 15
+        },
+        {
+            "name": "Building Automation",
+            "count": 6
+        },
+        {
+            "name": "Refrigeration",
+            "count": 9
+        },
+        {
+            "name": "Security Systems",
+            "count": 7
+        }
+    ],
+    "totalResults": 7
+}</code></pre>
+
+        <h3>GET /services/lines</h3>
+        <p>Retrieves a list of all service lines.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services/lines
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "Maintenance",
+            "count": 25
+        },
+        {
+            "name": "Inspection",
+            "count": 22
+        },
+        {
+            "name": "Repair",
+            "count": 18
+        },
+        {
+            "name": "Installation",
+            "count": 15
+        },
+        {
+            "name": "Testing",
+            "count": 10
+        },
+        {
+            "name": "Design",
+            "count": 5
+        },
+        {
+            "name": "Consulting",
+            "count": 3
+        }
+    ],
+    "totalResults": 7
+}</code></pre>
+
+        <h3>GET /services/{id}/rates</h3>
+        <p>Retrieves customer-specific rates for a service.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services/1001/rates
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "customerId": 301,
+            "customerName": "ABC Corporation",
+            "rate": 145.00,
+            "effectiveDate": "2023-01-01T00:00:00Z",
+            "expirationDate": "2023-12-31T23:59:59Z",
+            "contractId": 501
+        },
+        {
+            "customerId": 302,
+            "customerName": "XYZ Industries",
+            "rate": 160.00,
+            "effectiveDate": "2023-01-01T00:00:00Z",
+            "expirationDate": "2023-12-31T23:59:59Z",
+            "contractId": 502
+        },
+        {
+            "customerId": 303,
+            "customerName": "123 Properties",
+            "rate": 155.00,
+            "effectiveDate": "2023-01-01T00:00:00Z",
+            "expirationDate": "2023-12-31T23:59:59Z",
+            "contractId": 503
+        }
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>POST /services/{id}/rates</h3>
+        <p>Sets customer-specific rates for a service.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "customerId": 304,
+    "rate": 140.00,
+    "effectiveDate": "2023-07-01T00:00:00Z",
+    "expirationDate": "2024-06-30T23:59:59Z",
+    "contractId": 504
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created customer-specific rate.</p>
+
+        <h3>GET /services/stats</h3>
+        <p>Retrieves statistics about service usage.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services/stats?period=last6months
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "topServices": [
+        {
+            "id": 1001,
+            "name": "Preventive Maintenance - HVAC",
+            "usageCount": 458,
+            "revenue": 137400.00
+        },
+        {
+            "id": 1004,
+            "name": "Emergency HVAC Repair",
+            "usageCount": 216,
+            "revenue": 86400.00
+        },
+        {
+            "id": 1003,
+            "name": "HVAC System Inspection",
+            "usageCount": 203,
+            "revenue": 25375.00
+        },
+        {
+            "id": 1005,
+            "name": "HVAC System Tune-Up",
+            "usageCount": 187,
+            "revenue": 32725.00
+        },
+        {
+            "id": 1002,
+            "name": "Air Filter Replacement",
+            "usageCount": 165,
+            "revenue": 12375.00
+        }
+    ],
+    "totalJobs": 1229,
+    "totalRevenue": 294275.00,
+    "averageServiceDuration": 93.5,
+    "mostProfitableCategory": "HVAC",
+    "fastestGrowingService": "Emergency HVAC Repair"
+}</code></pre>
+
+        <h3>POST /services/{id}/clone</h3>
+        <p>Creates a new service by cloning an existing service.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Preventive Maintenance - Package Units",
+    "code": "SVC-HVAC-PM-PKG",
+    "description": "Specialized preventive maintenance for package HVAC units, including inspection, cleaning, and testing of all major components to ensure optimal performance and energy efficiency.",
+    "customFields": {
+        "serviceType": "Planned",
+        "typicalSystemTypes": "Package Units",
+        "certifications": "EPA 608",
+        "averageCompletionTime": "2.2 hours"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created service based on the cloned template.</p>
+
+        <h3>GET /services/{id}/usage</h3>
+        <p>Retrieves usage statistics for a specific service.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services/1001/usage?startDate=2023-01-01&endDate=2023-06-30
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns usage statistics for the specified service.</p>
+
+        <h3>POST /services/batch</h3>
+        <p>Creates multiple services in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "services": [
+        {
+            "name": "Backflow Preventer Testing",
+            "description": "Annual certification testing of backflow prevention devices",
+            "code": "SVC-PLMB-BKFL",
+            "category": "Plumbing",
+            "serviceLine": "Testing",
+            "isActive": true,
+            "defaultRate": 85.00,
+            "defaultRateType": "Per Unit",
+            "estimatedDuration": 30
+        },
+        {
+            "name": "Backflow Preventer Repair",
+            "description": "Repair of backflow prevention devices",
+            "code": "SVC-PLMB-BKFL-RPR",
+            "category": "Plumbing",
+            "serviceLine": "Repair",
+            "isActive": true,
+            "defaultRate": 125.00,
+            "defaultRateType": "Per Hour",
+            "estimatedDuration": 60
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created services.</p>
+
+        <h3>GET /services/search</h3>
+        <p>Searches for services based on various criteria.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services/search?query=filter&category=HVAC
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns services matching the search criteria.</p>
+
+        <h3>POST /services/import</h3>
+        <p>Imports services from a file or external system.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "source": "CSV",
+    "data": "base64-encoded-csv-content",
+    "mappings": {
+        "name": "ServiceName",
+        "description": "Description",
+        "code": "ServiceCode",
+        "category": "Category",
+        "defaultRate": "Rate"
+    },
+    "updateExisting": true,
+    "identifyBy": "code"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the imported services.</p>
+
+        <h3>POST /services/export</h3>
+        <p>Exports services to a file.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "format": "CSV",
+    "filter": {
+        "categories": ["HVAC", "Plumbing"],
+        "isActive": true
+    },
+    "fields": [
+        "id",
+        "name",
+        "description",
+        "code",
+        "category",
+        "defaultRate",
+        "estimatedDuration"
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a download URL for the exported services.</p>
+
+        <h3>GET /services/priceBook</h3>
+        <p>Retrieves a price book of all services.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/services/priceBook?customerId=301
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a formatted price book for the specified customer or the default price book.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

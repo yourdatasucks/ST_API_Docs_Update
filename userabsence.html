@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Absence API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('userabsence.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="UserAbsence">User Absence</h1>
+        <p>The User Absence object represents periods of time when a <a href="user.html">User</a> is unavailable for
+            work assignments or scheduling. This includes vacation time, sick leave, personal time off, training days,
+            or any other planned absence. The absence information is used by the scheduling system to prevent assignment
+            of jobs during these periods and helps in resource planning. Absences can be recurring or one-time events
+            and
+            may require approval from managers depending on company policies.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the user absence.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>userId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who will be absent.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>title</code></td>
+                    <td>string</td>
+                    <td>Title or name of the absence (e.g., "Summer Vacation", "Sick Leave").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description or reason for the absence.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>startDate</code></td>
+                    <td>datetime</td>
+                    <td>Start date and time of the absence period.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>endDate</code></td>
+                    <td>datetime</td>
+                    <td>End date and time of the absence period.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>allDay</code></td>
+                    <td>boolean</td>
+                    <td>Whether the absence spans the entire day(s).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of absence (e.g., "Vacation", "Sick", "Training", "Personal").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the absence request (e.g., "Pending", "Approved", "Denied", "Canceled").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>approvalRequired</code></td>
+                    <td>boolean</td>
+                    <td>Whether the absence requires manager approval.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>approvedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who approved the absence request.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>approvedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the absence request was approved.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>deniedReason</code></td>
+                    <td>string</td>
+                    <td>Reason provided if the absence request was denied.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isRecurring</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a recurring absence.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>recurrencePattern</code></td>
+                    <td>object</td>
+                    <td>Pattern information for recurring absences.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>parentAbsenceId</code></td>
+                    <td>integer</td>
+                    <td>For recurring instances, the ID of the parent absence pattern.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>duration</code></td>
+                    <td>integer</td>
+                    <td>Duration of the absence in minutes.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>durationDays</code></td>
+                    <td>decimal</td>
+                    <td>Duration of the absence in days (for PTO tracking).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>ptoUsed</code></td>
+                    <td>decimal</td>
+                    <td>Amount of paid time off used for this absence.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>color</code></td>
+                    <td>string</td>
+                    <td>Color code for visual representation in calendars.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isPrivate</code></td>
+                    <td>boolean</td>
+                    <td>Whether the absence details are private to the user and managers.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this absence record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this absence record was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this absence record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this absence record was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes or instructions related to the absence.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /userabsences</h3>
+        <p>Retrieves a list of user absences. Supports filtering by user, date range, status, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/userabsences?userId=101&startDate=2023-07-01&endDate=2023-12-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 5001,
+            "userId": 101,
+            "title": "Summer Vacation",
+            "startDate": "2023-07-24T00:00:00Z",
+            "endDate": "2023-07-28T23:59:59Z",
+            "allDay": true,
+            "type": "Vacation",
+            "status": "Approved",
+            "durationDays": 5,
+            "ptoUsed": 5.0
+        },
+        {
+            "id": 5002,
+            "userId": 101,
+            "title": "Training - Advanced HVAC Systems",
+            "startDate": "2023-09-12T09:00:00Z",
+            "endDate": "2023-09-14T17:00:00Z",
+            "allDay": false,
+            "type": "Training",
+            "status": "Approved",
+            "durationDays": 3,
+            "ptoUsed": 0.0
+        },
+        {
+            "id": 5003,
+            "userId": 101,
+            "title": "Holiday - Thanksgiving",
+            "startDate": "2023-11-23T00:00:00Z",
+            "endDate": "2023-11-24T23:59:59Z",
+            "allDay": true,
+            "type": "Holiday",
+            "status": "Approved",
+            "durationDays": 2,
+            "ptoUsed": 0.0
+        }
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /userabsences/{id}</h3>
+        <p>Retrieves a specific user absence by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/userabsences/5001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 5001,
+    "userId": 101,
+    "title": "Summer Vacation",
+    "description": "Annual family vacation to the beach",
+    "startDate": "2023-07-24T00:00:00Z",
+    "endDate": "2023-07-28T23:59:59Z",
+    "allDay": true,
+    "type": "Vacation",
+    "status": "Approved",
+    "approvalRequired": true,
+    "approvedBy": 5,
+    "approvedDate": "2023-06-15T10:30:00Z",
+    "isRecurring": false,
+    "duration": 7200,
+    "durationDays": 5,
+    "ptoUsed": 5.0,
+    "color": "#4CAF50",
+    "isPrivate": false,
+    "createdBy": 101,
+    "createdDate": "2023-06-10T14:25:00Z",
+    "lastModifiedBy": 5,
+    "lastModifiedDate": "2023-06-15T10:30:00Z",
+    "notes": "Will be completely unavailable during this time. No cell service at the beach house.",
+    "customFields": {
+        "backupContact": "Mary Johnson (ID: 102)",
+        "emergencyContactWhileAway": "555-123-4567",
+        "leaveCategory": "Annual Leave"
+    }
+}</code></pre>
+
+        <h3>POST /userabsences</h3>
+        <p>Creates a new user absence record.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "userId": 101,
+    "title": "Doctor's Appointment",
+    "description": "Annual physical examination",
+    "startDate": "2023-08-15T13:00:00Z",
+    "endDate": "2023-08-15T15:00:00Z",
+    "allDay": false,
+    "type": "Personal",
+    "approvalRequired": true,
+    "isPrivate": true,
+    "ptoUsed": 2.0,
+    "color": "#2196F3",
+    "notes": "Will check messages during waiting time and will be available by phone if needed urgently."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created user absence record (HTTP 201 Created).</p>
+
+        <h3>PUT /userabsences/{id}</h3>
+        <p>Updates an existing user absence record.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "startDate": "2023-08-15T14:00:00Z",
+    "endDate": "2023-08-15T16:00:00Z",
+    "notes": "Appointment time changed. Will check messages during waiting time and will be available by phone if needed urgently.",
+    "ptoUsed": 2.0
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated user absence record.</p>
+
+        <h3>DELETE /userabsences/{id}</h3>
+        <p>Deletes a user absence record.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /userabsences/{id}/cancel</h3>
+        <p>Cancels a previously approved or pending absence without deleting the record.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "reason": "Appointment rescheduled by doctor's office",
+    "notifyManager": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the canceled user absence record with updated status.</p>
+
+        <h3>POST /userabsences/{id}/approve</h3>
+        <p>Approves a pending absence request (typically used by managers).</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "comments": "Approved. Please ensure your ongoing tasks are handed over to the backup contact.",
+    "notifyUser": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the approved user absence record with updated status.</p>
+
+        <h3>POST /userabsences/{id}/deny</h3>
+        <p>Denies a pending absence request (typically used by managers).</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "reason": "Critical project deliverable during this time requires your expertise.",
+    "suggestAlternative": true,
+    "suggestedDates": {
+        "startDate": "2023-08-22T13:00:00Z",
+        "endDate": "2023-08-22T15:00:00Z"
+    },
+    "notifyUser": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the denied user absence record with updated status.</p>
+
+        <h3>GET /users/{id}/absences</h3>
+        <p>Retrieves all absences for a specific user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/101/absences?startDate=2023-01-01&endDate=2023-12-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of absence records for the specified user.</p>
+
+        <h3>GET /users/{id}/pto-balance</h3>
+        <p>Retrieves the paid time off balance for a specific user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/101/pto-balance
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "userId": 101,
+    "userName": "John Smith",
+    "asOfDate": "2023-07-15T00:00:00Z",
+    "fiscalYearStart": "2023-01-01T00:00:00Z",
+    "fiscalYearEnd": "2023-12-31T23:59:59Z",
+    "balances": {
+        "vacation": {
+            "startingBalance": 15.0,
+            "accrued": 7.5,
+            "used": 5.0,
+            "scheduled": 2.0,
+            "available": 15.5
+        },
+        "sick": {
+            "startingBalance": 10.0,
+            "accrued": 5.0,
+            "used": 1.0,
+            "scheduled": 0.0,
+            "available": 14.0
+        },
+        "personal": {
+            "startingBalance": 3.0,
+            "accrued": 0.0,
+            "used": 1.0,
+            "scheduled": 0.0,
+            "available": 2.0
+        }
+    },
+    "carryOverExpiration": "2023-03-31T23:59:59Z",
+    "accrualSchedule": {
+        "vacation": "1.25 days per month",
+        "sick": "1.0 days per month",
+        "personal": "3.0 days per year"
+    }
+}</code></pre>
+
+        <h3>POST /userabsences/recurring</h3>
+        <p>Creates a recurring absence pattern.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "userId": 101,
+    "title": "Physical Therapy",
+    "description": "Weekly physical therapy session for knee rehabilitation",
+    "firstStartDate": "2023-08-01T15:00:00Z",
+    "firstEndDate": "2023-08-01T16:00:00Z",
+    "type": "Medical",
+    "approvalRequired": true,
+    "ptoUsed": 1.0,
+    "recurrencePattern": {
+        "frequency": "Weekly",
+        "dayOfWeek": "Tuesday",
+        "interval": 1,
+        "occurrences": 8,
+        "endDate": "2023-09-19T16:00:00Z"
+    },
+    "isPrivate": true,
+    "notes": "Standing appointment with Dr. Johnson. May need to continue beyond the 8 weeks depending on progress."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created recurring absence pattern and the first few instances.</p>
+
+        <h3>GET /userabsences/recurring/{id}</h3>
+        <p>Retrieves a recurring absence pattern and its instances.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/userabsences/recurring/6001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the recurring absence pattern and its instances.</p>
+
+        <h3>PUT /userabsences/recurring/{id}</h3>
+        <p>Updates a recurring absence pattern.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "firstStartDate": "2023-08-01T14:00:00Z",
+    "firstEndDate": "2023-08-01T15:00:00Z",
+    "recurrencePattern": {
+        "frequency": "Weekly",
+        "dayOfWeek": "Tuesday",
+        "interval": 1,
+        "occurrences": 10
+    },
+    "updateMode": "AllInstances"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated recurring absence pattern.</p>
+
+        <h3>DELETE /userabsences/recurring/{id}</h3>
+        <p>Deletes a recurring absence pattern and optionally its instances.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">DELETE /v1.0/userabsences/recurring/6001?deleteInstances=true
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /userabsences/batch</h3>
+        <p>Creates multiple user absence records in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "absences": [
+        {
+            "userId": 101,
+            "title": "Christmas Holiday",
+            "startDate": "2023-12-25T00:00:00Z",
+            "endDate": "2023-12-25T23:59:59Z",
+            "allDay": true,
+            "type": "Holiday",
+            "status": "Approved"
+        },
+        {
+            "userId": 101,
+            "title": "New Year's Day",
+            "startDate": "2024-01-01T00:00:00Z",
+            "endDate": "2024-01-01T23:59:59Z",
+            "allDay": true,
+            "type": "Holiday",
+            "status": "Approved"
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created user absence records.</p>
+
+        <h3>GET /userabsences/conflicts</h3>
+        <p>Checks for scheduling conflicts based on proposed absence dates.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/userabsences/conflicts?userId=101&startDate=2023-07-24&endDate=2023-07-26
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "hasConflicts": true,
+    "conflicts": [
+        {
+            "absenceId": 5001,
+            "title": "Summer Vacation",
+            "startDate": "2023-07-24T00:00:00Z",
+            "endDate": "2023-07-28T23:59:59Z",
+            "type": "Vacation",
+            "status": "Approved"
+        }
+    ],
+    "scheduledJobs": [
+        {
+            "jobId": 10245,
+            "title": "Quarterly Maintenance - ABC Corp",
+            "startTime": "2023-07-25T09:00:00Z",
+            "endTime": "2023-07-25T13:00:00Z",
+            "status": "Scheduled"
+        }
+    ]
+}</code></pre>
+
+        <h3>GET /userabsences/calendar</h3>
+        <p>Retrieves a calendar view of user absences for a specified time period.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/userabsences/calendar?month=7&year=2023
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns calendar data showing user absences for the specified period.</p>
+
+        <h3>POST /userabsences/import</h3>
+        <p>Imports user absence records from a file or external system.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "source": "CSV",
+    "data": "base64-encoded-csv-content",
+    "mappings": {
+        "userId": "EmployeeID",
+        "title": "AbsenceTitle",
+        "startDate": "StartDate",
+        "endDate": "EndDate",
+        "type": "AbsenceType"
+    },
+    "defaultStatus": "Approved",
+    "updateExisting": false
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the imported user absence records.</p>
+
+        <h3>GET /userabsences/types</h3>
+        <p>Retrieves a list of all absence types defined in the system.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/userabsences/types
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "Vacation",
+            "usePto": true,
+            "requiresApproval": true,
+            "maxDuration": 15,
+            "color": "#4CAF50"
+        },
+        {
+            "name": "Sick",
+            "usePto": true,
+            "requiresApproval": false,
+            "maxDuration": null,
+            "color": "#F44336"
+        },
+        {
+            "name": "Personal",
+            "usePto": true,
+            "requiresApproval": true,
+            "maxDuration": 3,
+            "color": "#2196F3"
+        },
+        {
+            "name": "Training",
+            "usePto": false,
+            "requiresApproval": true,
+            "maxDuration": null,
+            "color": "#9C27B0"
+        },
+        {
+            "name": "Holiday",
+            "usePto": false,
+            "requiresApproval": false,
+            "maxDuration": null,
+            "color": "#FF9800"
+        },
+        {
+            "name": "Medical",
+            "usePto": true,
+            "requiresApproval": true,
+            "maxDuration": null,
+            "color": "#E91E63"
+        },
+        {
+            "name": "Jury Duty",
+            "usePto": false,
+            "requiresApproval": true,
+            "maxDuration": null,
+            "color": "#607D8B"
+        }
+    ],
+    "totalResults": 7
+}</code></pre>
+
+        <h3>POST /userabsences/types</h3>
+        <p>Creates a new absence type.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Military Leave",
+    "usePto": false,
+    "requiresApproval": true,
+    "maxDuration": null,
+    "color": "#3F51B5",
+    "requiresDocumentation": true,
+    "accrualImpact": "None"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created absence type.</p>
+
+        <h3>GET /userabsences/dashboard</h3>
+        <p>Retrieves a summary dashboard of user absences.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/userabsences/dashboard?month=7&year=2023
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a summary dashboard of user absences for the specified period.</p>
+
+        <h3>GET /users/current/absences</h3>
+        <p>Retrieves absences for the currently authenticated user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/current/absences?startDate=2023-01-01&endDate=2023-12-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of absence records for the current user.</p>
+
+        <h3>GET /users/current/pto-balance</h3>
+        <p>Retrieves the paid time off balance for the currently authenticated user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/current/pto-balance
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns PTO balance information for the current user.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

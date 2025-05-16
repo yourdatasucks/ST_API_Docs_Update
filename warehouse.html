@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('warehouse.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Warehouse">Warehouse</h1>
+        <p>The Warehouse object represents a physical storage location for inventory, equipment, parts, and supplies
+            used in service operations. Warehouses can include central distribution centers, branch locations,
+            service vehicles, or any other designated storage area. The Warehouse API allows for managing inventory
+            across multiple locations, tracking stock levels, recording transfers between warehouses, and maintaining
+            accurate inventory valuations.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the warehouse.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the warehouse.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>code</code></td>
+                    <td>string</td>
+                    <td>Short code or identifier for the warehouse.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the warehouse.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of warehouse (e.g., "Primary", "Branch", "Vehicle", "Customer").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether the warehouse is currently active and available for use.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>address</code></td>
+                    <td>object</td>
+                    <td>Physical address of the warehouse.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contactName</code></td>
+                    <td>string</td>
+                    <td>Name of the primary contact for the warehouse.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contactPhone</code></td>
+                    <td>string</td>
+                    <td>Phone number of the primary contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contactEmail</code></td>
+                    <td>string</td>
+                    <td>Email address of the primary contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>managerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who manages this warehouse.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>parentWarehouseId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent warehouse if this is a subwarehouse.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>latitude</code></td>
+                    <td>decimal</td>
+                    <td>Latitude coordinate of the warehouse location.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>longitude</code></td>
+                    <td>decimal</td>
+                    <td>Longitude coordinate of the warehouse location.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>businessHours</code></td>
+                    <td>object</td>
+                    <td>Operating hours of the warehouse.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>inventoryCount</code></td>
+                    <td>integer</td>
+                    <td>Total count of inventory items in the warehouse.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>inventoryValue</code></td>
+                    <td>decimal</td>
+                    <td>Total value of inventory stored in the warehouse.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>regionId</code></td>
+                    <td>integer</td>
+                    <td>ID of the region this warehouse belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isVirtual</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a virtual warehouse (not a physical location).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isTransferEnabled</code></td>
+                    <td>boolean</td>
+                    <td>Whether inventory can be transferred to/from this warehouse.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assignedVehicleId</code></td>
+                    <td>integer</td>
+                    <td>For vehicle warehouses, the ID of the assigned vehicle.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assignedUserId</code></td>
+                    <td>integer</td>
+                    <td>For vehicle/personal warehouses, the ID of the assigned user.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this warehouse.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this warehouse was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this warehouse.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this warehouse was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastInventoryDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time of the last physical inventory count.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /warehouses</h3>
+        <p>Retrieves a list of warehouses. Supports filtering by type, active status, region, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses?isActive=true&type=Primary
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 101,
+            "name": "Main Distribution Center",
+            "code": "DC-MAIN",
+            "type": "Primary",
+            "isActive": true,
+            "inventoryCount": 3452,
+            "inventoryValue": 456789.95
+        },
+        {
+            "id": 102,
+            "name": "East Regional Warehouse",
+            "code": "WH-EAST",
+            "type": "Primary",
+            "isActive": true,
+            "inventoryCount": 1893,
+            "inventoryValue": 245678.50
+        },
+        {
+            "id": 103,
+            "name": "West Regional Warehouse",
+            "code": "WH-WEST",
+            "type": "Primary",
+            "isActive": true,
+            "inventoryCount": 1756,
+            "inventoryValue": 231456.75
+        }
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /warehouses/{id}</h3>
+        <p>Retrieves a specific warehouse by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/101
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 101,
+    "name": "Main Distribution Center",
+    "code": "DC-MAIN",
+    "description": "Primary distribution center for all inventory and parts management",
+    "type": "Primary",
+    "isActive": true,
+    "address": {
+        "street": "1234 Industrial Blvd",
+        "city": "Chicago",
+        "state": "IL",
+        "postalCode": "60007",
+        "country": "US"
+    },
+    "contactName": "Michael Johnson",
+    "contactPhone": "555-789-1234",
+    "contactEmail": "mjohnson@example.com",
+    "managerId": 45,
+    "latitude": 41.9742,
+    "longitude": -87.8283,
+    "businessHours": {
+        "monday": {"open": "08:00", "close": "17:00"},
+        "tuesday": {"open": "08:00", "close": "17:00"},
+        "wednesday": {"open": "08:00", "close": "17:00"},
+        "thursday": {"open": "08:00", "close": "17:00"},
+        "friday": {"open": "08:00", "close": "16:00"},
+        "saturday": {"open": "09:00", "close": "13:00"},
+        "sunday": {"open": null, "close": null}
+    },
+    "inventoryCount": 3452,
+    "inventoryValue": 456789.95,
+    "regionId": 1,
+    "isVirtual": false,
+    "isTransferEnabled": true,
+    "createdBy": 1,
+    "createdDate": "2022-01-05T10:30:00Z",
+    "lastModifiedBy": 45,
+    "lastModifiedDate": "2023-06-12T15:45:00Z",
+    "lastInventoryDate": "2023-05-31T09:00:00Z",
+    "customFields": {
+        "securityLevel": "High",
+        "storageCapacity": "25000 sqft",
+        "temperatureControlled": "true",
+        "inventoryTurnoverRate": "4.2"
+    }
+}</code></pre>
+
+        <h3>POST /warehouses</h3>
+        <p>Creates a new warehouse.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "South Branch Location",
+    "code": "WH-SOUTH",
+    "description": "Southern branch warehouse serving customers in the southern region",
+    "type": "Branch",
+    "isActive": true,
+    "address": {
+        "street": "789 Commerce Way",
+        "city": "Atlanta",
+        "state": "GA",
+        "postalCode": "30301",
+        "country": "US"
+    },
+    "contactName": "Sarah Williams",
+    "contactPhone": "555-456-7890",
+    "contactEmail": "swilliams@example.com",
+    "managerId": 52,
+    "parentWarehouseId": 101,
+    "latitude": 33.749,
+    "longitude": -84.388,
+    "businessHours": {
+        "monday": {"open": "08:00", "close": "17:00"},
+        "tuesday": {"open": "08:00", "close": "17:00"},
+        "wednesday": {"open": "08:00", "close": "17:00"},
+        "thursday": {"open": "08:00", "close": "17:00"},
+        "friday": {"open": "08:00", "close": "17:00"},
+        "saturday": null,
+        "sunday": null
+    },
+    "regionId": 3,
+    "isVirtual": false,
+    "isTransferEnabled": true,
+    "customFields": {
+        "securityLevel": "Medium",
+        "storageCapacity": "15000 sqft",
+        "temperatureControlled": "true"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created warehouse (HTTP 201 Created).</p>
+
+        <h3>PUT /warehouses/{id}</h3>
+        <p>Updates an existing warehouse.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "South Branch Location",
+    "description": "Southern regional warehouse serving customers across the southeastern states",
+    "contactName": "Sarah Williams-Johnson",
+    "contactPhone": "555-456-7891",
+    "contactEmail": "swilliams-j@example.com",
+    "businessHours": {
+        "monday": {"open": "07:30", "close": "18:00"},
+        "tuesday": {"open": "07:30", "close": "18:00"},
+        "wednesday": {"open": "07:30", "close": "18:00"},
+        "thursday": {"open": "07:30", "close": "18:00"},
+        "friday": {"open": "07:30", "close": "18:00"},
+        "saturday": {"open": "09:00", "close": "13:00"},
+        "sunday": null
+    },
+    "customFields": {
+        "securityLevel": "Medium",
+        "storageCapacity": "18000 sqft",
+        "temperatureControlled": "true",
+        "lastSafetyInspection": "2023-05-15"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated warehouse.</p>
+
+        <h3>DELETE /warehouses/{id}</h3>
+        <p>Deletes a warehouse. This is typically restricted if the warehouse contains inventory.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /warehouses/{id}/deactivate</h3>
+        <p>Deactivates a warehouse without deleting it.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "reason": "Consolidating inventory to new location",
+    "targetWarehouseId": 105,
+    "transferInventory": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the deactivated warehouse with updated status.</p>
+
+        <h3>POST /warehouses/{id}/activate</h3>
+        <p>Activates a previously deactivated warehouse.</p>
+        <h4>Response</h4>
+        <p>Returns the activated warehouse with updated status.</p>
+
+        <h3>GET /warehouses/{id}/inventory</h3>
+        <p>Retrieves the current inventory in a specific warehouse.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/101/inventory?category=HVAC&lowStock=true
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of inventory items in the specified warehouse.</p>
+
+        <h3>POST /warehouses/{id}/transfer</h3>
+        <p>Transfers inventory from one warehouse to another.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "targetWarehouseId": 102,
+    "items": [
+        {
+            "itemId": 5001,
+            "quantity": 20,
+            "reason": "Rebalancing inventory"
+        },
+        {
+            "itemId": 5002,
+            "quantity": 15,
+            "reason": "Rebalancing inventory"
+        },
+        {
+            "itemId": 5003,
+            "quantity": 10,
+            "reason": "Rebalancing inventory"
+        }
+    ],
+    "scheduledDate": "2023-08-01T09:00:00Z",
+    "notes": "Delivery by company truck #105. Contact receiving warehouse before arrival."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the inventory transfer.</p>
+
+        <h3>GET /warehouses/{id}/transfers</h3>
+        <p>Retrieves transfer history for a specific warehouse.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/101/transfers?startDate=2023-01-01&endDate=2023-07-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of inventory transfers involving the specified warehouse.</p>
+
+        <h3>POST /warehouses/{id}/inventory-adjustment</h3>
+        <p>Adjusts inventory quantities in a warehouse.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "adjustments": [
+        {
+            "itemId": 5001,
+            "quantityChange": -5,
+            "reason": "Damaged stock",
+            "notes": "Water damage from roof leak"
+        },
+        {
+            "itemId": 5004,
+            "quantityChange": 10,
+            "reason": "Inventory count adjustment",
+            "notes": "Physical count found extra units"
+        }
+    ],
+    "adjustmentDate": "2023-07-25T14:30:00Z",
+    "authorizedBy": 45
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the inventory adjustments.</p>
+
+        <h3>POST /warehouses/{id}/physical-count</h3>
+        <p>Records the results of a physical inventory count.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "countDate": "2023-07-31T09:00:00Z",
+    "countedBy": [45, 67, 89],
+    "items": [
+        {"itemId": 5001, "countedQuantity": 152, "systemQuantity": 150},
+        {"itemId": 5002, "countedQuantity": 98, "systemQuantity": 100},
+        {"itemId": 5003, "countedQuantity": 75, "systemQuantity": 75},
+        {"itemId": 5004, "countedQuantity": 205, "systemQuantity": 200}
+    ],
+    "autoAdjust": true,
+    "notes": "Full inventory count for Q2 financial reporting"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the physical count and any automatic adjustments.</p>
+
+        <h3>GET /warehouses/types</h3>
+        <p>Retrieves a list of all warehouse types defined in the system.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/types
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "Primary",
+            "description": "Main warehouses for centralized inventory management",
+            "count": 3
+        },
+        {
+            "name": "Branch",
+            "description": "Regional branch locations for local inventory",
+            "count": 8
+        },
+        {
+            "name": "Vehicle",
+            "description": "Mobile warehouses in service vehicles",
+            "count": 45
+        },
+        {
+            "name": "Customer",
+            "description": "On-site inventory stored at customer locations",
+            "count": 12
+        },
+        {
+            "name": "Virtual",
+            "description": "Non-physical locations for special inventory tracking",
+            "count": 2
+        }
+    ],
+    "totalResults": 5
+}</code></pre>
+
+        <h3>GET /warehouses/regions</h3>
+        <p>Retrieves a list of regions with warehouses.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/regions
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of regions with warehouse counts.</p>
+
+        <h3>GET /warehouses/search</h3>
+        <p>Searches for warehouses based on various criteria.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/search?query=atlanta&radius=50
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns warehouses matching the search criteria.</p>
+
+        <h3>GET /warehouses/nearest</h3>
+        <p>Finds the nearest warehouses to a specified location.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/nearest?latitude=33.749&longitude=-84.388&count=3
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the nearest warehouses to the specified coordinates.</p>
+
+        <h3>POST /warehouses/batch</h3>
+        <p>Creates multiple warehouses in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "warehouses": [
+        {
+            "name": "Northeast Branch",
+            "code": "WH-NE",
+            "type": "Branch",
+            "isActive": true,
+            "address": {
+                "city": "Boston",
+                "state": "MA"
+            },
+            "regionId": 2
+        },
+        {
+            "name": "Northwest Branch",
+            "code": "WH-NW",
+            "type": "Branch",
+            "isActive": true,
+            "address": {
+                "city": "Seattle",
+                "state": "WA"
+            },
+            "regionId": 4
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created warehouses.</p>
+
+        <h3>GET /warehouses/{id}/stock-levels</h3>
+        <p>Retrieves stock level information for items in a warehouse.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/101/stock-levels?belowMinimum=true
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns stock level information for items in the warehouse.</p>
+
+        <h3>POST /warehouses/vehicle</h3>
+        <p>Creates a new vehicle warehouse linked to a specific vehicle and user.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Service Van #105",
+    "code": "VAN-105",
+    "type": "Vehicle",
+    "assignedVehicleId": 453,
+    "assignedUserId": 78,
+    "isActive": true,
+    "parentWarehouseId": 102,
+    "isTransferEnabled": true,
+    "customFields": {
+        "vehicleType": "Transit Van",
+        "licensePlate": "XYZ-1234",
+        "maxCapacity": "2000 lbs"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created vehicle warehouse.</p>
+
+        <h3>GET /users/{id}/warehouse</h3>
+        <p>Retrieves the warehouse assigned to a specific user (typically a vehicle warehouse).</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/78/warehouse
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the warehouse assigned to the specified user.</p>
+
+        <h3>POST /warehouses/import</h3>
+        <p>Imports warehouses from a file or external system.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "source": "CSV",
+    "data": "base64-encoded-csv-content",
+    "mappings": {
+        "name": "WarehouseName",
+        "code": "WarehouseCode",
+        "type": "Type",
+        "street": "Address.Street",
+        "city": "Address.City",
+        "state": "Address.State"
+    },
+    "updateExisting": true,
+    "identifyBy": "code"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the imported warehouses.</p>
+
+        <h3>GET /warehouses/stats</h3>
+        <p>Retrieves statistics about warehouse usage and inventory.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/warehouses/stats
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns statistical information about warehouses and inventory.</p>
+
+        <h2>Related Resources</h2>
+        <ul>
+            <li><a href="inventory.html">Inventory</a></li>
+            <li><a href="user.html">User</a></li>
+            <li><a href="region.html">Region</a></li>
+        </ul>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>
