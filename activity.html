@@ -93,53 +93,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Activity management...</p>
 
-        <h3>GET /activities</h3>
-        <p>Retrieves a list of activities. Supports filtering by various parameters like <code>UserId</code>,
-            <code>ActivityType</code>, <code>TargetEntityType</code>, <code>TargetEntityId</code>, and date ranges.
-        </p>
-        <h4>Request Example (Filtering by TargetEntityId)</h4>
-        <pre><code class="language-http">GET /v1.0/activities?TargetEntityType=Deal&TargetEntityId=12345
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "Id": 789,
-            "Timestamp": "2023-03-10T14:35:00Z",
-            "UserId": 101,
-            "ActivityType": "NOTE_ADDED",
-            "Description": "User John Doe added a note to Deal 'Project Alpha'.",
-            "TargetEntityType": "Deal",
-            "TargetEntityId": 12345,
-            "Details": {
-                "note_content": "Followed up with client, they are interested."
-            }
-        },
-        {
-            "Id": 788,
-            "Timestamp": "2023-03-09T10:15:00Z",
-            "UserId": 102,
-            "ActivityType": "STATUS_CHANGED",
-            "Description": "User Jane Smith changed status of Deal 'Project Alpha' from 'Prospecting' to 'Qualification'.",
-            "TargetEntityType": "Deal",
-            "TargetEntityId": 12345,
-            "Details": {
-                "old_status": "Prospecting",
-                "new_status": "Qualification"
-            }
-        }
-        // ... other activities
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 100,
-    "startIndex": 1
-}</code></pre>
-        <p><strong>Note:</strong> Creating activities is typically done implicitly by the system when actions are
-            performed. Direct creation via POST might be restricted or not available for all activity types.</p>
+        <section id="resource-activity" class="resource-section">
+            <h3>Activity</h3>
+            <p>The activity resource is used to manage Activity data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /activity</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/activity</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/activity/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/activity/123</td>
+                        <td>404</td>
+                        <td>activity not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/activity</td>
+                        <td>200</td>
+                        <td>activity created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/activity</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/activity/123</td>
+                        <td>200</td>
+                        <td>activity updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/activity/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/activity/123</td>
+                        <td>404</td>
+                        <td>activity not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/activity/123</td>
+                        <td>204</td>
+                        <td>activity deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/activity/123</td>
+                        <td>404</td>
+                        <td>activity not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /activity/[activityId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>activity entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the activity</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the activity</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Activitys</h4>
+            <pre><code>GET /activity
 
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "activitys": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/activity/123",
+                "name": "Example Activity"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Activity</h4>
+            <pre><code>GET /activity/123
+
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/activity/123",
+        "name": "Example Activity"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

@@ -126,130 +126,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Contact Type management...</p>
 
-        <h3>GET /contacttypes</h3>
-        <p>Retrieves a list of contact types. Can be filtered by company ID or active status.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contacttypes?companyId=123&isActive=true
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 101,
-            "name": "Decision Maker",
-            "description": "Contact with authority to make purchasing decisions",
-            "isDefault": true,
-            "isActive": true,
-            "color": "#4A90E2",
-            "icon": "user-tie",
-            "order": 1,
-            "companyId": null,
-            "createdDate": "2020-01-15T10:30:00Z",
-            "createdBy": 45,
-            "lastModifiedDate": "2020-01-15T10:30:00Z",
-            "lastModifiedBy": 45
-        },
-        {
-            "id": 102,
-            "name": "Billing Contact",
-            "description": "Contact responsible for billing and payments",
-            "isDefault": true,
-            "isActive": true,
-            "color": "#50E3C2",
-            "icon": "file-invoice-dollar",
-            "order": 2,
-            "companyId": null,
-            "createdDate": "2020-01-15T10:35:00Z",
-            "createdBy": 45,
-            "lastModifiedDate": "2020-01-15T10:35:00Z",
-            "lastModifiedBy": 45
-        },
-        {
-            "id": 103,
-            "name": "Site Manager",
-            "description": "Contact responsible for on-site coordination",
-            "isDefault": false,
-            "isActive": true,
-            "color": "#F5A623",
-            "icon": "hard-hat",
-            "order": 3,
-            "companyId": 123,
-            "createdDate": "2022-03-10T14:20:00Z",
-            "createdBy": 67,
-            "lastModifiedDate": "2022-03-10T14:20:00Z",
-            "lastModifiedBy": 67
-        }
-        // Additional contact types...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-contacttype" class="resource-section">
+            <h3>Contact Type</h3>
+            <p>The contacttype resource is used to manage Contact Type data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /contacttype</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contacttype</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contacttype/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contacttype/123</td>
+                        <td>404</td>
+                        <td>contacttype not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/contacttype</td>
+                        <td>200</td>
+                        <td>contacttype created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/contacttype</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contacttype/123</td>
+                        <td>200</td>
+                        <td>contacttype updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contacttype/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contacttype/123</td>
+                        <td>404</td>
+                        <td>contacttype not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/contacttype/123</td>
+                        <td>204</td>
+                        <td>contacttype deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/contacttype/123</td>
+                        <td>404</td>
+                        <td>contacttype not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /contacttype/[contacttypeId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>contacttype entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the contacttype</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the contacttype</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Contact Types</h4>
+            <pre><code>GET /contacttype
 
-        <h3>GET /contacttypes/{id}</h3>
-        <p>Retrieves a specific contact type by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contacttypes/101
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 101,
-    "name": "Decision Maker",
-    "description": "Contact with authority to make purchasing decisions",
-    "isDefault": true,
-    "isActive": true,
-    "color": "#4A90E2",
-    "icon": "user-tie",
-    "order": 1,
-    "companyId": null,
-    "createdDate": "2020-01-15T10:30:00Z",
-    "createdBy": 45,
-    "lastModifiedDate": "2020-01-15T10:30:00Z",
-    "lastModifiedBy": 45
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "contacttypes": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/contacttype/123",
+                "name": "Example Contact Type"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Contact Type</h4>
+            <pre><code>GET /contacttype/123
 
-        <h3>POST /contacttypes</h3>
-        <p>Creates a new contact type.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Project Coordinator",
-    "description": "Contact responsible for coordinating project activities",
-    "isActive": true,
-    "color": "#D0021B",
-    "icon": "project-diagram",
-    "order": 4,
-    "companyId": 123
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created contact type object (HTTP 201 Created).</p>
-
-        <h3>PUT /contacttypes/{id}</h3>
-        <p>Updates an existing contact type.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Project Manager",
-    "description": "Contact responsible for managing project activities and resources",
-    "color": "#CC0000",
-    "order": 3
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated contact type object.</p>
-
-        <h3>DELETE /contacttypes/{id}</h3>
-        <p>Deletes a contact type. This may be disallowed for default types or types that are in use.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /contacttypes/{id}/contacts</h3>
-        <p>Retrieves all contacts associated with a specific contact type.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contacttypes/101/contacts
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="contact.html">Contacts</a> with this contact type.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/contacttype/123",
+        "name": "Example Contact Type"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

@@ -188,236 +188,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Payment Terms management...</p>
 
-        <h3>GET /payment-terms</h3>
-        <p>Retrieves a list of payment terms. Supports filtering by active status, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/payment-terms?isActive=true
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 1001,
-            "code": "NET30",
-            "name": "Net 30 Days",
-            "dueInDays": 30,
-            "calculationType": "DaysAfterInvoice",
-            "isDefault": true,
-            "isActive": true,
-            "createdDate": "2022-01-15T09:30:00Z"
-        },
-        {
-            "id": 1002,
-            "code": "NET15",
-            "name": "Net 15 Days",
-            "dueInDays": 15,
-            "calculationType": "DaysAfterInvoice",
-            "isDefault": false,
-            "isActive": true,
-            "createdDate": "2022-01-15T09:35:00Z"
-        },
-        {
-            "id": 1003,
-            "code": "2/10NET30",
-            "name": "2% 10 Net 30",
-            "dueInDays": 30,
-            "discountPercentage": 2.0,
-            "discountIfPaidByDays": 10,
-            "calculationType": "DaysAfterInvoice",
-            "isDefault": false,
-            "isActive": true,
-            "createdDate": "2022-01-15T09:40:00Z"
-        },
-        {
-            "id": 1004,
-            "code": "DOM15",
-            "name": "Due 15th of Month",
-            "dueDayOfMonth": 15,
-            "calculationType": "SpecificDayOfMonth",
-            "isDefault": false,
-            "isActive": true,
-            "createdDate": "2022-01-15T09:45:00Z"
-        }
-        // Additional payment terms...
-    ],
-    "totalResults": 4,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-paymentterms" class="resource-section">
+            <h3>Payment Terms</h3>
+            <p>The paymentterms resource is used to manage Payment Terms data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /paymentterms</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/paymentterms</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/paymentterms/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/paymentterms/123</td>
+                        <td>404</td>
+                        <td>paymentterms not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/paymentterms</td>
+                        <td>200</td>
+                        <td>paymentterms created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/paymentterms</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/paymentterms/123</td>
+                        <td>200</td>
+                        <td>paymentterms updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/paymentterms/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/paymentterms/123</td>
+                        <td>404</td>
+                        <td>paymentterms not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/paymentterms/123</td>
+                        <td>204</td>
+                        <td>paymentterms deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/paymentterms/123</td>
+                        <td>404</td>
+                        <td>paymentterms not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /paymentterms/[paymenttermsId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>paymentterms entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the paymentterms</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the paymentterms</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Payment Termss</h4>
+            <pre><code>GET /paymentterms
 
-        <h3>GET /payment-terms/{id}</h3>
-        <p>Retrieves a specific payment terms record by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/payment-terms/1003
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 1003,
-    "code": "2/10NET30",
-    "name": "2% 10 Net 30",
-    "description": "2% discount if paid within 10 days, otherwise due in 30 days",
-    "dueInDays": 30,
-    "discountPercentage": 2.0,
-    "discountIfPaidByDays": 10,
-    "lateFeePercentage": 1.5,
-    "lateFeeGracePeriod": 5,
-    "isDefault": false,
-    "isActive": true,
-    "calculationType": "DaysAfterInvoice",
-    "termsText": "Terms: 2% 10 Net 30",
-    "invoiceMessage": "A 2% discount is available if paid within 10 days of invoice date. Full payment is due within 30 days.",
-    "useBusinessDaysOnly": false,
-    "createdBy": 101,
-    "createdDate": "2022-01-15T09:40:00Z",
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2022-01-15T09:40:00Z",
-    "customFields": {
-        "accountingCode": "TERMS-003",
-        "appliesTo": "All Customers"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "paymenttermss": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/paymentterms/123",
+                "name": "Example Payment Terms"
+            }
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Payment Terms</h4>
+            <pre><code>GET /paymentterms/123
 
-        <h3>POST /payment-terms</h3>
-        <p>Creates a new payment terms record.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "code": "DOM30",
-    "name": "Due 30th of Month",
-    "description": "Payment due on the 30th of the month following invoice date",
-    "dueDayOfMonth": 30,
-    "calculationType": "SpecificDayOfMonth",
-    "lateFeePercentage": 1.5,
-    "lateFeeGracePeriod": 5,
-    "isDefault": false,
-    "isActive": true,
-    "termsText": "Terms: Due 30th of Month",
-    "invoiceMessage": "Payment is due on the 30th of the month following invoice date.",
-    "useBusinessDaysOnly": false,
-    "customFields": {
-        "accountingCode": "TERMS-005",
-        "appliesTo": "Corporate Customers"
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/paymentterms/123",
+        "name": "Example Payment Terms"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created payment terms record (HTTP 201 Created).</p>
-
-        <h3>PUT /payment-terms/{id}</h3>
-        <p>Updates an existing payment terms record.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Due 30th of Month - Corporate",
-    "description": "Payment due on the 30th of the month following invoice date, for corporate customers",
-    "lateFeePercentage": 2.0,
-    "lateFeeGracePeriod": 3,
-    "invoiceMessage": "Payment is due on the 30th of the month following invoice date. Late fees may apply to overdue payments.",
-    "customFields": {
-        "accountingCode": "TERMS-005",
-        "appliesTo": "Corporate Customers",
-        "approvalRequired": "false"
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated payment terms record.</p>
-
-        <h3>DELETE /payment-terms/{id}</h3>
-        <p>Deletes a payment terms record. This is typically handled as a soft delete by setting isActive to false.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /payment-terms/{id}/set-default</h3>
-        <p>Sets a payment terms record as the default terms. This will automatically unset any previously default terms.
-        </p>
-        <h4>Response</h4>
-        <p>Returns the updated payment terms record with isDefault set to true.</p>
-
-        <h3>POST /payment-terms/{id}/deactivate</h3>
-        <p>Deactivates a payment terms record (sets isActive to false).</p>
-        <h4>Response</h4>
-        <p>Returns the updated payment terms record with isActive set to false.</p>
-
-        <h3>POST /payment-terms/{id}/activate</h3>
-        <p>Activates a payment terms record (sets isActive to true).</p>
-        <h4>Response</h4>
-        <p>Returns the updated payment terms record with isActive set to true.</p>
-
-        <h3>GET /payment-terms/default</h3>
-        <p>Retrieves the default payment terms record.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/payment-terms/default
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the payment terms record with isDefault set to true.</p>
-
-        <h3>GET /customers/{customerId}/payment-terms</h3>
-        <p>Retrieves the payment terms assigned to a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/1001/payment-terms
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the payment terms record assigned to the specified customer.</p>
-
-        <h3>PUT /customers/{customerId}/payment-terms</h3>
-        <p>Assigns payment terms to a specific customer.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "paymentTermsId": 1003,
-    "overrideValues": {
-        "lateFeePercentage": 1.0,
-        "invoiceMessage": "Custom message for this customer regarding payment terms."
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns information about the updated customer payment terms assignment.</p>
-
-        <h3>GET /invoices/{invoiceId}/payment-terms</h3>
-        <p>Retrieves the payment terms assigned to a specific invoice.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/invoices/5001/payment-terms
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the payment terms record assigned to the specified invoice.</p>
-
-        <h3>GET /payment-terms/calculate-due-date</h3>
-        <p>Calculates a due date based on payment terms and invoice date.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/payment-terms/calculate-due-date?paymentTermsId=1003&invoiceDate=2023-07-15
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "invoiceDate": "2023-07-15",
-    "dueDate": "2023-08-14",
-    "discountAvailableUntil": "2023-07-25",
-    "discountPercentage": 2.0,
-    "lateFeeAppliesAfter": "2023-08-19",
-    "lateFeePercentage": 1.5
-}</code></pre>
-
-        <h3>POST /payment-terms/batch</h3>
-        <p>Creates multiple payment terms records in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "code": "NET45",
-            "name": "Net 45 Days",
-            "dueInDays": 45,
-            "calculationType": "DaysAfterInvoice",
-            "isActive": true
-        },
-        {
-            "code": "NET60",
-            "name": "Net 60 Days",
-            "dueInDays": 60,
-            "calculationType": "DaysAfterInvoice",
-            "isActive": true
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created payment terms records.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

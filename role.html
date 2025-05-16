@@ -135,526 +135,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Role management...</p>
 
-        <h3>GET /roles</h3>
-        <p>Retrieves a list of roles. Supports filtering by name, active status, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/roles?isActive=true
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 1,
-            "name": "Administrator",
-            "description": "Full system access and configuration rights",
-            "isActive": true,
-            "isSystem": true,
-            "userCount": 5,
-            "scope": "Global",
-            "createdDate": "2022-01-01T00:00:00Z"
-        },
-        {
-            "id": 2,
-            "name": "Service Manager",
-            "description": "Manages service operations, technicians, and job scheduling",
-            "isActive": true,
-            "isSystem": true,
-            "userCount": 12,
-            "scope": "Global",
-            "createdDate": "2022-01-01T00:00:00Z"
-        },
-        {
-            "id": 3,
-            "name": "Technician",
-            "description": "Field service technician with mobile access",
-            "isActive": true,
-            "isSystem": true,
-            "userCount": 48,
-            "scope": "Global",
-            "createdDate": "2022-01-01T00:00:00Z"
-        },
-        {
-            "id": 4,
-            "name": "Sales Representative",
-            "description": "Sales team member with quote creation abilities",
-            "isActive": true,
-            "isSystem": true,
-            "userCount": 15,
-            "scope": "Global",
-            "createdDate": "2022-01-01T00:00:00Z"
-        },
-        {
-            "id": 5,
-            "name": "Office Staff",
-            "description": "Administrative staff with limited access",
-            "isActive": true,
-            "isSystem": true,
-            "userCount": 10,
-            "scope": "Global",
-            "createdDate": "2022-01-01T00:00:00Z"
-        }
-        // Additional roles...
-    ],
-    "totalResults": 5,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-role" class="resource-section">
+            <h3>Role</h3>
+            <p>The role resource is used to manage Role data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /role</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/role</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/role/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/role/123</td>
+                        <td>404</td>
+                        <td>role not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/role</td>
+                        <td>200</td>
+                        <td>role created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/role</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/role/123</td>
+                        <td>200</td>
+                        <td>role updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/role/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/role/123</td>
+                        <td>404</td>
+                        <td>role not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/role/123</td>
+                        <td>204</td>
+                        <td>role deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/role/123</td>
+                        <td>404</td>
+                        <td>role not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /role/[roleId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>role entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the role</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the role</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Roles</h4>
+            <pre><code>GET /role
 
-        <h3>GET /roles/{id}</h3>
-        <p>Retrieves a specific role by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/roles/3
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 3,
-    "name": "Technician",
-    "description": "Field service technician with mobile access",
-    "isActive": true,
-    "isSystem": true,
-    "permissions": [
-        {
-            "resource": "job",
-            "actions": ["read", "update", "complete"],
-            "constraints": {
-                "assigned": true
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "roles": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/role/123",
+                "name": "Example Role"
             }
-        },
-        {
-            "resource": "customer",
-            "actions": ["read"],
-            "constraints": {
-                "hasRelatedJob": true
-            }
-        },
-        {
-            "resource": "location",
-            "actions": ["read"],
-            "constraints": {
-                "hasRelatedJob": true
-            }
-        },
-        {
-            "resource": "asset",
-            "actions": ["read", "create", "update"],
-            "constraints": {
-                "atJobLocation": true
-            }
-        },
-        {
-            "resource": "attachment",
-            "actions": ["read", "create", "update", "delete"],
-            "constraints": {
-                "owner": true
-            }
-        },
-        {
-            "resource": "comment",
-            "actions": ["read", "create", "update", "delete"],
-            "constraints": {
-                "owner": true
-            }
-        },
-        {
-            "resource": "schedule",
-            "actions": ["read"],
-            "constraints": {
-                "self": true
-            }
-        }
-    ],
-    "userCount": 48,
-    "scope": "Global",
-    "createdBy": 1,
-    "createdDate": "2022-01-01T00:00:00Z",
-    "lastModifiedBy": 1,
-    "lastModifiedDate": "2022-01-01T00:00:00Z",
-    "customFields": {
-        "requiredCertifications": "None",
-        "allowsOvertime": "true",
-        "mobileAccess": "true"
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Role</h4>
+            <pre><code>GET /role/123
 
-        <h3>POST /roles</h3>
-        <p>Creates a new role.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Regional Manager",
-    "description": "Manages service operations for a specific region",
-    "isActive": true,
-    "scope": "Region",
-    "permissions": [
-        {
-            "resource": "job",
-            "actions": ["read", "create", "update", "delete", "approve", "assign"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "customer",
-            "actions": ["read", "create", "update"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "location",
-            "actions": ["read", "create", "update"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "invoice",
-            "actions": ["read", "create", "update", "approve"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "quote",
-            "actions": ["read", "create", "update", "approve"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "user",
-            "actions": ["read", "assign"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "report",
-            "actions": ["read", "create", "update", "run"],
-            "constraints": {
-                "region": true
-            }
-        }
-    ],
-    "customFields": {
-        "regionsManaged": "Northeast",
-        "reportsTo": "Operations Director",
-        "approvalLimit": "25000"
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/role/123",
+        "name": "Example Role"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created role (HTTP 201 Created).</p>
-
-        <h3>PUT /roles/{id}</h3>
-        <p>Updates an existing role.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Regional Manager",
-    "description": "Manages service operations and sales for a specific region",
-    "isActive": true,
-    "permissions": [
-        {
-            "resource": "job",
-            "actions": ["read", "create", "update", "delete", "approve", "assign"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "customer",
-            "actions": ["read", "create", "update"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "location",
-            "actions": ["read", "create", "update"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "invoice",
-            "actions": ["read", "create", "update", "approve"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "quote",
-            "actions": ["read", "create", "update", "approve"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "contract",
-            "actions": ["read", "create", "update", "approve"],
-            "constraints": {
-                "region": true,
-                "valueLimit": 50000
-            }
-        },
-        {
-            "resource": "user",
-            "actions": ["read", "assign"],
-            "constraints": {
-                "region": true
-            }
-        },
-        {
-            "resource": "report",
-            "actions": ["read", "create", "update", "run"],
-            "constraints": {
-                "region": true
-            }
-        }
-    ],
-    "customFields": {
-        "regionsManaged": "Northeast",
-        "reportsTo": "Operations Director",
-        "approvalLimit": "50000"
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated role.</p>
-
-        <h3>DELETE /roles/{id}</h3>
-        <p>Deletes a role. This is only allowed for custom roles that are not assigned to any users.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /roles/{id}/deactivate</h3>
-        <p>Deactivates a role without deleting it. Users with this role will lose the associated permissions.</p>
-        <h4>Response</h4>
-        <p>Returns the deactivated role with updated status.</p>
-
-        <h3>POST /roles/{id}/activate</h3>
-        <p>Activates a previously deactivated role.</p>
-        <h4>Response</h4>
-        <p>Returns the activated role with updated status.</p>
-
-        <h3>GET /roles/{id}/users</h3>
-        <p>Retrieves a list of users assigned to a specific role.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/roles/3/users
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of users assigned to the specified role.</p>
-
-        <h3>POST /roles/{id}/assign</h3>
-        <p>Assigns a role to one or more users.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "userIds": [101, 102, 103]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns information about the role assignments.</p>
-
-        <h3>POST /roles/{id}/unassign</h3>
-        <p>Removes a role from one or more users.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "userIds": [101, 102]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns information about the role removals.</p>
-
-        <h3>GET /roles/{id}/permissions</h3>
-        <p>Retrieves the permissions for a specific role.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/roles/3/permissions
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of permissions for the specified role.</p>
-
-        <h3>PUT /roles/{id}/permissions</h3>
-        <p>Updates the permissions for a specific role.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "permissions": [
-        {
-            "resource": "job",
-            "actions": ["read", "update", "complete", "reassign"],
-            "constraints": {
-                "assigned": true
-            }
-        },
-        {
-            "resource": "customer",
-            "actions": ["read"],
-            "constraints": {
-                "hasRelatedJob": true
-            }
-        },
-        {
-            "resource": "location",
-            "actions": ["read"],
-            "constraints": {
-                "hasRelatedJob": true
-            }
-        },
-        {
-            "resource": "asset",
-            "actions": ["read", "create", "update", "delete"],
-            "constraints": {
-                "atJobLocation": true
-            }
-        },
-        {
-            "resource": "attachment",
-            "actions": ["read", "create", "update", "delete"],
-            "constraints": {
-                "owner": true
-            }
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated role with the new permissions.</p>
-
-        <h3>POST /roles/{id}/clone</h3>
-        <p>Creates a new role by cloning an existing role.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Senior Technician",
-    "description": "Enhanced technician role with additional permissions",
-    "isActive": true,
-    "additionalPermissions": [
-        {
-            "resource": "job",
-            "actions": ["reassign", "approve"],
-            "constraints": {
-                "team": true
-            }
-        },
-        {
-            "resource": "quote",
-            "actions": ["read", "create"],
-            "constraints": {
-                "jobRelated": true
-            }
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created role based on the cloned template.</p>
-
-        <h3>GET /permissions</h3>
-        <p>Retrieves a list of all available permissions in the system.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/permissions
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "resource": "job",
-            "actions": ["read", "create", "update", "delete", "assign", "reassign", "approve", "complete", "schedule"],
-            "possibleConstraints": ["assigned", "team", "department", "branch", "region", "global"]
-        },
-        {
-            "resource": "customer",
-            "actions": ["read", "create", "update", "delete", "merge"],
-            "possibleConstraints": ["hasRelatedJob", "department", "branch", "region", "global"]
-        },
-        {
-            "resource": "invoice",
-            "actions": ["read", "create", "update", "delete", "approve", "email", "print"],
-            "possibleConstraints": ["created", "department", "branch", "region", "global", "valueLimit"]
-        },
-        // Additional resources and their available actions...
-    ],
-    "totalResults": 15,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-
-        <h3>GET /users/{userId}/roles</h3>
-        <p>Retrieves the roles assigned to a specific user.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/users/101/roles
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of roles assigned to the specified user.</p>
-
-        <h3>GET /roles/effective-permissions</h3>
-        <p>Retrieves the effective permissions for the current user based on their assigned roles.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/roles/effective-permissions
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of effective permissions for the current user.</p>
-
-        <h3>GET /users/{userId}/effective-permissions</h3>
-        <p>Retrieves the effective permissions for a specific user based on their assigned roles.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/users/101/effective-permissions
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of effective permissions for the specified user.</p>
-
-        <h3>POST /roles/batch</h3>
-        <p>Creates multiple roles in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "roles": [
-        {
-            "name": "Dispatcher",
-            "description": "Schedules and assigns jobs to technicians",
-            "isActive": true,
-            "permissions": [
-                {
-                    "resource": "job",
-                    "actions": ["read", "update", "assign", "schedule"],
-                    "constraints": {
-                        "global": true
-                    }
-                },
-                {
-                    "resource": "user",
-                    "actions": ["read"],
-                    "constraints": {
-                        "global": true
-                    }
-                },
-                {
-                    "resource": "schedule",
-                    "actions": ["read", "create", "update"],
-                    "constraints": {
-                        "global": true
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Inventory Manager",
-            "description": "Manages parts and equipment inventory",
-            "isActive": true,
-            "permissions": [
-                {
-                    "resource": "inventory",
-                    "actions": ["read", "create", "update", "delete"],
-                    "constraints": {
-                        "global": true
-                    }
-                },
-                {
-                    "resource": "purchase",
-                    "actions": ["read", "create", "update"],
-                    "constraints": {
-                        "global": true
-                    }
-                }
-            ]
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created roles.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

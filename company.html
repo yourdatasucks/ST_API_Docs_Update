@@ -270,199 +270,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Company management...</p>
 
-        <h3>GET /companies</h3>
-        <p>Retrieves a list of companies. Supports filtering by type, status, and other fields.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/companies?type=Customer&status=Active
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 123,
-            "name": "Acme Corporation",
-            "legalName": "Acme Corporation Inc.",
-            "dba": null,
-            "type": "Customer",
-            "status": "Active",
-            "phone": "555-123-4567",
-            "fax": "555-123-4568",
-            "email": "info@acmecorp.example.com",
-            "website": "https://www.acmecorp.example.com",
-            "taxId": "12-3456789",
-            "billingAddress": {
-                "street1": "123 Main Street",
-                "street2": "Suite 100",
-                "city": "Anytown",
-                "state": "CA",
-                "postalCode": "12345",
-                "country": "US",
-                "latitude": 37.7749,
-                "longitude": -122.4194
-            },
-            "mailingAddress": {
-                "street1": "PO Box 5678",
-                "street2": "",
-                "city": "Anytown",
-                "state": "CA",
-                "postalCode": "12345",
-                "country": "US",
-                "latitude": null,
-                "longitude": null
-            },
-            "notes": "Key customer since 2015. Annual maintenance contract.",
-            "logoUrl": "https://cdn.example.com/logos/acme.png",
-            "industry": "Manufacturing",
-            "yearFounded": 1985,
-            "numberOfEmployees": 250,
-            "annualRevenue": "$10M-$50M",
-            "parentCompanyId": null,
-            "customFields": {
-                "accountManager": "Jane Smith",
-                "creditLimit": 50000,
-                "preferredPaymentTerms": "Net 30"
-            },
-            "tags": ["VIP", "Manufacturing", "West Coast"],
-            "createdDate": "2015-03-15T10:30:00Z",
-            "createdBy": 45,
-            "lastModifiedDate": "2023-01-10T15:45:00Z",
-            "lastModifiedBy": 67
-        },
-        // Additional companies...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-company" class="resource-section">
+            <h3>Company</h3>
+            <p>The company resource is used to manage Company data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /company</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/company</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/company/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/company/123</td>
+                        <td>404</td>
+                        <td>company not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/company</td>
+                        <td>200</td>
+                        <td>company created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/company</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/company/123</td>
+                        <td>200</td>
+                        <td>company updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/company/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/company/123</td>
+                        <td>404</td>
+                        <td>company not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/company/123</td>
+                        <td>204</td>
+                        <td>company deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/company/123</td>
+                        <td>404</td>
+                        <td>company not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /company/[companyId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>company entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the company</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the company</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Companys</h4>
+            <pre><code>GET /company
 
-        <h3>GET /companies/{id}</h3>
-        <p>Retrieves a specific company by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/companies/123
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 123,
-    "name": "Acme Corporation",
-    "legalName": "Acme Corporation Inc.",
-    "dba": null,
-    "type": "Customer",
-    "status": "Active",
-    "phone": "555-123-4567",
-    "fax": "555-123-4568",
-    "email": "info@acmecorp.example.com",
-    "website": "https://www.acmecorp.example.com",
-    "taxId": "12-3456789",
-    "billingAddress": {
-        "street1": "123 Main Street",
-        "street2": "Suite 100",
-        "city": "Anytown",
-        "state": "CA",
-        "postalCode": "12345",
-        "country": "US",
-        "latitude": 37.7749,
-        "longitude": -122.4194
-    },
-    "mailingAddress": {
-        "street1": "PO Box 5678",
-        "street2": "",
-        "city": "Anytown",
-        "state": "CA",
-        "postalCode": "12345",
-        "country": "US",
-        "latitude": null,
-        "longitude": null
-    },
-    "notes": "Key customer since 2015. Annual maintenance contract.",
-    "logoUrl": "https://cdn.example.com/logos/acme.png",
-    "industry": "Manufacturing",
-    "yearFounded": 1985,
-    "numberOfEmployees": 250,
-    "annualRevenue": "$10M-$50M",
-    "parentCompanyId": null,
-    "customFields": {
-        "accountManager": "Jane Smith",
-        "creditLimit": 50000,
-        "preferredPaymentTerms": "Net 30"
-    },
-    "tags": ["VIP", "Manufacturing", "West Coast"],
-    "createdDate": "2015-03-15T10:30:00Z",
-    "createdBy": 45,
-    "lastModifiedDate": "2023-01-10T15:45:00Z",
-    "lastModifiedBy": 67
-}</code></pre>
-
-        <h3>POST /companies</h3>
-        <p>Creates a new company.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "TechSolutions LLC",
-    "legalName": "TechSolutions Limited Liability Company",
-    "type": "Customer",
-    "status": "Active",
-    "phone": "555-987-6543",
-    "email": "info@techsolutions.example.com",
-    "website": "https://www.techsolutions.example.com",
-    "billingAddress": {
-        "street1": "456 Tech Avenue",
-        "city": "Silicon Valley",
-        "state": "CA",
-        "postalCode": "94025",
-        "country": "US"
-    },
-    "industry": "Information Technology",
-    "tags": ["IT", "Software Development"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created company object (HTTP 201 Created).</p>
-
-        <h3>PUT /companies/{id}</h3>
-        <p>Updates an existing company.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "TechSolutions Corporation",
-    "legalName": "TechSolutions Corporation LLC",
-    "phone": "555-987-6544",
-    "numberOfEmployees": 120,
-    "customFields": {
-        "accountManager": "Michael Brown",
-        "creditLimit": 75000
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "companys": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/company/123",
+                "name": "Example Company"
+            }
+        ]
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated company object.</p>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Company</h4>
+            <pre><code>GET /company/123
 
-        <h3>DELETE /companies/{id}</h3>
-        <p>Deletes a company. This may be disallowed if the company has associated records (e.g., locations, contacts,
-            jobs).</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /companies/{id}/locations</h3>
-        <p>Retrieves all locations associated with a specific company.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/companies/123/locations
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="location.html">Location</a> objects for this company.</p>
-
-        <h3>GET /companies/{id}/contacts</h3>
-        <p>Retrieves all contacts associated with a specific company.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/companies/123/contacts
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="contact.html">Contact</a> objects for this company.</p>
-
-        <h3>POST /companies/{id}/logo</h3>
-        <p>Uploads a logo image for a company.</p>
-        <h4>Request</h4>
-        <p>Multipart form data with an image file, or JSON with base64-encoded image data.</p>
-        <h4>Response</h4>
-        <p>Returns the updated company object with the new logoUrl.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/company/123",
+        "name": "Example Company"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

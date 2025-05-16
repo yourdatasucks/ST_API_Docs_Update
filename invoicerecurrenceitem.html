@@ -158,184 +158,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Invoice Recurrence Item management...</p>
 
-        <h3>GET /invoicerecurrences/{invoiceRecurrenceId}/items</h3>
-        <p>Retrieves all line items for a specific invoice recurrence.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/invoicerecurrences/1001/items
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 5001,
-            "invoiceRecurrenceId": 1001,
-            "description": "Fire Alarm Monitoring Service",
-            "quantity": 1,
-            "unitPrice": 150.00,
-            "unitCost": 75.00,
-            "taxable": true,
-            "sequenceNumber": 1,
-            "itemType": "Service",
-            "serviceItemId": 118,
-            "createdDate": "2022-12-15T09:30:00Z"
-        },
-        {
-            "id": 5002,
-            "invoiceRecurrenceId": 1001,
-            "description": "Cellular Backup Service",
-            "quantity": 1,
-            "unitPrice": 50.00,
-            "unitCost": 25.00,
-            "taxable": true,
-            "sequenceNumber": 2,
-            "itemType": "Service",
-            "serviceItemId": 119,
-            "createdDate": "2022-12-15T09:30:00Z"
-        }
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-invoicerecurrenceitem" class="resource-section">
+            <h3>Invoice Recurrence Item</h3>
+            <p>The invoicerecurrenceitem resource is used to manage Invoice Recurrence Item data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /invoicerecurrenceitem</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/invoicerecurrenceitem</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/invoicerecurrenceitem/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/invoicerecurrenceitem/123</td>
+                        <td>404</td>
+                        <td>invoicerecurrenceitem not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/invoicerecurrenceitem</td>
+                        <td>200</td>
+                        <td>invoicerecurrenceitem created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/invoicerecurrenceitem</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/invoicerecurrenceitem/123</td>
+                        <td>200</td>
+                        <td>invoicerecurrenceitem updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/invoicerecurrenceitem/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/invoicerecurrenceitem/123</td>
+                        <td>404</td>
+                        <td>invoicerecurrenceitem not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/invoicerecurrenceitem/123</td>
+                        <td>204</td>
+                        <td>invoicerecurrenceitem deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/invoicerecurrenceitem/123</td>
+                        <td>404</td>
+                        <td>invoicerecurrenceitem not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /invoicerecurrenceitem/[invoicerecurrenceitemId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>invoicerecurrenceitem entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the invoicerecurrenceitem</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the invoicerecurrenceitem</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Invoice Recurrence Items</h4>
+            <pre><code>GET /invoicerecurrenceitem
 
-        <h3>GET /invoicerecurrenceitems/{id}</h3>
-        <p>Retrieves a specific invoice recurrence item by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/invoicerecurrenceitems/5001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 5001,
-    "invoiceRecurrenceId": 1001,
-    "description": "Fire Alarm Monitoring Service",
-    "quantity": 1,
-    "unitPrice": 150.00,
-    "unitCost": 75.00,
-    "taxable": true,
-    "sequenceNumber": 1,
-    "itemType": "Service",
-    "serviceItemId": 118,
-    "notes": "Monthly monitoring fee for main building fire alarm system",
-    "createdBy": 101,
-    "createdDate": "2022-12-15T09:30:00Z",
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2022-12-15T09:30:00Z",
-    "customFields": {
-        "departmentCode": "MON-01",
-        "contractLineItemId": "CLN-2022-789"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "invoicerecurrenceitems": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/invoicerecurrenceitem/123",
+                "name": "Example Invoice Recurrence Item"
+            }
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Invoice Recurrence Item</h4>
+            <pre><code>GET /invoicerecurrenceitem/123
 
-        <h3>POST /invoicerecurrences/{invoiceRecurrenceId}/items</h3>
-        <p>Creates a new invoice recurrence item for the specified invoice recurrence.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "description": "Emergency Service Coverage",
-    "quantity": 1,
-    "unitPrice": 75.00,
-    "unitCost": 35.00,
-    "taxable": true,
-    "sequenceNumber": 3,
-    "itemType": "Service",
-    "serviceItemId": 120,
-    "notes": "24/7 emergency service coverage with 2-hour response time",
-    "customFields": {
-        "departmentCode": "SVC-01",
-        "contractLineItemId": "CLN-2022-790"
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/invoicerecurrenceitem/123",
+        "name": "Example Invoice Recurrence Item"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created invoice recurrence item (HTTP 201 Created).</p>
-
-        <h3>PUT /invoicerecurrenceitems/{id}</h3>
-        <p>Updates an existing invoice recurrence item.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "description": "Premium Emergency Service Coverage",
-    "quantity": 1,
-    "unitPrice": 100.00,
-    "taxable": true,
-    "notes": "24/7 emergency service coverage with 1-hour response time",
-    "customFields": {
-        "departmentCode": "SVC-01",
-        "contractLineItemId": "CLN-2022-790",
-        "serviceLevel": "Premium"
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated invoice recurrence item.</p>
-
-        <h3>DELETE /invoicerecurrenceitems/{id}</h3>
-        <p>Deletes an invoice recurrence item.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /invoicerecurrences/{invoiceRecurrenceId}/items/batch</h3>
-        <p>Creates multiple invoice recurrence items for the specified invoice recurrence in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "description": "Quarterly Inspection - Fire Alarm",
-            "quantity": 1,
-            "unitPrice": 450.00,
-            "taxable": true,
-            "itemType": "Service",
-            "serviceItemId": 121
-        },
-        {
-            "description": "Quarterly Inspection - Sprinkler System",
-            "quantity": 1,
-            "unitPrice": 350.00,
-            "taxable": true,
-            "itemType": "Service",
-            "serviceItemId": 122
-        },
-        {
-            "description": "Quarterly Inspection - Fire Extinguishers",
-            "quantity": 1,
-            "unitPrice": 250.00,
-            "taxable": true,
-            "itemType": "Service",
-            "serviceItemId": 123
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created invoice recurrence items.</p>
-
-        <h3>PUT /invoicerecurrences/{invoiceRecurrenceId}/items/reorder</h3>
-        <p>Reorders the line items in an invoice recurrence.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "itemOrder": [5002, 5001, 5003]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns success message and updates the sequenceNumber property of the affected items.</p>
-
-        <h3>GET /serviceitems/{serviceItemId}/invoicerecurrenceitems</h3>
-        <p>Retrieves all invoice recurrence items associated with a specific service item.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/serviceitems/118/invoicerecurrenceitems
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of invoice recurrence items associated with the specified service item.</p>
-
-        <h3>POST /serviceitems/{serviceItemId}/invoicerecurrenceitems</h3>
-        <p>Creates invoice recurrence items from a service item across multiple recurrences.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "invoiceRecurrenceIds": [1001, 1002, 1003],
-    "quantity": 1,
-    "unitPrice": 150.00,
-    "taxable": true,
-    "itemType": "Service"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created invoice recurrence items.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

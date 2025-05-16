@@ -254,311 +254,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Heartbeat management...</p>
 
-        <h3>POST /heartbeats</h3>
-        <p>Sends a heartbeat signal to the server.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "clientId": "mobile-app-6789",
-    "type": "Mobile",
-    "status": "Active",
-    "deviceInfo": {
-        "deviceType": "Smartphone",
-        "os": "Android",
-        "osVersion": "13",
-        "manufacturer": "Samsung",
-        "model": "Galaxy S23",
-        "uniqueId": "IMEI:990000862471854"
-    },
-    "metrics": {
-        "batteryLevel": 78.5,
-        "memoryUsage": 42.3,
-        "cpuUsage": 12.7,
-        "networkSpeed": 15.2,
-        "signalStrength": -67
-    },
-    "location": {
-        "latitude": 35.7796,
-        "longitude": -78.6382,
-        "accuracy": 10.5
-    },
-    "userId": 12345,
-    "version": "4.2.1",
-    "expectedInterval": 300,
-    "notes": "Field technician mobile app"
-}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 987654,
-    "clientId": "mobile-app-6789",
-    "type": "Mobile",
-    "timestamp": "2023-08-16T14:22:05Z",
-    "status": "Active",
-    "deviceInfo": {
-        "deviceType": "Smartphone",
-        "os": "Android",
-        "osVersion": "13",
-        "manufacturer": "Samsung",
-        "model": "Galaxy S23",
-        "uniqueId": "IMEI:990000862471854"
-    },
-    "metrics": {
-        "batteryLevel": 78.5,
-        "memoryUsage": 42.3,
-        "cpuUsage": 12.7,
-        "networkSpeed": 15.2,
-        "signalStrength": -67
-    },
-    "location": {
-        "latitude": 35.7796,
-        "longitude": -78.6382,
-        "accuracy": 10.5
-    },
-    "userId": 12345,
-    "ipAddress": "203.0.113.45",
-    "version": "4.2.1",
-    "expectedInterval": 300,
-    "lastSeen": "2023-08-16T14:22:05Z",
-    "isOnline": true,
-    "notes": "Field technician mobile app"
-}</code></pre>
+        <section id="resource-heartbeat" class="resource-section">
+            <h3>Heartbeat</h3>
+            <p>The heartbeat resource is used to manage Heartbeat data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /heartbeat</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/heartbeat</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/heartbeat/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/heartbeat/123</td>
+                        <td>404</td>
+                        <td>heartbeat not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/heartbeat</td>
+                        <td>200</td>
+                        <td>heartbeat created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/heartbeat</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/heartbeat/123</td>
+                        <td>200</td>
+                        <td>heartbeat updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/heartbeat/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/heartbeat/123</td>
+                        <td>404</td>
+                        <td>heartbeat not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/heartbeat/123</td>
+                        <td>204</td>
+                        <td>heartbeat deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/heartbeat/123</td>
+                        <td>404</td>
+                        <td>heartbeat not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /heartbeat/[heartbeatId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>heartbeat entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the heartbeat</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the heartbeat</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Heartbeats</h4>
+            <pre><code>GET /heartbeat
 
-        <h3>GET /heartbeats</h3>
-        <p>Retrieves a list of heartbeat records. Supports filtering by clientId, type, status, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/heartbeats?type=Mobile&status=Active
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 987654,
-            "clientId": "mobile-app-6789",
-            "type": "Mobile",
-            "timestamp": "2023-08-16T14:22:05Z",
-            "status": "Active",
-            "userId": 12345,
-            "ipAddress": "203.0.113.45",
-            "version": "4.2.1",
-            "lastSeen": "2023-08-16T14:22:05Z",
-            "isOnline": true
-        },
-        {
-            "id": 987653,
-            "clientId": "mobile-app-5678",
-            "type": "Mobile",
-            "timestamp": "2023-08-16T14:21:30Z",
-            "status": "Active",
-            "userId": 12346,
-            "ipAddress": "203.0.113.46",
-            "version": "4.2.1",
-            "lastSeen": "2023-08-16T14:21:30Z",
-            "isOnline": true
-        }
-        // Additional heartbeats...
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "heartbeats": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/heartbeat/123",
+                "name": "Example Heartbeat"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Heartbeat</h4>
+            <pre><code>GET /heartbeat/123
 
-        <h3>GET /heartbeats/{id}</h3>
-        <p>Retrieves a specific heartbeat record by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/heartbeats/987654
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the heartbeat record with the specified ID.</p>
-
-        <h3>GET /heartbeats/client/{clientId}</h3>
-        <p>Retrieves heartbeat records for a specific client.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/heartbeats/client/mobile-app-6789
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of heartbeat records for the specified client.</p>
-
-        <h3>GET /heartbeats/client/{clientId}/latest</h3>
-        <p>Retrieves the most recent heartbeat for a specific client.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/heartbeats/client/mobile-app-6789/latest
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the most recent heartbeat record for the specified client.</p>
-
-        <h3>GET /heartbeats/user/{userId}</h3>
-        <p>Retrieves heartbeat records for a specific user.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/heartbeats/user/12345
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of heartbeat records for the specified user.</p>
-
-        <h3>GET /heartbeats/status/{status}</h3>
-        <p>Retrieves heartbeat records with a specific status.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/heartbeats/status/Warning
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of heartbeat records with the specified status.</p>
-
-        <h3>GET /heartbeats/summary</h3>
-        <p>Retrieves a summary of client statuses based on heartbeat data.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/heartbeats/summary?type=Mobile
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "totalClients": 150,
-    "activeClients": 132,
-    "inactiveClients": 18,
-    "byStatus": {
-        "Active": 120,
-        "Idle": 12,
-        "Warning": 8,
-        "Error": 10
-    },
-    "byType": {
-        "Mobile": 85,
-        "Desktop": 45,
-        "Integration": 20
-    },
-    "byVersion": {
-        "4.2.1": 95,
-        "4.2.0": 40,
-        "4.1.5": 15
-    },
-    "lastUpdated": "2023-08-16T14:30:00Z"
-}</code></pre>
-
-        <h3>DELETE /heartbeats/{id}</h3>
-        <p>Deletes a specific heartbeat record.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /heartbeats/batch</h3>
-        <p>Sends multiple heartbeat signals in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "heartbeats": [
-        {
-            "clientId": "sensor-temp-123",
-            "type": "IoT",
-            "status": "Active",
-            "metrics": {
-                "temperature": 22.5,
-                "humidity": 65.2,
-                "batteryLevel": 89.0
-            },
-            "location": {
-                "latitude": 35.7796,
-                "longitude": -78.6382
-            },
-            "version": "1.0.3"
-        },
-        {
-            "clientId": "sensor-motion-456",
-            "type": "IoT",
-            "status": "Active",
-            "metrics": {
-                "motionDetected": true,
-                "batteryLevel": 76.5
-            },
-            "location": {
-                "latitude": 35.7798,
-                "longitude": -78.6385
-            },
-            "version": "1.0.3"
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created heartbeat records.</p>
-
-        <h3>GET /heartbeats/monitor</h3>
-        <p>Retrieves a real-time monitoring view of client heartbeats.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/heartbeats/monitor?type=Mobile&interval=5m
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "monitoring": {
-        "startTime": "2023-08-16T14:00:00Z",
-        "endTime": "2023-08-16T14:30:00Z",
-        "interval": "5m",
-        "type": "Mobile"
-    },
-    "clients": [
-        {
-            "clientId": "mobile-app-6789",
-            "status": "Active",
-            "userId": 12345,
-            "userFullName": "John Smith",
-            "metrics": {
-                "batteryLevel": [80, 79, 79, 78, 78, 77]
-            },
-            "timestamps": [
-                "2023-08-16T14:00:05Z",
-                "2023-08-16T14:05:10Z",
-                "2023-08-16T14:10:02Z",
-                "2023-08-16T14:15:08Z",
-                "2023-08-16T14:20:12Z",
-                "2023-08-16T14:25:05Z"
-            ],
-            "isOnline": true,
-            "version": "4.2.1"
-        },
-        {
-            "clientId": "mobile-app-5678",
-            "status": "Warning",
-            "userId": 12346,
-            "userFullName": "Jane Doe",
-            "metrics": {
-                "batteryLevel": [45, 40, 35, 30, 25, null]
-            },
-            "timestamps": [
-                "2023-08-16T14:00:15Z",
-                "2023-08-16T14:05:18Z",
-                "2023-08-16T14:10:22Z",
-                "2023-08-16T14:15:17Z",
-                "2023-08-16T14:20:20Z",
-                null
-            ],
-            "isOnline": false,
-            "version": "4.2.1"
-        }
-        // Additional clients...
-    ]
-}</code></pre>
-
-        <h3>POST /heartbeats/register</h3>
-        <p>Registers a new client for heartbeat monitoring.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "clientId": "field-app-9876",
-    "type": "Mobile",
-    "deviceInfo": {
-        "deviceType": "Tablet",
-        "os": "iOS",
-        "osVersion": "16.5",
-        "manufacturer": "Apple",
-        "model": "iPad Pro"
-    },
-    "userId": 12347,
-    "expectedInterval": 300,
-    "alertThreshold": 900,
-    "notifyOnOffline": true,
-    "notifyContacts": ["admin@example.com", "support@example.com"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the registration details for the client.</p>
-
-        <h3>DELETE /heartbeats/client/{clientId}</h3>
-        <p>Deletes all heartbeat records for a specific client.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/heartbeat/123",
+        "name": "Example Heartbeat"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

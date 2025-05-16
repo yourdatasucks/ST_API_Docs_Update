@@ -360,490 +360,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Job management...</p>
 
-        <h3>GET /jobs</h3>
-        <p>Retrieves a list of jobs. Supports filtering by customer, location, status, date range, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs?customerId=5678&status=Scheduled&startDate=2023-08-01&endDate=2023-08-31
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 12345,
-            "number": "JOB-2023-0789",
-            "customerId": 5678,
-            "locationId": 9012,
-            "type": "Inspection",
-            "status": "Scheduled",
-            "priority": "Normal",
-            "scheduledStartDate": "2023-08-15T09:00:00Z",
-            "scheduledEndDate": "2023-08-15T11:00:00Z",
-            "description": "Annual fire alarm inspection",
-            "assignedUsers": [101, 102],
-            "createdDate": "2023-07-10T14:30:00Z"
-        },
-        {
-            "id": 12346,
-            "number": "JOB-2023-0790",
-            "customerId": 5678,
-            "locationId": 9013,
-            "type": "Maintenance",
-            "status": "Scheduled",
-            "priority": "Normal",
-            "scheduledStartDate": "2023-08-22T13:00:00Z",
-            "scheduledEndDate": "2023-08-22T16:00:00Z",
-            "description": "Quarterly sprinkler system maintenance",
-            "assignedUsers": [103, 104],
-            "createdDate": "2023-07-12T11:15:00Z"
-        }
-        // Additional jobs...
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-job" class="resource-section">
+            <h3>Job</h3>
+            <p>The job resource is used to manage Job data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /job</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/job</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/job/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/job/123</td>
+                        <td>404</td>
+                        <td>job not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/job</td>
+                        <td>200</td>
+                        <td>job created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/job</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/job/123</td>
+                        <td>200</td>
+                        <td>job updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/job/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/job/123</td>
+                        <td>404</td>
+                        <td>job not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/job/123</td>
+                        <td>204</td>
+                        <td>job deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/job/123</td>
+                        <td>404</td>
+                        <td>job not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /job/[jobId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>job entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the job</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the job</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Jobs</h4>
+            <pre><code>GET /job
 
-        <h3>GET /jobs/{id}</h3>
-        <p>Retrieves a specific job by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 12345,
-    "number": "JOB-2023-0789",
-    "customerId": 5678,
-    "locationId": 9012,
-    "type": "Inspection",
-    "status": "Scheduled",
-    "priority": "Normal",
-    "createdBy": 101,
-    "createdDate": "2023-07-10T14:30:00Z",
-    "scheduledStartDate": "2023-08-15T09:00:00Z",
-    "scheduledEndDate": "2023-08-15T11:00:00Z",
-    "description": "Annual fire alarm inspection",
-    "summary": "Perform comprehensive NFPA 72 fire alarm inspection",
-    "notes": "Customer has requested that all work be completed before noon.",
-    "customerNotes": "Please check in at the security desk upon arrival.",
-    "privateNotes": "Previous inspection found issues with 3rd floor pull stations.",
-    "assignedUsers": [101, 102],
-    "tags": [
-        {
-            "id": 201,
-            "name": "Fire Alarm",
-            "color": "#FF0000"
-        },
-        {
-            "id": 202,
-            "name": "Annual",
-            "color": "#0000FF"
-        }
-    ],
-    "items": [
-        {
-            "id": 7001,
-            "description": "Fire Alarm System Inspection",
-            "quantity": 1,
-            "unitPrice": 1500.00,
-            "itemType": "Service"
-        }
-    ],
-    "attachments": [
-        {
-            "id": 8001,
-            "name": "Previous Inspection Report.pdf",
-            "contentType": "application/pdf",
-            "size": 2458012,
-            "url": "https://api.servicetrade.com/attachments/8001"
-        }
-    ],
-    "serviceLineId": 301,
-    "contractId": 401,
-    "purchaseOrderNumber": "PO-45678",
-    "estimatedDuration": 120,
-    "estimatedCost": 750.00,
-    "estimatedRevenue": 1500.00,
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2023-07-15T09:45:00Z",
-    "externalId": "JOB-EXT-123",
-    "customFields": {
-        "buildingType": "Commercial Office",
-        "squareFootage": "125000",
-        "systemManufacturer": "Simplex"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "jobs": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/job/123",
+                "name": "Example Job"
+            }
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Job</h4>
+            <pre><code>GET /job/123
 
-        <h3>POST /jobs</h3>
-        <p>Creates a new job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "customerId": 5679,
-    "locationId": 9014,
-    "type": "Repair",
-    "status": "Created",
-    "priority": "High",
-    "scheduledStartDate": "2023-08-18T10:00:00Z",
-    "scheduledEndDate": "2023-08-18T12:00:00Z",
-    "description": "Replace faulty fire pump controller",
-    "summary": "Fire pump controller replacement",
-    "notes": "Customer reported controller showing fault code E-123",
-    "customerNotes": "Please call 30 minutes before arrival.",
-    "privateNotes": "Bring replacement model FPC-5000.",
-    "assignedUsers": [105, 106],
-    "serviceLineId": 302,
-    "purchaseOrderNumber": "PO-56789",
-    "estimatedDuration": 120,
-    "estimatedCost": 850.00,
-    "estimatedRevenue": 2250.00,
-    "items": [
-        {
-            "description": "Fire Pump Controller Replacement",
-            "quantity": 1,
-            "unitPrice": 1500.00,
-            "itemType": "Service"
-        },
-        {
-            "description": "Fire Pump Controller Model FPC-5000",
-            "quantity": 1,
-            "unitPrice": 750.00,
-            "itemType": "Material"
-        }
-    ],
-    "tags": [201, 203],
-    "customFields": {
-        "buildingType": "Manufacturing",
-        "pumpGPM": "1000",
-        "controllerManufacturer": "Metron"
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/job/123",
+        "name": "Example Job"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created job (HTTP 201 Created).</p>
-
-        <h3>PUT /jobs/{id}</h3>
-        <p>Updates an existing job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "status": "Scheduled",
-    "priority": "Normal",
-    "scheduledStartDate": "2023-08-20T14:00:00Z",
-    "scheduledEndDate": "2023-08-20T16:00:00Z",
-    "description": "Replace faulty fire pump controller and test operation",
-    "assignedUsers": [105, 107],
-    "notes": "Rescheduled at customer request. Controller is showing intermittent fault code E-123.",
-    "customFields": {
-        "buildingType": "Manufacturing",
-        "pumpGPM": "1000",
-        "controllerManufacturer": "Metron",
-        "rescheduledReason": "Customer requested later date"
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated job.</p>
-
-        <h3>DELETE /jobs/{id}</h3>
-        <p>Deletes a job. This is typically only allowed for jobs in "Created" status without any associated invoices or
-            other dependencies.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /jobs/{id}/cancel</h3>
-        <p>Cancels a job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "reason": "Customer facility closed indefinitely",
-    "notify": true,
-    "notifyContacts": [5001, 5002],
-    "notifyMessage": "Due to your facility closure, we've canceled the scheduled service visit."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated job with status changed to "Canceled".</p>
-
-        <h3>POST /jobs/{id}/start</h3>
-        <p>Marks a job as started (changes status to "In Progress" and sets actualStartDate).</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "startDate": "2023-08-15T09:15:00Z",
-    "userId": 102,
-    "notes": "Arrived on site, checked in with security"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated job with status changed to "In Progress".</p>
-
-        <h3>POST /jobs/{id}/complete</h3>
-        <p>Marks a job as completed (changes status to "Completed" and sets actualEndDate and completedDate).</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "completionDate": "2023-08-15T11:30:00Z",
-    "userId": 102,
-    "completionNotes": "Completed full inspection. All devices tested and functioning properly. Customer signed off on work.",
-    "actualCost": 725.50,
-    "actualRevenue": 1500.00,
-    "generateInvoice": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated job with status changed to "Completed".</p>
-
-        <h3>POST /jobs/{id}/reschedule</h3>
-        <p>Reschedules a job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "scheduledStartDate": "2023-08-25T13:00:00Z",
-    "scheduledEndDate": "2023-08-25T15:00:00Z",
-    "reason": "Weather delay",
-    "notify": true,
-    "notifyContacts": [5001, 5002],
-    "notifyMessage": "Due to severe weather conditions, we need to reschedule your service visit."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated job with new scheduled dates.</p>
-
-        <h3>POST /jobs/{id}/reassign</h3>
-        <p>Reassigns a job to different users.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "assignedUsers": [108, 109],
-    "reason": "Original technician on leave",
-    "notifyNewUsers": true,
-    "notifyPreviousUsers": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated job with new assigned users.</p>
-
-        <h3>GET /jobs/{id}/items</h3>
-        <p>Retrieves all items for a specific job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345/items
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="jobitem.html">Job Item</a> objects for the specified job.</p>
-
-        <h3>POST /jobs/{id}/items</h3>
-        <p>Adds a new item to a job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "description": "Additional Fire Alarm Pull Station Testing",
-    "quantity": 10,
-    "unitPrice": 15.00,
-    "taxable": true,
-    "itemType": "Service",
-    "serviceItemId": 501,
-    "notes": "Testing of 10 additional pull stations in new building wing"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the created <a href="jobitem.html">Job Item</a>.</p>
-
-        <h3>GET /jobs/{id}/attachments</h3>
-        <p>Retrieves all attachments for a specific job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345/attachments
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="attachment.html">Attachment</a> objects for the specified job.</p>
-
-        <h3>POST /jobs/{id}/attachments</h3>
-        <p>Adds an attachment to a job.</p>
-        <h4>Request</h4>
-        <p>A multipart/form-data request containing the file to attach.</p>
-        <h4>Response</h4>
-        <p>Returns the created <a href="attachment.html">Attachment</a> object.</p>
-
-        <h3>GET /jobs/{id}/tasks</h3>
-        <p>Retrieves all tasks for a specific job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345/tasks
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="task.html">Task</a> objects for the specified job.</p>
-
-        <h3>POST /jobs/{id}/tasks</h3>
-        <p>Adds a new task to a job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "description": "Test all notification appliances",
-    "taskListId": 601,
-    "dueDate": "2023-08-15T11:00:00Z",
-    "assignedUserId": 102,
-    "priority": "High"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the created <a href="task.html">Task</a>.</p>
-
-        <h3>GET /jobs/{id}/comments</h3>
-        <p>Retrieves all comments for a specific job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345/comments
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="comment.html">Comment</a> objects for the specified job.</p>
-
-        <h3>POST /jobs/{id}/comments</h3>
-        <p>Adds a new comment to a job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "text": "Customer contact will be out of office. Use secondary contact information.",
-    "isPrivate": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the created <a href="comment.html">Comment</a>.</p>
-
-        <h3>GET /jobs/{id}/history</h3>
-        <p>Retrieves the change history for a specific job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345/history
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="history.html">History</a> objects for the specified job.</p>
-
-        <h3>GET /jobs/{id}/invoices</h3>
-        <p>Retrieves all invoices associated with a specific job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345/invoices
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="invoice.html">Invoice</a> objects for the specified job.</p>
-
-        <h3>POST /jobs/{id}/invoices</h3>
-        <p>Creates a new invoice from a job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "items": ["all", 7001, 7002],
-    "includeUninvoicedOnly": true,
-    "date": "2023-08-15",
-    "notes": "Thank you for your business!",
-    "status": "Draft"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the created <a href="invoice.html">Invoice</a>.</p>
-
-        <h3>GET /customers/{id}/jobs</h3>
-        <p>Retrieves all jobs for a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/5678/jobs?status=Active
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of jobs for the specified customer.</p>
-
-        <h3>GET /locations/{id}/jobs</h3>
-        <p>Retrieves all jobs for a specific location.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/locations/9012/jobs?startDate=2023-01-01
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of jobs for the specified location.</p>
-
-        <h3>GET /users/{id}/jobs</h3>
-        <p>Retrieves all jobs assigned to a specific user.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/users/102/jobs?status=Scheduled
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of jobs for the specified user.</p>
-
-        <h3>POST /jobs/batch</h3>
-        <p>Creates multiple jobs in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "jobs": [
-        {
-            "customerId": 5679,
-            "locationId": 9014,
-            "type": "Inspection",
-            "status": "Scheduled",
-            "scheduledStartDate": "2023-08-25T09:00:00Z",
-            "scheduledEndDate": "2023-08-25T11:00:00Z",
-            "description": "Annual fire extinguisher inspection",
-            "assignedUsers": [105, 106]
-        },
-        {
-            "customerId": 5680,
-            "locationId": 9015,
-            "type": "Inspection",
-            "status": "Scheduled",
-            "scheduledStartDate": "2023-08-25T13:00:00Z",
-            "scheduledEndDate": "2023-08-25T15:00:00Z",
-            "description": "Annual fire extinguisher inspection",
-            "assignedUsers": [105, 106]
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created jobs.</p>
-
-        <h3>GET /jobs/summary</h3>
-        <p>Retrieves summary information about jobs, grouped by various criteria.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/summary?groupBy=status&startDate=2023-01-01&endDate=2023-07-31
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "totalJobs": 1245,
-    "byStatus": {
-        "Created": {
-            "count": 125,
-            "percentage": 10.0
-        },
-        "Scheduled": {
-            "count": 356,
-            "percentage": 28.6
-        },
-        "In Progress": {
-            "count": 82,
-            "percentage": 6.6
-        },
-        "Completed": {
-            "count": 642,
-            "percentage": 51.6
-        },
-        "Canceled": {
-            "count": 40,
-            "percentage": 3.2
-        }
-    },
-    "byType": {
-        "Inspection": {
-            "count": 743,
-            "percentage": 59.7
-        },
-        "Repair": {
-            "count": 287,
-            "percentage": 23.1
-        },
-        "Installation": {
-            "count": 125,
-            "percentage": 10.0
-        },
-        "Maintenance": {
-            "count": 90,
-            "percentage": 7.2
-        }
-    },
-    "byMonth": {
-        "2023-01": {
-            "count": 175,
-            "revenue": 262500.00
-        },
-        "2023-02": {
-            "count": 168,
-            "revenue": 252000.00
-        },
-        // Additional months...
-        "2023-07": {
-            "count": 184,
-            "revenue": 276000.00
-        }
-    },
-    "financials": {
-        "totalEstimatedRevenue": 1867500.00,
-        "totalActualRevenue": 1437500.00,
-        "totalEstimatedCost": 746875.00,
-        "totalActualCost": 575000.00,
-        "averageJobValue": 1500.00,
-        "grossMarginPercentage": 60.0
-    }
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

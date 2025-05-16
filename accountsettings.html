@@ -32,47 +32,151 @@
         <p><em>Consult the specific API documentation for a comprehensive list of available account settings.</em></p>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Account Settings management...</p>
 
-        <h3>GET /account/settings</h3>
-        <p>Retrieves all current account settings for the authenticated account.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/account/settings
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "feature_assets_enabled": true,
-    "default_currency": "USD",
-    "session_timeout_minutes": 60,
-    "email_notifications": {
-        "new_lead_assigned": true,
-        "task_completed": false
+        <section id="resource-accountsettings" class="resource-section">
+            <h3>Account Settings</h3>
+            <p>The accountsettings resource is used to manage Account Settings data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /accountsettings</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/accountsettings</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/accountsettings/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/accountsettings/123</td>
+                        <td>404</td>
+                        <td>accountsettings not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/accountsettings</td>
+                        <td>200</td>
+                        <td>accountsettings created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/accountsettings</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/accountsettings/123</td>
+                        <td>200</td>
+                        <td>accountsettings updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/accountsettings/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/accountsettings/123</td>
+                        <td>404</td>
+                        <td>accountsettings not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/accountsettings/123</td>
+                        <td>204</td>
+                        <td>accountsettings deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/accountsettings/123</td>
+                        <td>404</td>
+                        <td>accountsettings not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /accountsettings/[accountsettingsId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>accountsettings entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the accountsettings</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the accountsettings</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Account Settingss</h4>
+            <pre><code>GET /accountsettings
+
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "accountsettingss": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/accountsettings/123",
+                "name": "Example Account Settings"
+            }
+        ]
     }
-    // ... other settings
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Account Settings</h4>
+            <pre><code>GET /accountsettings/123
 
-        <h3>PUT /account/settings</h3>
-        <p>Updates one or more account settings. Only include the settings you wish to change in the request body.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "feature_assets_enabled": false,
-    "session_timeout_minutes": 120
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated account settings object (HTTP 200 OK).</p>
-        <pre><code class="language-json">{
-    "feature_assets_enabled": false,
-    "default_currency": "USD",
-    "session_timeout_minutes": 120,
-    "email_notifications": {
-        "new_lead_assigned": true,
-        "task_completed": false
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/accountsettings/123",
+        "name": "Example Account Settings"
     }
-    // ... other settings reflecting the update
-}</code></pre>
-        <p><strong>Note:</strong> Access to modify account settings typically requires administrative privileges.</p>
-
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

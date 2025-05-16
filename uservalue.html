@@ -109,368 +109,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for User Value management...</p>
 
-        <h3>List User Values</h3>
-        <p>Returns a list of user values for a specific user.</p>
+        <section id="resource-uservalue" class="resource-section">
+            <h3>User Value</h3>
+            <p>The uservalue resource is used to manage User Value data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /uservalue</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/uservalue</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/uservalue/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/uservalue/123</td>
+                        <td>404</td>
+                        <td>uservalue not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/uservalue</td>
+                        <td>200</td>
+                        <td>uservalue created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/uservalue</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/uservalue/123</td>
+                        <td>200</td>
+                        <td>uservalue updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/uservalue/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/uservalue/123</td>
+                        <td>404</td>
+                        <td>uservalue not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/uservalue/123</td>
+                        <td>204</td>
+                        <td>uservalue deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/uservalue/123</td>
+                        <td>404</td>
+                        <td>uservalue not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /uservalue/[uservalueId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>uservalue entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the uservalue</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the uservalue</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve User Values</h4>
+            <pre><code>GET /uservalue
 
-        <h4>Request</h4>
-        <pre><code>GET /user/{userId}/values</code></pre>
-
-        <h5>Query Parameters</h5>
-        <table>
-            <thead>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Required</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>category</code></td>
-                    <td>string</td>
-                    <td>Filter by category.</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>name</code></td>
-                    <td>string</td>
-                    <td>Filter by field name.</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>dataType</code></td>
-                    <td>string</td>
-                    <td>Filter by data type.</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>isPublic</code></td>
-                    <td>boolean</td>
-                    <td>Filter by public visibility.</td>
-                    <td>false</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h4>Response</h4>
-        <p>Returns an array of user value objects.</p>
-
-        <pre><code>{
-  "data": [
-    {
-      "id": 501,
-      "userId": 101,
-      "name": "hvacCertification",
-      "value": "Level 2",
-      "dataType": "string",
-      "category": "Certifications",
-      "isPublic": true,
-      "createdDate": "2023-03-15T09:30:00Z",
-      "modifiedDate": "2023-03-15T09:30:00Z",
-      "expirationDate": "2025-03-15T00:00:00Z"
-    },
-    {
-      "id": 502,
-      "userId": 101,
-      "name": "fleetVehicleId",
-      "value": "F-150-22",
-      "dataType": "string",
-      "category": "Equipment",
-      "isPublic": true,
-      "createdDate": "2023-01-10T14:25:00Z",
-      "modifiedDate": "2023-07-22T11:30:15Z",
-      "expirationDate": null
-    },
-    {
-      "id": 503,
-      "userId": 101,
-      "name": "isFirstAidTrained",
-      "value": "true",
-      "dataType": "boolean",
-      "category": "Safety",
-      "isPublic": true,
-      "createdDate": "2023-02-05T10:15:30Z",
-      "modifiedDate": "2023-02-05T10:15:30Z",
-      "expirationDate": "2024-02-05T00:00:00Z"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "uservalues": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/uservalue/123",
+                "name": "Example User Value"
+            }
+        ]
     }
-  ],
-  "metadata": {
-    "resultCount": 3,
-    "totalCount": 3
-  }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific User Value</h4>
+            <pre><code>GET /uservalue/123
 
-        <h3>Get User Value</h3>
-        <p>Returns a specific user value by ID.</p>
-
-        <h4>Request</h4>
-        <pre><code>GET /uservalue/{id}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the requested user value object.</p>
-
-        <pre><code>{
-  "data": {
-    "id": 501,
-    "userId": 101,
-    "name": "hvacCertification",
-    "value": "Level 2",
-    "dataType": "string",
-    "category": "Certifications",
-    "isPublic": true,
-    "createdDate": "2023-03-15T09:30:00Z",
-    "modifiedDate": "2023-03-15T09:30:00Z",
-    "expirationDate": "2025-03-15T00:00:00Z"
-  }
-}</code></pre>
-
-        <h3>Create User Value</h3>
-        <p>Creates a new user value.</p>
-
-        <h4>Request</h4>
-        <pre><code>POST /uservalue</code></pre>
-
-        <h5>Request Body</h5>
-        <pre><code>{
-  "userId": 101,
-  "name": "electricalLicense",
-  "value": "EL-2023-4582",
-  "dataType": "string",
-  "category": "Licenses",
-  "isPublic": true,
-  "expirationDate": "2024-12-31T00:00:00Z"
-}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the newly created user value object.</p>
-
-        <pre><code>{
-  "data": {
-    "id": 504,
-    "userId": 101,
-    "name": "electricalLicense",
-    "value": "EL-2023-4582",
-    "dataType": "string",
-    "category": "Licenses",
-    "isPublic": true,
-    "createdDate": "2023-09-10T15:20:33Z",
-    "modifiedDate": "2023-09-10T15:20:33Z",
-    "expirationDate": "2024-12-31T00:00:00Z"
-  }
-}</code></pre>
-
-        <h3>Update User Value</h3>
-        <p>Updates an existing user value.</p>
-
-        <h4>Request</h4>
-        <pre><code>PUT /uservalue/{id}</code></pre>
-
-        <h5>Request Body</h5>
-        <pre><code>{
-  "value": "EL-2023-7890",
-  "isPublic": true,
-  "expirationDate": "2025-12-31T00:00:00Z"
-}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the updated user value object.</p>
-
-        <pre><code>{
-  "data": {
-    "id": 504,
-    "userId": 101,
-    "name": "electricalLicense",
-    "value": "EL-2023-7890",
-    "dataType": "string",
-    "category": "Licenses",
-    "isPublic": true,
-    "createdDate": "2023-09-10T15:20:33Z",
-    "modifiedDate": "2023-09-10T16:45:22Z",
-    "expirationDate": "2025-12-31T00:00:00Z"
-  }
-}</code></pre>
-
-        <h3>Delete User Value</h3>
-        <p>Removes a user value.</p>
-
-        <h4>Request</h4>
-        <pre><code>DELETE /uservalue/{id}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns a success message upon successful deletion.</p>
-
-        <pre><code>{
-  "success": true,
-  "message": "User value successfully deleted"
-}</code></pre>
-
-        <h3>Batch Create User Values</h3>
-        <p>Creates multiple user values in a single operation.</p>
-
-        <h4>Request</h4>
-        <pre><code>POST /user/{userId}/values/batch</code></pre>
-
-        <h5>Request Body</h5>
-        <pre><code>{
-  "values": [
-    {
-      "name": "safetyTraining",
-      "value": "2023-08-15",
-      "dataType": "date",
-      "category": "Training",
-      "isPublic": true,
-      "expirationDate": "2024-08-15T00:00:00Z"
-    },
-    {
-      "name": "equipmentQualification",
-      "value": "Forklift",
-      "dataType": "string",
-      "category": "Equipment",
-      "isPublic": true,
-      "expirationDate": "2025-01-01T00:00:00Z"
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/uservalue/123",
+        "name": "Example User Value"
     }
-  ]
-}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the newly created user value objects.</p>
-
-        <pre><code>{
-  "data": [
-    {
-      "id": 505,
-      "userId": 101,
-      "name": "safetyTraining",
-      "value": "2023-08-15",
-      "dataType": "date",
-      "category": "Training",
-      "isPublic": true,
-      "createdDate": "2023-09-10T17:30:45Z",
-      "modifiedDate": "2023-09-10T17:30:45Z",
-      "expirationDate": "2024-08-15T00:00:00Z"
-    },
-    {
-      "id": 506,
-      "userId": 101,
-      "name": "equipmentQualification",
-      "value": "Forklift",
-      "dataType": "string",
-      "category": "Equipment",
-      "isPublic": true,
-      "createdDate": "2023-09-10T17:30:45Z",
-      "modifiedDate": "2023-09-10T17:30:45Z",
-      "expirationDate": "2025-01-01T00:00:00Z"
-    }
-  ],
-  "success": true,
-  "count": 2
-}</code></pre>
-
-        <h3>Search User Values</h3>
-        <p>Searches for user values across all users.</p>
-
-        <h4>Request</h4>
-        <pre><code>GET /uservalue/search</code></pre>
-
-        <h5>Query Parameters</h5>
-        <table>
-            <thead>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Required</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>name</code></td>
-                    <td>string</td>
-                    <td>Search by field name.</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>value</code></td>
-                    <td>string</td>
-                    <td>Search by field value.</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>category</code></td>
-                    <td>string</td>
-                    <td>Filter by category.</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>expiringBefore</code></td>
-                    <td>date</td>
-                    <td>Find values expiring before the specified date.</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>limit</code></td>
-                    <td>integer</td>
-                    <td>Maximum number of records to return (default: 100, max: 1000).</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>offset</code></td>
-                    <td>integer</td>
-                    <td>Number of records to skip (default: 0).</td>
-                    <td>false</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h4>Response</h4>
-        <p>Returns an array of matching user value objects.</p>
-
-        <pre><code>{
-  "data": [
-    {
-      "id": 501,
-      "userId": 101,
-      "name": "hvacCertification",
-      "value": "Level 2",
-      "dataType": "string",
-      "category": "Certifications",
-      "isPublic": true,
-      "createdDate": "2023-03-15T09:30:00Z",
-      "modifiedDate": "2023-03-15T09:30:00Z",
-      "expirationDate": "2025-03-15T00:00:00Z",
-      "user": {
-        "id": 101,
-        "displayName": "John Smith"
-      }
-    },
-    {
-      "id": 601,
-      "userId": 102,
-      "name": "hvacCertification",
-      "value": "Level 3",
-      "dataType": "string",
-      "category": "Certifications",
-      "isPublic": true,
-      "createdDate": "2023-02-10T11:20:00Z",
-      "modifiedDate": "2023-02-10T11:20:00Z",
-      "expirationDate": "2026-02-10T00:00:00Z",
-      "user": {
-        "id": 102,
-        "displayName": "Mary Johnson"
-      }
-    }
-  ],
-  "metadata": {
-    "resultCount": 2,
-    "offset": 0,
-    "limit": 100,
-    "totalCount": 2
-  }
-}</code></pre>
-
-        <h2>Related Resources</h2>
+}
+</code></pre>
+        </section><h2>Related Resources</h2>
         <ul>
             <li><a href="user.html">User</a></li>
             <li><a href="usergrouplabel.html">User Group Label</a></li>

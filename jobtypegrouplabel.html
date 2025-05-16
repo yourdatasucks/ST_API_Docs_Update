@@ -141,220 +141,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Job Type Group Label management...</p>
 
-        <h3>GET /job-type-group-labels</h3>
-        <p>Retrieves a list of job type group labels.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/job-type-group-labels
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 1001,
-            "name": "Preventative Maintenance",
-            "description": "Regular scheduled maintenance services",
-            "isDefault": false,
-            "isSystem": true,
-            "color": "#4CAF50",
-            "icon": "wrench",
-            "isActive": true,
-            "jobCount": 256,
-            "sequence": 1,
-            "createdDate": "2022-01-01T00:00:00Z"
-        },
-        {
-            "id": 1002,
-            "name": "Inspection",
-            "description": "Routine or code-required inspections",
-            "isDefault": true,
-            "isSystem": true,
-            "color": "#2196F3",
-            "icon": "clipboard-check",
-            "isActive": true,
-            "jobCount": 423,
-            "sequence": 2,
-            "createdDate": "2022-01-01T00:00:00Z"
-        },
-        {
-            "id": 1003,
-            "name": "Emergency Service",
-            "description": "Urgent repair or response services",
-            "isDefault": false,
-            "isSystem": true,
-            "color": "#F44336",
-            "icon": "alert-circle",
-            "isActive": true,
-            "jobCount": 87,
-            "sequence": 3,
-            "createdDate": "2022-01-01T00:00:00Z"
-        }
-        // Additional job type group labels...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-jobtypegrouplabel" class="resource-section">
+            <h3>Job Type Group Label</h3>
+            <p>The jobtypegrouplabel resource is used to manage Job Type Group Label data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /jobtypegrouplabel</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/jobtypegrouplabel</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/jobtypegrouplabel/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/jobtypegrouplabel/123</td>
+                        <td>404</td>
+                        <td>jobtypegrouplabel not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/jobtypegrouplabel</td>
+                        <td>200</td>
+                        <td>jobtypegrouplabel created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/jobtypegrouplabel</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/jobtypegrouplabel/123</td>
+                        <td>200</td>
+                        <td>jobtypegrouplabel updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/jobtypegrouplabel/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/jobtypegrouplabel/123</td>
+                        <td>404</td>
+                        <td>jobtypegrouplabel not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/jobtypegrouplabel/123</td>
+                        <td>204</td>
+                        <td>jobtypegrouplabel deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/jobtypegrouplabel/123</td>
+                        <td>404</td>
+                        <td>jobtypegrouplabel not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /jobtypegrouplabel/[jobtypegrouplabelId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>jobtypegrouplabel entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the jobtypegrouplabel</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the jobtypegrouplabel</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Job Type Group Labels</h4>
+            <pre><code>GET /jobtypegrouplabel
 
-        <h3>GET /job-type-group-labels/{id}</h3>
-        <p>Retrieves a specific job type group label by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/job-type-group-labels/1001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 1001,
-    "name": "Preventative Maintenance",
-    "description": "Regular scheduled maintenance services",
-    "isDefault": false,
-    "isSystem": true,
-    "createdBy": 101,
-    "createdDate": "2022-01-01T00:00:00Z",
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2022-01-01T00:00:00Z",
-    "color": "#4CAF50",
-    "icon": "wrench",
-    "isActive": true,
-    "jobTypeIds": [2001, 2002, 2003, 2004],
-    "jobCount": 256,
-    "sequence": 1
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "jobtypegrouplabels": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/jobtypegrouplabel/123",
+                "name": "Example Job Type Group Label"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Job Type Group Label</h4>
+            <pre><code>GET /jobtypegrouplabel/123
 
-        <h3>POST /job-type-group-labels</h3>
-        <p>Creates a new job type group label.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Custom Installation",
-    "description": "Custom equipment installations",
-    "color": "#9C27B0",
-    "icon": "tools",
-    "isActive": true,
-    "jobTypeIds": [2010, 2011, 2012],
-    "sequence": 4
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created job type group label (HTTP 201 Created).</p>
-
-        <h3>PUT /job-type-group-labels/{id}</h3>
-        <p>Updates an existing job type group label.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Custom Installation & Setup",
-    "description": "Custom equipment installations and initial setup",
-    "color": "#9C27B0",
-    "icon": "tools",
-    "isActive": true,
-    "jobTypeIds": [2010, 2011, 2012, 2013],
-    "sequence": 4
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated job type group label.</p>
-
-        <h3>DELETE /job-type-group-labels/{id}</h3>
-        <p>Deletes a job type group label. System-defined labels cannot be deleted.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /job-type-group-labels/{id}/job-types</h3>
-        <p>Retrieves all job types associated with a specific job type group label.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/job-type-group-labels/1001/job-types
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 2001,
-            "name": "Quarterly Maintenance",
-            "description": "Quarterly preventative maintenance service",
-            "isActive": true
-        },
-        {
-            "id": 2002,
-            "name": "Semi-Annual Maintenance",
-            "description": "Semi-annual preventative maintenance service",
-            "isActive": true
-        },
-        {
-            "id": 2003,
-            "name": "Annual Maintenance",
-            "description": "Annual preventative maintenance service",
-            "isActive": true
-        },
-        {
-            "id": 2004,
-            "name": "Filter Replacement",
-            "description": "Regular filter replacement service",
-            "isActive": true
-        }
-    ],
-    "totalResults": 4,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-
-        <h3>POST /job-type-group-labels/{id}/job-types</h3>
-        <p>Associates job types with a job type group label.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "jobTypeIds": [2005, 2006, 2007]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns success message and updates the job type group label.</p>
-
-        <h3>DELETE /job-type-group-labels/{id}/job-types/{jobTypeId}</h3>
-        <p>Removes a job type association from a job type group label.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful removal of the association.</p>
-
-        <h3>GET /jobs/type-group-labels</h3>
-        <p>Retrieves job counts by job type group label.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/type-group-labels?startDate=2023-01-01&endDate=2023-12-31
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "totalJobs": 766,
-    "byTypeGroupLabel": [
-        {
-            "id": 1002,
-            "name": "Inspection",
-            "count": 423,
-            "percentage": 55.2,
-            "revenue": 634500.00
-        },
-        {
-            "id": 1001,
-            "name": "Preventative Maintenance",
-            "count": 256,
-            "percentage": 33.4,
-            "revenue": 384000.00
-        },
-        {
-            "id": 1003,
-            "name": "Emergency Service",
-            "count": 87,
-            "percentage": 11.4,
-            "revenue": 217500.00
-        }
-    ]
-}</code></pre>
-
-        <h3>PUT /job-type-group-labels/reorder</h3>
-        <p>Reorders job type group labels.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "order": [1003, 1001, 1002, 1004]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns success message and updates the sequence property of the affected labels.</p>
-
-        <h3>POST /job-type-group-labels/default/{id}</h3>
-        <p>Sets a job type group label as the default.</p>
-        <h4>Response</h4>
-        <p>Returns the updated job type group label with isDefault set to true.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/jobtypegrouplabel/123",
+        "name": "Example Job Type Group Label"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

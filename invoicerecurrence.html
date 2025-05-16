@@ -418,479 +418,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Invoice Recurrence management...</p>
 
-        <h3>GET /invoicerecurrences</h3>
-        <p>Retrieves a list of invoice recurrences. Supports filtering by customer, status, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/invoicerecurrences?customerId=5678&status=Active
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 1001,
-            "name": "Monthly Monitoring Service",
-            "customerId": 5678,
-            "status": "Active",
-            "frequency": "Monthly",
-            "dayOfMonth": 1,
-            "startDate": "2023-01-01",
-            "nextRunDate": "2023-08-01T00:00:00Z",
-            "completedOccurrences": 7,
-            "lastRunDate": "2023-07-01T00:30:15Z",
-            "autoSend": true,
-            "createdDate": "2022-12-15T09:30:00Z"
-        },
-        {
-            "id": 1002,
-            "name": "Quarterly Inspection Services",
-            "customerId": 5678,
-            "status": "Active",
-            "frequency": "Quarterly",
-            "dayOfMonth": 15,
-            "months": [1, 4, 7, 10],
-            "startDate": "2023-01-15",
-            "nextRunDate": "2023-10-15T00:00:00Z",
-            "completedOccurrences": 3,
-            "lastRunDate": "2023-07-15T00:15:45Z",
-            "autoSend": true,
-            "createdDate": "2022-12-20T14:45:00Z"
-        }
-        // Additional recurrences...
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-invoicerecurrence" class="resource-section">
+            <h3>Invoice Recurrence</h3>
+            <p>The invoicerecurrence resource is used to manage Invoice Recurrence data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /invoicerecurrence</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/invoicerecurrence</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/invoicerecurrence/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/invoicerecurrence/123</td>
+                        <td>404</td>
+                        <td>invoicerecurrence not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/invoicerecurrence</td>
+                        <td>200</td>
+                        <td>invoicerecurrence created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/invoicerecurrence</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/invoicerecurrence/123</td>
+                        <td>200</td>
+                        <td>invoicerecurrence updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/invoicerecurrence/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/invoicerecurrence/123</td>
+                        <td>404</td>
+                        <td>invoicerecurrence not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/invoicerecurrence/123</td>
+                        <td>204</td>
+                        <td>invoicerecurrence deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/invoicerecurrence/123</td>
+                        <td>404</td>
+                        <td>invoicerecurrence not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /invoicerecurrence/[invoicerecurrenceId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>invoicerecurrence entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the invoicerecurrence</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the invoicerecurrence</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Invoice Recurrences</h4>
+            <pre><code>GET /invoicerecurrence
 
-        <h3>GET /invoicerecurrences/{id}</h3>
-        <p>Retrieves a specific invoice recurrence by ID, including the full invoice template.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/invoicerecurrences/1001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 1001,
-    "name": "Monthly Monitoring Service",
-    "customerId": 5678,
-    "status": "Active",
-    "frequency": "Monthly",
-    "dayOfMonth": 1,
-    "startDate": "2023-01-01",
-    "nextRunDate": "2023-08-01T00:00:00Z",
-    "completedOccurrences": 7,
-    "lastRunDate": "2023-07-01T00:30:15Z",
-    "invoiceTemplate": {
-        "items": [
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "invoicerecurrences": [
             {
-                "description": "Fire Alarm Monitoring Service",
-                "quantity": 1,
-                "unitPrice": 150.00,
-                "unitCost": 75.00,
-                "taxable": true,
-                "itemType": "Service",
-                "serviceItemId": 118,
-                "sequenceNumber": 1
-            },
-            {
-                "description": "Cellular Backup Service",
-                "quantity": 1,
-                "unitPrice": 50.00,
-                "unitCost": 25.00,
-                "taxable": true,
-                "itemType": "Service",
-                "serviceItemId": 119,
-                "sequenceNumber": 2
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/invoicerecurrence/123",
+                "name": "Example Invoice Recurrence"
             }
-        ],
-        "notes": "Thank you for your business!",
-        "termsAndConditions": "Payment due within 15 days. Late payments subject to a 1.5% monthly finance charge.",
-        "taxRate": 7.50,
-        "taxGroupId": 123,
-        "paymentTermsId": 456,
-        "dueDays": 15,
-        "currency": "USD",
-        "billingAddress": {
-            "name": "ACME Corporation",
-            "street1": "123 Main Street",
-            "street2": "Suite 400",
-            "city": "Raleigh",
-            "state": "NC",
-            "zip": "27601",
-            "country": "US"
-        }
-    },
-    "invoiceNumberPrefix": "MON-",
-    "autoSend": true,
-    "sendToContacts": [5001, 5002],
-    "emailSubject": "Monthly Monitoring Service Invoice",
-    "emailMessage": "Please find attached your monthly monitoring service invoice. Thank you for your business!",
-    "reminderDays": 7,
-    "autoCharge": false,
-    "contractId": 2001,
-    "notes": "Contract renewal scheduled for December 2023.",
-    "createdBy": 101,
-    "createdDate": "2022-12-15T09:30:00Z",
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2022-12-15T09:30:00Z",
-    "customFields": {
-        "departmentCode": "MON-01",
-        "accountManager": "John Smith"
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Invoice Recurrence</h4>
+            <pre><code>GET /invoicerecurrence/123
 
-        <h3>POST /invoicerecurrences</h3>
-        <p>Creates a new invoice recurrence.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Quarterly Maintenance Service",
-    "customerId": 5679,
-    "status": "Active",
-    "frequency": "Quarterly",
-    "dayOfMonth": 15,
-    "months": [1, 4, 7, 10],
-    "startDate": "2023-08-15",
-    "invoiceTemplate": {
-        "items": [
-            {
-                "description": "Quarterly Maintenance Service",
-                "quantity": 1,
-                "unitPrice": 1200.00,
-                "taxable": true,
-                "itemType": "Service",
-                "serviceItemId": 120
-            },
-            {
-                "description": "Preventative Maintenance Parts Allowance",
-                "quantity": 1,
-                "unitPrice": 300.00,
-                "taxable": true,
-                "itemType": "Material",
-                "serviceItemId": 121
-            }
-        ],
-        "notes": "Thank you for your business!",
-        "termsAndConditions": "Payment due within 30 days. Late payments subject to a 1.5% monthly finance charge.",
-        "taxRate": 7.50,
-        "paymentTermsId": 456,
-        "dueDays": 30,
-        "currency": "USD"
-    },
-    "invoiceNumberPrefix": "QMS-",
-    "autoSend": true,
-    "sendToContacts": [5003, 5004],
-    "emailSubject": "Quarterly Maintenance Service Invoice",
-    "emailMessage": "Please find attached your quarterly maintenance service invoice. Thank you for your business!",
-    "reminderDays": 10,
-    "contractId": 2002,
-    "customFields": {
-        "departmentCode": "SVC-02",
-        "accountManager": "Jane Doe"
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/invoicerecurrence/123",
+        "name": "Example Invoice Recurrence"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created invoice recurrence (HTTP 201 Created).</p>
-
-        <h3>PUT /invoicerecurrences/{id}</h3>
-        <p>Updates an existing invoice recurrence.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Quarterly Maintenance Service - Premium",
-    "status": "Active",
-    "invoiceTemplate": {
-        "items": [
-            {
-                "description": "Quarterly Maintenance Service - Premium",
-                "quantity": 1,
-                "unitPrice": 1500.00,
-                "taxable": true,
-                "itemType": "Service",
-                "serviceItemId": 120
-            },
-            {
-                "description": "Preventative Maintenance Parts Allowance",
-                "quantity": 1,
-                "unitPrice": 500.00,
-                "taxable": true,
-                "itemType": "Material",
-                "serviceItemId": 121
-            },
-            {
-                "description": "24/7 Emergency Response Coverage",
-                "quantity": 1,
-                "unitPrice": 750.00,
-                "taxable": true,
-                "itemType": "Service",
-                "serviceItemId": 122
-            }
-        ],
-        "notes": "Thank you for choosing our premium service package!",
-        "termsAndConditions": "Payment due within 30 days. Late payments subject to a 2.0% monthly finance charge."
-    },
-    "emailSubject": "Quarterly Premium Maintenance Service Invoice",
-    "emailMessage": "Please find attached your quarterly premium maintenance service invoice. Thank you for your business!"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated invoice recurrence.</p>
-
-        <h3>DELETE /invoicerecurrences/{id}</h3>
-        <p>Deletes an invoice recurrence. This will prevent future invoices from being generated but won't affect
-            already issued invoices.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>PUT /invoicerecurrences/{id}/status</h3>
-        <p>Updates the status of an invoice recurrence.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "status": "Paused",
-    "notes": "Customer requested temporary suspension of service."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated invoice recurrence with the new status.</p>
-
-        <h3>GET /invoicerecurrences/{id}/history</h3>
-        <p>Retrieves the invoice generation history for a specific recurrence.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/invoicerecurrences/1001/history
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "invoiceId": 12330,
-            "number": "MON-2023-0750",
-            "date": "2023-07-01",
-            "total": 215.63,
-            "status": "Paid",
-            "generatedDate": "2023-07-01T00:30:15Z",
-            "sentDate": "2023-07-01T00:35:20Z"
-        },
-        {
-            "invoiceId": 12310,
-            "number": "MON-2023-0700",
-            "date": "2023-06-01",
-            "total": 215.63,
-            "status": "Paid",
-            "generatedDate": "2023-06-01T00:25:10Z",
-            "sentDate": "2023-06-01T00:30:05Z"
-        },
-        {
-            "invoiceId": 12290,
-            "number": "MON-2023-0650",
-            "date": "2023-05-01",
-            "total": 215.63,
-            "status": "Paid",
-            "generatedDate": "2023-05-01T00:15:45Z",
-            "sentDate": "2023-05-01T00:20:30Z"
-        }
-        // Additional invoice history...
-    ],
-    "totalResults": 7,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-
-        <h3>POST /invoicerecurrences/{id}/generate</h3>
-        <p>Manually triggers generation of an invoice from the recurrence template.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "invoiceDate": "2023-08-01",
-    "sendToCustomer": true,
-    "overrideNextRunDate": true
-}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "invoiceId": 12350,
-    "number": "MON-2023-0800",
-    "date": "2023-08-01",
-    "total": 215.63,
-    "status": "Sent",
-    "recurrenceId": 1001,
-    "generatedDate": "2023-07-25T14:30:45Z",
-    "sentDate": "2023-07-25T14:35:20Z",
-    "invoiceUrl": "https://api.servicetrade.com/invoices/12350"
-}</code></pre>
-
-        <h3>GET /invoicerecurrences/preview</h3>
-        <p>Previews upcoming invoice recurrences due to run within a specified time period.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/invoicerecurrences/preview?startDate=2023-08-01&endDate=2023-08-31
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 1001,
-            "name": "Monthly Monitoring Service",
-            "customerId": 5678,
-            "customerName": "ACME Corporation",
-            "scheduledDate": "2023-08-01T00:00:00Z",
-            "estimatedAmount": 215.63,
-            "frequency": "Monthly",
-            "occurrence": 8
-        },
-        {
-            "id": 1003,
-            "name": "Annual Maintenance Contract",
-            "customerId": 5680,
-            "customerName": "XYZ Industries",
-            "scheduledDate": "2023-08-15T00:00:00Z",
-            "estimatedAmount": 4500.00,
-            "frequency": "Annual",
-            "occurrence": 1
-        }
-        // Additional upcoming recurrences...
-    ],
-    "totalResults": 2,
-    "totalEstimatedAmount": 4715.63,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-
-        <h3>POST /invoicerecurrences/batch</h3>
-        <p>Creates multiple invoice recurrences in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "recurrences": [
-        {
-            "name": "Monthly Inspection - Site A",
-            "customerId": 5681,
-            "status": "Active",
-            "frequency": "Monthly",
-            "dayOfMonth": 10,
-            "startDate": "2023-08-10",
-            "invoiceTemplate": {
-                "items": [
-                    {
-                        "description": "Monthly Fire Extinguisher Inspection",
-                        "quantity": 1,
-                        "unitPrice": 350.00,
-                        "taxable": true,
-                        "itemType": "Service",
-                        "serviceItemId": 123
-                    }
-                ],
-                "taxRate": 7.50
-            },
-            "autoSend": true
-        },
-        {
-            "name": "Monthly Inspection - Site B",
-            "customerId": 5681,
-            "status": "Active",
-            "frequency": "Monthly",
-            "dayOfMonth": 15,
-            "startDate": "2023-08-15",
-            "invoiceTemplate": {
-                "items": [
-                    {
-                        "description": "Monthly Fire Extinguisher Inspection",
-                        "quantity": 1,
-                        "unitPrice": 450.00,
-                        "taxable": true,
-                        "itemType": "Service",
-                        "serviceItemId": 123
-                    }
-                ],
-                "taxRate": 7.50
-            },
-            "autoSend": true
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created invoice recurrences.</p>
-
-        <h3>GET /customers/{id}/invoicerecurrences</h3>
-        <p>Retrieves all invoice recurrences for a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/5678/invoicerecurrences?status=Active
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of invoice recurrences for the specified customer.</p>
-
-        <h3>GET /contracts/{id}/invoicerecurrences</h3>
-        <p>Retrieves all invoice recurrences associated with a specific contract.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contracts/2001/invoicerecurrences
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of invoice recurrences for the specified contract.</p>
-
-        <h3>POST /contracts/{id}/invoicerecurrences</h3>
-        <p>Creates an invoice recurrence from a contract.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Contract Billing - ABC Corp",
-    "frequency": "Monthly",
-    "dayOfMonth": 1,
-    "startDate": "2023-09-01",
-    "autoSend": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created invoice recurrence based on the contract terms.</p>
-
-        <h3>GET /invoicerecurrences/summary</h3>
-        <p>Retrieves summary information about invoice recurrences.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/invoicerecurrences/summary?groupBy=frequency
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "totalRecurrences": 45,
-    "activeRecurrences": 38,
-    "pausedRecurrences": 5,
-    "completedRecurrences": 2,
-    "byFrequency": {
-        "Monthly": {
-            "count": 25,
-            "estimatedMonthlyRevenue": 12500.00,
-            "estimatedAnnualRevenue": 150000.00
-        },
-        "Quarterly": {
-            "count": 12,
-            "estimatedMonthlyRevenue": 4800.00,
-            "estimatedAnnualRevenue": 57600.00
-        },
-        "Annual": {
-            "count": 8,
-            "estimatedMonthlyRevenue": 3333.33,
-            "estimatedAnnualRevenue": 40000.00
-        }
-    },
-    "byCustomer": [
-        {
-            "customerId": 5678,
-            "name": "ACME Corporation",
-            "recurrenceCount": 5,
-            "estimatedMonthlyRevenue": 2150.00
-        },
-        {
-            "customerId": 5679,
-            "name": "XYZ Industries",
-            "recurrenceCount": 3,
-            "estimatedMonthlyRevenue": 1750.00
-        }
-        // Additional customers...
-    ],
-    "upcomingInvoices": {
-        "next30Days": {
-            "count": 18,
-            "estimatedAmount": 15250.00
-        },
-        "next60Days": {
-            "count": 32,
-            "estimatedAmount": 28750.00
-        },
-        "next90Days": {
-            "count": 45,
-            "estimatedAmount": 42500.00
-        }
-    }
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

@@ -259,231 +259,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Contract management...</p>
 
-        <h3>GET /contracts</h3>
-        <p>Retrieves a list of contracts. Supports filtering by company, status, date ranges, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contracts?companyId=123&status=Active
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 456,
-            "number": "CONT-2023-001",
-            "name": "Annual Maintenance Agreement",
-            "description": "Comprehensive maintenance coverage for all HVAC systems at main office location",
-            "companyId": 123,
-            "locationIds": [201, 202],
-            "type": "Maintenance",
-            "status": "Active",
-            "startDate": "2023-01-01",
-            "endDate": "2023-12-31",
-            "term": 12,
-            "autoRenew": true,
-            "renewalTerm": 12,
-            "cancellationNoticeDays": 30,
-            "totalValue": 12000.00,
-            "recurringAmount": 1000.00,
-            "billingFrequency": "Monthly",
-            "nextBillingDate": "2023-08-01",
-            "primaryContactId": 301,
-            "salesRepId": 201,
-            "accountManagerId": 202,
-            "notificationDays": 60,
-            "contractDocumentUrl": "https://documents.example.com/contracts/CONT-2023-001.pdf",
-            "signedDate": "2022-12-15",
-            "notes": "Customer has requested priority response for all service calls.",
-            "assetIds": [501, 502, 503, 504],
-            "customFields": {
-                "contractType": "Premium",
-                "discountPercentage": 10,
-                "specialTerms": "24/7 emergency response"
-            },
-            "tags": ["HVAC", "Premium", "Monthly Billing"],
-            "createdDate": "2022-11-30T14:30:00Z",
-            "createdBy": 201,
-            "lastModifiedDate": "2022-12-15T10:15:00Z",
-            "lastModifiedBy": 202
-        },
-        // Additional contracts...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-contract" class="resource-section">
+            <h3>Contract</h3>
+            <p>The contract resource is used to manage Contract data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /contract</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contract</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contract/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contract/123</td>
+                        <td>404</td>
+                        <td>contract not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/contract</td>
+                        <td>200</td>
+                        <td>contract created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/contract</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contract/123</td>
+                        <td>200</td>
+                        <td>contract updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contract/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contract/123</td>
+                        <td>404</td>
+                        <td>contract not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/contract/123</td>
+                        <td>204</td>
+                        <td>contract deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/contract/123</td>
+                        <td>404</td>
+                        <td>contract not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /contract/[contractId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>contract entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the contract</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the contract</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Contracts</h4>
+            <pre><code>GET /contract
 
-        <h3>GET /contracts/{id}</h3>
-        <p>Retrieves a specific contract by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contracts/456
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 456,
-    "number": "CONT-2023-001",
-    "name": "Annual Maintenance Agreement",
-    "description": "Comprehensive maintenance coverage for all HVAC systems at main office location",
-    "companyId": 123,
-    "locationIds": [201, 202],
-    "type": "Maintenance",
-    "status": "Active",
-    "startDate": "2023-01-01",
-    "endDate": "2023-12-31",
-    "term": 12,
-    "autoRenew": true,
-    "renewalTerm": 12,
-    "cancellationNoticeDays": 30,
-    "totalValue": 12000.00,
-    "recurringAmount": 1000.00,
-    "billingFrequency": "Monthly",
-    "nextBillingDate": "2023-08-01",
-    "primaryContactId": 301,
-    "salesRepId": 201,
-    "accountManagerId": 202,
-    "notificationDays": 60,
-    "contractDocumentUrl": "https://documents.example.com/contracts/CONT-2023-001.pdf",
-    "signedDate": "2022-12-15",
-    "notes": "Customer has requested priority response for all service calls.",
-    "assetIds": [501, 502, 503, 504],
-    "customFields": {
-        "contractType": "Premium",
-        "discountPercentage": 10,
-        "specialTerms": "24/7 emergency response"
-    },
-    "tags": ["HVAC", "Premium", "Monthly Billing"],
-    "createdDate": "2022-11-30T14:30:00Z",
-    "createdBy": 201,
-    "lastModifiedDate": "2022-12-15T10:15:00Z",
-    "lastModifiedBy": 202,
-    "rules": [
-        {
-            "id": 701,
-            "contractId": 456,
-            "type": "ServiceFrequency",
-            "name": "Quarterly HVAC Inspection",
-            "description": "Comprehensive inspection and maintenance of all HVAC systems",
-            // Other rule properties...
-        },
-        {
-            "id": 702,
-            "contractId": 456,
-            "type": "ResponseTime",
-            "name": "Emergency Response",
-            "description": "Maximum 4-hour response time for emergency calls",
-            // Other rule properties...
-        }
-        // Additional rules...
-    ],
-    "serviceRecurrences": [
-        {
-            "id": 601,
-            "contractId": 456,
-            "name": "Quarterly HVAC Maintenance",
-            "frequency": "Quarterly",
-            // Other service recurrence properties...
-        }
-        // Additional service recurrences...
-    ]
-}</code></pre>
-
-        <h3>POST /contracts</h3>
-        <p>Creates a new contract.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Fire Safety System Maintenance",
-    "description": "Annual maintenance and inspection of all fire safety systems",
-    "companyId": 123,
-    "locationIds": [203],
-    "type": "Maintenance",
-    "status": "Draft",
-    "startDate": "2023-09-01",
-    "endDate": "2024-08-31",
-    "term": 12,
-    "autoRenew": true,
-    "cancellationNoticeDays": 60,
-    "totalValue": 6000.00,
-    "recurringAmount": 500.00,
-    "billingFrequency": "Monthly",
-    "primaryContactId": 302,
-    "salesRepId": 201,
-    "assetIds": [601, 602, 603],
-    "tags": ["Fire Safety", "Annual Inspection"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created contract object (HTTP 201 Created).</p>
-
-        <h3>PUT /contracts/{id}</h3>
-        <p>Updates an existing contract.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Fire Safety System Maintenance - Premium",
-    "description": "Comprehensive annual maintenance and inspection of all fire safety systems with priority service",
-    "status": "Active",
-    "recurringAmount": 600.00,
-    "accountManagerId": 203,
-    "notes": "Customer upgraded to premium service level with 24/7 emergency response"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated contract object.</p>
-
-        <h3>DELETE /contracts/{id}</h3>
-        <p>Deletes a contract. This may be disallowed for active contracts or contracts with associated records.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /contracts/{id}/rules</h3>
-        <p>Retrieves all contract rules associated with a specific contract.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contracts/456/rules
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="contractrule.html">Contract Rules</a> for this contract.</p>
-
-        <h3>GET /contracts/{id}/servicerecurrences</h3>
-        <p>Retrieves all service recurrences associated with a specific contract.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contracts/456/servicerecurrences
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="servicerecurrence.html">Service Recurrences</a> for this contract.</p>
-
-        <h3>GET /contracts/{id}/assets</h3>
-        <p>Retrieves all assets covered by a specific contract.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contracts/456/assets
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="asset.html">Assets</a> covered by this contract.</p>
-
-        <h3>POST /contracts/{id}/renew</h3>
-        <p>Renews an existing contract, creating a new contract term.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "renewalStartDate": "2024-01-01",
-    "renewalEndDate": "2024-12-31",
-    "adjustments": {
-        "recurringAmount": 1050.00,
-        "notes": "5% price increase from previous term"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "contracts": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/contract/123",
+                "name": "Example Contract"
+            }
+        ]
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the renewed contract object.</p>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Contract</h4>
+            <pre><code>GET /contract/123
 
-        <h3>POST /contracts/{id}/terminate</h3>
-        <p>Terminates an active contract before its end date.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "terminationDate": "2023-10-31",
-    "terminationReason": "Customer relocated to a region we don't service",
-    "earlyTerminationFee": 2000.00,
-    "waiveTerminationFee": false,
-    "notes": "Approved by regional manager"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated contract object with terminated status.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/contract/123",
+        "name": "Example Contract"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

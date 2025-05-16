@@ -167,190 +167,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Clock In/Out management...</p>
 
-        <h3>GET /clocks</h3>
-        <p>Retrieves a list of clock entries. Typically filtered by user, date range, or job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/clocks?userId=456&startDate=2023-08-01&endDate=2023-08-15
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 123456,
-            "userId": 456,
-            "type": "In",
-            "timestamp": "2023-08-01T08:02:31Z",
-            "jobId": 789,
-            "taskId": null,
-            "serviceItemId": null,
-            "locationId": 101,
-            "gpsLatitude": 35.9606,
-            "gpsLongitude": -78.5604,
-            "gpsAccuracy": 10.5,
-            "deviceId": "SM-G998U-456789",
-            "ipAddress": "192.168.1.5",
-            "notes": "Starting job installation",
-            "isEdited": false,
-            "editNotes": null,
-            "editedBy": null,
-            "editedDate": null,
-            "createdDate": "2023-08-01T08:02:31Z"
-        },
-        {
-            "id": 123457,
-            "userId": 456,
-            "type": "Out",
-            "timestamp": "2023-08-01T12:03:45Z",
-            "jobId": 789,
-            "taskId": null,
-            "serviceItemId": null,
-            "locationId": 101,
-            "gpsLatitude": 35.9607,
-            "gpsLongitude": -78.5602,
-            "gpsAccuracy": 8.2,
-            "deviceId": "SM-G998U-456789",
-            "ipAddress": "192.168.1.5",
-            "notes": "Lunch break",
-            "isEdited": false,
-            "editNotes": null,
-            "editedBy": null,
-            "editedDate": null,
-            "createdDate": "2023-08-01T12:03:45Z"
-        },
-        // Additional clock entries...
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-clock" class="resource-section">
+            <h3>Clock In/Out</h3>
+            <p>The clock resource is used to manage Clock In/Out data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /clock</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/clock</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/clock/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/clock/123</td>
+                        <td>404</td>
+                        <td>clock not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/clock</td>
+                        <td>200</td>
+                        <td>clock created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/clock</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/clock/123</td>
+                        <td>200</td>
+                        <td>clock updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/clock/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/clock/123</td>
+                        <td>404</td>
+                        <td>clock not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/clock/123</td>
+                        <td>204</td>
+                        <td>clock deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/clock/123</td>
+                        <td>404</td>
+                        <td>clock not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /clock/[clockId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>clock entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the clock</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the clock</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Clock In/Outs</h4>
+            <pre><code>GET /clock
 
-        <h3>GET /clocks/{id}</h3>
-        <p>Retrieves a specific clock entry by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/clocks/123456
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 123456,
-    "userId": 456,
-    "type": "In",
-    "timestamp": "2023-08-01T08:02:31Z",
-    "jobId": 789,
-    "taskId": null,
-    "serviceItemId": null,
-    "locationId": 101,
-    "gpsLatitude": 35.9606,
-    "gpsLongitude": -78.5604,
-    "gpsAccuracy": 10.5,
-    "deviceId": "SM-G998U-456789",
-    "ipAddress": "192.168.1.5",
-    "notes": "Starting job installation",
-    "isEdited": false,
-    "editNotes": null,
-    "editedBy": null,
-    "editedDate": null,
-    "createdDate": "2023-08-01T08:02:31Z"
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "clocks": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/clock/123",
+                "name": "Example Clock In/Out"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Clock In/Out</h4>
+            <pre><code>GET /clock/123
 
-        <h3>POST /clocks</h3>
-        <p>Creates a new clock entry (clock in or out).</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "userId": 456,
-    "type": "In",
-    "timestamp": "2023-08-02T08:00:00Z",
-    "jobId": 789,
-    "locationId": 101,
-    "gpsLatitude": 35.9606,
-    "gpsLongitude": -78.5604,
-    "gpsAccuracy": 9.8,
-    "deviceId": "SM-G998U-456789",
-    "notes": "Starting day 2 of installation"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created clock entry object (HTTP 201 Created).</p>
-
-        <h3>PUT /clocks/{id}</h3>
-        <p>Updates an existing clock entry. Typically used by administrators to correct errors.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "timestamp": "2023-08-02T08:05:00Z",
-    "editNotes": "Correcting timestamp - employee forgot to clock in at start of shift"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated clock entry object, with isEdited set to true and editedBy/editedDate populated.</p>
-
-        <h3>DELETE /clocks/{id}</h3>
-        <p>Deletes a clock entry. This may be restricted based on permissions and timecard status.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /clocks/current</h3>
-        <p>Retrieves the current clock status for a user.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/clocks/current?userId=456
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "userId": 456,
-    "status": "ClockedIn",
-    "lastClockInTime": "2023-08-02T08:00:00Z",
-    "lastClockInId": 123460,
-    "currentJobId": 789,
-    "currentLocationId": 101,
-    "elapsedTime": "PT2H15M", // ISO 8601 duration format
-    "elapsedTimeSeconds": 8100
-}</code></pre>
-
-        <h3>GET /clocks/summary</h3>
-        <p>Retrieves a summary of clock time for a user within a date range.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/clocks/summary?userId=456&startDate=2023-08-01&endDate=2023-08-15
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "userId": 456,
-    "startDate": "2023-08-01",
-    "endDate": "2023-08-15",
-    "totalHours": 76.5,
-    "regularHours": 72.0,
-    "overtimeHours": 4.5,
-    "dailySummaries": [
-        {
-            "date": "2023-08-01",
-            "totalHours": 7.85,
-            "entries": [
-                {
-                    "clockInId": 123456,
-                    "clockOutId": 123457,
-                    "startTime": "2023-08-01T08:02:31Z",
-                    "endTime": "2023-08-01T12:03:45Z",
-                    "duration": "PT4H1M14S",
-                    "jobId": 789,
-                    "locationId": 101
-                },
-                // Additional clock pairs for the day...
-            ]
-        },
-        // Additional daily summaries...
-    ],
-    "jobSummaries": [
-        {
-            "jobId": 789,
-            "jobName": "Main Office Renovation",
-            "totalHours": 42.25
-        },
-        {
-            "jobId": 790,
-            "jobName": "Branch Office Setup",
-            "totalHours": 34.25
-        }
-        // Additional job summaries...
-    ]
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/clock/123",
+        "name": "Example Clock In/Out"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

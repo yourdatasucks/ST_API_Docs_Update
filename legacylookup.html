@@ -127,289 +127,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Legacy Lookup management...</p>
 
-        <h3>GET /legacy-lookups</h3>
-        <p>Retrieves a list of legacy lookup records. Supports filtering by legacy system, entity type, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/legacy-lookups?legacySystem=OldERP&entityType=Customer
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 5001,
-            "legacySystem": "OldERP",
-            "legacyId": "CUST-001",
-            "entityType": "Customer",
-            "entityId": 1001,
-            "migrationBatchId": "BATCH-2023-07",
-            "migrationDate": "2023-07-01T12:00:00Z",
-            "createdDate": "2023-07-01T12:05:22Z"
-        },
-        {
-            "id": 5002,
-            "legacySystem": "OldERP",
-            "legacyId": "CUST-002",
-            "entityType": "Customer",
-            "entityId": 1002,
-            "migrationBatchId": "BATCH-2023-07",
-            "migrationDate": "2023-07-01T12:00:00Z",
-            "createdDate": "2023-07-01T12:05:23Z"
-        },
-        {
-            "id": 5003,
-            "legacySystem": "OldERP",
-            "legacyId": "CUST-003",
-            "entityType": "Customer",
-            "entityId": 1003,
-            "migrationBatchId": "BATCH-2023-07",
-            "migrationDate": "2023-07-01T12:00:00Z",
-            "createdDate": "2023-07-01T12:05:25Z"
-        }
-        // Additional legacy lookup records...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-legacylookup" class="resource-section">
+            <h3>Legacy Lookup</h3>
+            <p>The legacylookup resource is used to manage Legacy Lookup data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /legacylookup</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/legacylookup</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/legacylookup/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/legacylookup/123</td>
+                        <td>404</td>
+                        <td>legacylookup not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/legacylookup</td>
+                        <td>200</td>
+                        <td>legacylookup created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/legacylookup</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/legacylookup/123</td>
+                        <td>200</td>
+                        <td>legacylookup updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/legacylookup/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/legacylookup/123</td>
+                        <td>404</td>
+                        <td>legacylookup not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/legacylookup/123</td>
+                        <td>204</td>
+                        <td>legacylookup deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/legacylookup/123</td>
+                        <td>404</td>
+                        <td>legacylookup not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /legacylookup/[legacylookupId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>legacylookup entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the legacylookup</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the legacylookup</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Legacy Lookups</h4>
+            <pre><code>GET /legacylookup
 
-        <h3>GET /legacy-lookups/{id}</h3>
-        <p>Retrieves a specific legacy lookup record by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/legacy-lookups/5001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 5001,
-    "legacySystem": "OldERP",
-    "legacyId": "CUST-001",
-    "entityType": "Customer",
-    "entityId": 1001,
-    "additionalData": {
-        "legacyCustomerSince": "2010-05-15",
-        "legacyRevenue": 250000,
-        "legacyCategory": "A"
-    },
-    "createdBy": 101,
-    "createdDate": "2023-07-01T12:05:22Z",
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2023-07-01T12:05:22Z",
-    "migrationBatchId": "BATCH-2023-07",
-    "migrationDate": "2023-07-01T12:00:00Z",
-    "notes": "Customer data migrated from OldERP system."
-}</code></pre>
-
-        <h3>POST /legacy-lookups</h3>
-        <p>Creates a new legacy lookup record.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "legacySystem": "OldERP",
-    "legacyId": "LOC-005",
-    "entityType": "Location",
-    "entityId": 2005,
-    "additionalData": {
-        "legacyAddress": "500 Old Main St, Suite 400",
-        "legacyContactName": "John Smith",
-        "legacyZone": "East"
-    },
-    "migrationBatchId": "BATCH-2023-07",
-    "migrationDate": "2023-07-01T12:00:00Z",
-    "notes": "Location data migrated from OldERP system."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created legacy lookup record (HTTP 201 Created).</p>
-
-        <h3>PUT /legacy-lookups/{id}</h3>
-        <p>Updates an existing legacy lookup record.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "entityId": 2006,
-    "additionalData": {
-        "legacyAddress": "500 Old Main St, Suite 400",
-        "legacyContactName": "Jane Smith",
-        "legacyZone": "East"
-    },
-    "notes": "Location data migrated from OldERP system. Updated entityId after location merge."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated legacy lookup record.</p>
-
-        <h3>DELETE /legacy-lookups/{id}</h3>
-        <p>Deletes a legacy lookup record.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /legacy-lookups/find</h3>
-        <p>Finds a ServiceTrade entity using a legacy system identifier.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/legacy-lookups/find?legacySystem=OldERP&legacyId=JOB-10045&entityType=Job
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 5150,
-    "legacySystem": "OldERP",
-    "legacyId": "JOB-10045",
-    "entityType": "Job",
-    "entityId": 3025,
-    "migrationBatchId": "BATCH-2023-07",
-    "migrationDate": "2023-07-01T12:00:00Z",
-    "entityDetails": {
-        "id": 3025,
-        "number": "JOB-2023-0325",
-        "customerId": 1001,
-        "locationId": 2001,
-        "type": "Inspection",
-        "status": "Completed",
-        "createdDate": "2023-07-01T12:10:45Z"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "legacylookups": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/legacylookup/123",
+                "name": "Example Legacy Lookup"
+            }
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Legacy Lookup</h4>
+            <pre><code>GET /legacylookup/123
 
-        <h3>POST /legacy-lookups/batch</h3>
-        <p>Creates multiple legacy lookup records in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "legacySystem": "OldERP",
-    "migrationBatchId": "BATCH-2023-07",
-    "migrationDate": "2023-07-01T12:00:00Z",
-    "lookups": [
-        {
-            "legacyId": "ASSET-1001",
-            "entityType": "Asset",
-            "entityId": 4001,
-            "additionalData": {
-                "legacyInstallDate": "2018-03-12"
-            }
-        },
-        {
-            "legacyId": "ASSET-1002",
-            "entityType": "Asset",
-            "entityId": 4002,
-            "additionalData": {
-                "legacyInstallDate": "2019-05-22"
-            }
-        },
-        {
-            "legacyId": "ASSET-1003",
-            "entityType": "Asset",
-            "entityId": 4003,
-            "additionalData": {
-                "legacyInstallDate": "2020-11-05"
-            }
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created legacy lookup records.</p>
-
-        <h3>GET /legacy-lookups/statistics</h3>
-        <p>Retrieves statistical information about legacy lookup records.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/legacy-lookups/statistics?legacySystem=OldERP
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "totalRecords": 3526,
-    "byEntityType": {
-        "Customer": 125,
-        "Location": 187,
-        "Asset": 1458,
-        "Job": 1756
-    },
-    "byMigrationBatch": {
-        "BATCH-2023-07": 3526
-    },
-    "createdByDate": {
-        "2023-07-01": 3526
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/legacylookup/123",
+        "name": "Example Legacy Lookup"
     }
-}</code></pre>
-
-        <h3>GET /entities/{entityType}/{entityId}/legacy-lookups</h3>
-        <p>Retrieves all legacy lookup records for a specific ServiceTrade entity.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entities/Customer/1001/legacy-lookups
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 5001,
-            "legacySystem": "OldERP",
-            "legacyId": "CUST-001",
-            "entityType": "Customer",
-            "entityId": 1001,
-            "migrationBatchId": "BATCH-2023-07",
-            "migrationDate": "2023-07-01T12:00:00Z",
-            "createdDate": "2023-07-01T12:05:22Z"
-        },
-        {
-            "id": 5301,
-            "legacySystem": "OldCRM",
-            "legacyId": "C-45678",
-            "entityType": "Customer",
-            "entityId": 1001,
-            "migrationBatchId": "BATCH-2023-08",
-            "migrationDate": "2023-08-15T10:00:00Z",
-            "createdDate": "2023-08-15T10:15:42Z"
-        }
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-
-        <h3>GET /legacy-systems</h3>
-        <p>Retrieves a list of all legacy systems that have lookup records.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/legacy-systems
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "name": "OldERP",
-            "recordCount": 3526,
-            "firstMigrationDate": "2023-07-01T12:00:00Z",
-            "lastMigrationDate": "2023-07-01T12:00:00Z"
-        },
-        {
-            "name": "OldCRM",
-            "recordCount": 425,
-            "firstMigrationDate": "2023-08-15T10:00:00Z",
-            "lastMigrationDate": "2023-08-15T10:00:00Z"
-        }
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-
-        <h3>GET /migration-batches</h3>
-        <p>Retrieves a list of all migration batches that have lookup records.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/migration-batches
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": "BATCH-2023-07",
-            "recordCount": 3526,
-            "migrationDate": "2023-07-01T12:00:00Z",
-            "legacySystems": ["OldERP"]
-        },
-        {
-            "id": "BATCH-2023-08",
-            "recordCount": 425,
-            "migrationDate": "2023-08-15T10:00:00Z",
-            "legacySystems": ["OldCRM"]
-        }
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

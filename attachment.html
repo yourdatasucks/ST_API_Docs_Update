@@ -105,75 +105,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Attachment management...</p>
 
-        <h3>GET /attachments?RelatedEntityType={type}&RelatedEntityId={id}</h3>
-        <p>Retrieves a list of attachments for a specific related entity.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/attachments?RelatedEntityType=Deal&RelatedEntityId=12345
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "Id": 301,
-            "FileName": "Contract_Proposal.pdf",
-            "FileSize": 102400, // 100KB
-            "MimeType": "application/pdf",
-            "Url": "https://api.example.com/files/attachments/301/download",
-            "RelatedEntityType": "Deal",
-            "RelatedEntityId": 12345,
-            "UploadDate": "2023-02-20T11:00:00Z"
-            // ... other properties
-        }
-    ],
-    // ... pagination info
-}</code></pre>
+        <section id="resource-attachment" class="resource-section">
+            <h3>Attachment</h3>
+            <p>The attachment resource is used to manage Attachment data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /attachment</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/attachment</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/attachment/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/attachment/123</td>
+                        <td>404</td>
+                        <td>attachment not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/attachment</td>
+                        <td>200</td>
+                        <td>attachment created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/attachment</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/attachment/123</td>
+                        <td>200</td>
+                        <td>attachment updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/attachment/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/attachment/123</td>
+                        <td>404</td>
+                        <td>attachment not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/attachment/123</td>
+                        <td>204</td>
+                        <td>attachment deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/attachment/123</td>
+                        <td>404</td>
+                        <td>attachment not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /attachment/[attachmentId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>attachment entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the attachment</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the attachment</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Attachments</h4>
+            <pre><code>GET /attachment
 
-        <h3>POST /attachments (multipart/form-data)</h3>
-        <p>Uploads a new attachment and associates it with an entity. The request must be
-            <code>multipart/form-data</code>.
-        </p>
-        <h4>Request Body Parameters (form data)</h4>
-        <ul>
-            <li><code>file</code>: The file to upload.</li>
-            <li><code>RelatedEntityType</code>: (string) The type of entity to associate with.</li>
-            <li><code>RelatedEntityId</code>: (integer) The ID of the entity instance.</li>
-            <li><code>Description</code>: (string, optional) Description of the attachment.</li>
-        </ul>
-        <h4>Example (Conceptual - client library would handle multipart)</h4>
-        <pre><code class="language-http">POST /v1.0/attachments
-Authorization: Bearer {access_token}
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "attachments": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/attachment/123",
+                "name": "Example Attachment"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Attachment</h4>
+            <pre><code>GET /attachment/123
 
-------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"; filename="Site_Photos.zip"
-Content-Type: application/zip
-
-(binary file data)
-------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="RelatedEntityType"
-
-Project
-------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="RelatedEntityId"
-
-789
-------WebKitFormBoundary7MA4YWxkTrZu0gW--</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created attachment object (HTTP 201 Created).</p>
-
-        <h3>GET /attachments/{id}</h3>
-        <p>Retrieves metadata for a specific attachment by its ID.</p>
-
-        <h3>GET /attachments/{id}/download</h3>
-        <p>Provides a direct download link or streams the file content for the specified attachment. (This endpoint
-            might vary by API design).</p>
-
-        <h3>DELETE /attachments/{id}</h3>
-        <p>Deletes an attachment.</p>
-
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/attachment/123",
+        "name": "Example Attachment"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

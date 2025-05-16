@@ -312,220 +312,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Entity Filter management...</p>
 
-        <h3>GET /entityfilters</h3>
-        <p>Retrieves a list of entity filters. Can be filtered by entityType, ownerType, ownerId, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entityfilters?entityType=Job&ownerType=User&ownerId=123
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 456,
-            "name": "Open Jobs This Month",
-            "description": "All open jobs created this month",
-            "entityType": "Job",
-            "criteria": {
-                "operator": "and",
-                "conditions": [
-                    {
-                        "field": "status",
-                        "operator": "in",
-                        "value": ["Open", "In Progress"]
-                    },
-                    {
-                        "field": "createdDate",
-                        "operator": "greaterThanOrEqual",
-                        "value": "2023-08-01"
-                    }
-                ]
-            },
-            "isGlobal": false,
-            "isDefault": false,
-            "isSystemDefined": false,
-            "ownerType": "User",
-            "ownerId": 123,
-            "sortField": "createdDate",
-            "sortDirection": "desc",
-            "itemsPerPage": 25,
-            "displayColumns": ["id", "title", "customer", "location", "status", "createdDate"],
-            "usageCount": 15,
-            "lastUsedDate": "2023-08-15T13:45:00Z",
-            "createdDate": "2023-08-01T09:30:00Z",
-            "createdBy": 123,
-            "lastModifiedDate": "2023-08-10T16:20:00Z",
-            "lastModifiedBy": 123
-        },
-        // Additional entity filters...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-entityfilter" class="resource-section">
+            <h3>Entity Filter</h3>
+            <p>The entityfilter resource is used to manage Entity Filter data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /entityfilter</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/entityfilter</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/entityfilter/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/entityfilter/123</td>
+                        <td>404</td>
+                        <td>entityfilter not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/entityfilter</td>
+                        <td>200</td>
+                        <td>entityfilter created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/entityfilter</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/entityfilter/123</td>
+                        <td>200</td>
+                        <td>entityfilter updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/entityfilter/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/entityfilter/123</td>
+                        <td>404</td>
+                        <td>entityfilter not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/entityfilter/123</td>
+                        <td>204</td>
+                        <td>entityfilter deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/entityfilter/123</td>
+                        <td>404</td>
+                        <td>entityfilter not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /entityfilter/[entityfilterId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>entityfilter entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the entityfilter</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the entityfilter</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Entity Filters</h4>
+            <pre><code>GET /entityfilter
 
-        <h3>GET /entityfilters/{id}</h3>
-        <p>Retrieves a specific entity filter by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entityfilters/456
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the entity filter object with the specified ID.</p>
-
-        <h3>GET /entityfilters/defaults</h3>
-        <p>Retrieves the default entity filters for all entity types.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entityfilters/defaults
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of default entity filter objects.</p>
-
-        <h3>GET /entityfilters/defaults/{entityType}</h3>
-        <p>Retrieves the default entity filter for a specific entity type.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entityfilters/defaults/Job
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the default entity filter object for the specified entity type.</p>
-
-        <h3>POST /entityfilters</h3>
-        <p>Creates a new entity filter.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "High Value Customers",
-    "description": "Customers with lifetime value over $100,000",
-    "entityType": "Customer",
-    "criteria": {
-        "operator": "and",
-        "conditions": [
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "entityfilters": [
             {
-                "field": "lifetime.revenue",
-                "operator": "greaterThan",
-                "value": 100000
-            },
-            {
-                "field": "status",
-                "operator": "equals",
-                "value": "Active"
-            }
-        ]
-    },
-    "isGlobal": true,
-    "ownerType": "User",
-    "ownerId": 123,
-    "sortField": "lifetime.revenue",
-    "sortDirection": "desc",
-    "displayColumns": ["id", "name", "industry", "lifetime.revenue", "lifetime.jobCount"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created entity filter object (HTTP 201 Created).</p>
-
-        <h3>PUT /entityfilters/{id}</h3>
-        <p>Updates an existing entity filter.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Very High Value Customers",
-    "criteria": {
-        "operator": "and",
-        "conditions": [
-            {
-                "field": "lifetime.revenue",
-                "operator": "greaterThan",
-                "value": 250000
-            },
-            {
-                "field": "status",
-                "operator": "equals",
-                "value": "Active"
-            }
-        ]
-    },
-    "isGlobal": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated entity filter object.</p>
-
-        <h3>DELETE /entityfilters/{id}</h3>
-        <p>Deletes an entity filter.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /entityfilters/{id}/setdefault</h3>
-        <p>Sets an entity filter as the default for its entity type.</p>
-        <h4>Response</h4>
-        <p>Returns the updated entity filter object with isDefault set to true.</p>
-
-        <h3>POST /entityfilters/{id}/clone</h3>
-        <p>Creates a copy of an existing entity filter.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "High Value Industrial Customers",
-    "ownerType": "User",
-    "ownerId": 124
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created entity filter object based on the cloned filter.</p>
-
-        <h3>POST /entityfilters/{id}/apply</h3>
-        <p>Applies an entity filter and returns the matching entities.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "page": 1,
-    "itemsPerPage": 25,
-    "sortField": "name",
-    "sortDirection": "asc",
-    "additionalCriteria": {
-        "operator": "and",
-        "conditions": [
-            {
-                "field": "industry",
-                "operator": "equals",
-                "value": "Healthcare"
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/entityfilter/123",
+                "name": "Example Entity Filter"
             }
         ]
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns entities matching the filter criteria, with pagination information.</p>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Entity Filter</h4>
+            <pre><code>GET /entityfilter/123
 
-        <h3>GET /entityfilters/system/{entityType}</h3>
-        <p>Retrieves system-defined filters for a specific entity type.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entityfilters/system/Job
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of system-defined entity filter objects for the specified entity type.</p>
-
-        <h3>GET /entityfilters/metadata/{entityType}</h3>
-        <p>Retrieves metadata about filterable fields for a specific entity type.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entityfilters/metadata/Job
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "entityType": "Job",
-    "fields": [
-        {
-            "name": "id",
-            "label": "Job ID",
-            "type": "integer",
-            "filterable": true,
-            "sortable": true,
-            "operators": ["equals", "notEquals", "in", "notIn", "greaterThan", "lessThan", "isNull", "isNotNull"]
-        },
-        {
-            "name": "title",
-            "label": "Job Title",
-            "type": "string",
-            "filterable": true,
-            "sortable": true,
-            "operators": ["equals", "notEquals", "contains", "notContains", "startsWith", "endsWith", "isNull", "isNotNull", "isEmpty", "isNotEmpty"]
-        },
-        // Additional fields...
-    ]
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/entityfilter/123",
+        "name": "Example Entity Filter"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

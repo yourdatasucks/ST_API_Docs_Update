@@ -280,212 +280,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Contract Rule management...</p>
 
-        <h3>GET /contractrules</h3>
-        <p>Retrieves a list of contract rules. Often filtered by contractId.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contractrules?contractId=456
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 701,
-            "contractId": 456,
-            "type": "ServiceFrequency",
-            "name": "Quarterly HVAC Inspection",
-            "description": "Comprehensive inspection and maintenance of all HVAC systems",
-            "isActive": true,
-            "startDate": null,
-            "endDate": null,
-            "serviceTypeIds": [101, 102],
-            "assetIds": [501, 502, 503, 504],
-            "locationIds": [201, 202],
-            "priority": "High",
-            "parameters": {
-                "frequency": "Quarterly",
-                "interval": 1,
-                "minimumVisits": 4,
-                "preferredDays": ["Tuesday", "Wednesday", "Thursday"],
-                "preferredTimeRange": "Morning"
-            },
-            "notes": "Customer requests service team to call 30 minutes before arrival.",
-            "createdDate": "2022-11-30T14:35:00Z",
-            "createdBy": 201,
-            "lastModifiedDate": "2022-11-30T14:35:00Z",
-            "lastModifiedBy": 201
-        },
-        {
-            "id": 702,
-            "contractId": 456,
-            "type": "ResponseTime",
-            "name": "Emergency Response",
-            "description": "Maximum 4-hour response time for emergency calls",
-            "isActive": true,
-            "startDate": null,
-            "endDate": null,
-            "serviceTypeIds": [101, 102, 103],
-            "assetIds": [501, 502, 503, 504],
-            "locationIds": [201, 202],
-            "priority": "Critical",
-            "parameters": {
-                "responseTimeHours": 4,
-                "severity": "Emergency",
-                "businessHoursOnly": false,
-                "penalty": 200.00
-            },
-            "notes": "If response time exceeds 4 hours, customer receives $200 credit on next invoice.",
-            "createdDate": "2022-11-30T14:40:00Z",
-            "createdBy": 201,
-            "lastModifiedDate": "2022-11-30T14:40:00Z",
-            "lastModifiedBy": 201
-        },
-        {
-            "id": 703,
-            "contractId": 456,
-            "type": "CoverageHours",
-            "name": "Standard Business Hours Coverage",
-            "description": "Service covered during normal business hours Monday-Friday",
-            "isActive": true,
-            "startDate": null,
-            "endDate": null,
-            "serviceTypeIds": [101, 102, 103],
-            "assetIds": [501, 502, 503, 504],
-            "locationIds": [201, 202],
-            "priority": "Normal",
-            "parameters": {
-                "coverage": "8x5",
-                "businessHoursStart": "08:00",
-                "businessHoursEnd": "17:00",
-                "businessDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                "holidaysIncluded": false,
-                "afterHoursRate": 150.00
-            },
-            "notes": "After-hours service available at $150/hour premium rate.",
-            "createdDate": "2022-11-30T14:45:00Z",
-            "createdBy": 201,
-            "lastModifiedDate": "2022-11-30T14:45:00Z",
-            "lastModifiedBy": 201
-        }
-        // Additional contract rules...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-contractrule" class="resource-section">
+            <h3>Contract Rule</h3>
+            <p>The contractrule resource is used to manage Contract Rule data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /contractrule</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contractrule</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contractrule/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contractrule/123</td>
+                        <td>404</td>
+                        <td>contractrule not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/contractrule</td>
+                        <td>200</td>
+                        <td>contractrule created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/contractrule</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contractrule/123</td>
+                        <td>200</td>
+                        <td>contractrule updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contractrule/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contractrule/123</td>
+                        <td>404</td>
+                        <td>contractrule not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/contractrule/123</td>
+                        <td>204</td>
+                        <td>contractrule deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/contractrule/123</td>
+                        <td>404</td>
+                        <td>contractrule not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /contractrule/[contractruleId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>contractrule entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the contractrule</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the contractrule</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Contract Rules</h4>
+            <pre><code>GET /contractrule
 
-        <h3>GET /contractrules/{id}</h3>
-        <p>Retrieves a specific contract rule by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contractrules/701
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 701,
-    "contractId": 456,
-    "type": "ServiceFrequency",
-    "name": "Quarterly HVAC Inspection",
-    "description": "Comprehensive inspection and maintenance of all HVAC systems",
-    "isActive": true,
-    "startDate": null,
-    "endDate": null,
-    "serviceTypeIds": [101, 102],
-    "assetIds": [501, 502, 503, 504],
-    "locationIds": [201, 202],
-    "priority": "High",
-    "parameters": {
-        "frequency": "Quarterly",
-        "interval": 1,
-        "minimumVisits": 4,
-        "preferredDays": ["Tuesday", "Wednesday", "Thursday"],
-        "preferredTimeRange": "Morning"
-    },
-    "notes": "Customer requests service team to call 30 minutes before arrival.",
-    "createdDate": "2022-11-30T14:35:00Z",
-    "createdBy": 201,
-    "lastModifiedDate": "2022-11-30T14:35:00Z",
-    "lastModifiedBy": 201
-}</code></pre>
-
-        <h3>POST /contractrules</h3>
-        <p>Creates a new contract rule.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "contractId": 456,
-    "type": "ResponseTime",
-    "name": "Standard Response Time",
-    "description": "Maximum 8-hour response time for standard service calls",
-    "isActive": true,
-    "serviceTypeIds": [101, 102, 103],
-    "assetIds": [501, 502, 503, 504],
-    "priority": "Normal",
-    "parameters": {
-        "responseTimeHours": 8,
-        "severity": "Standard",
-        "businessHoursOnly": true,
-        "penalty": 0
-    },
-    "notes": "Applies to non-emergency service calls during business hours"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created contract rule object (HTTP 201 Created).</p>
-
-        <h3>PUT /contractrules/{id}</h3>
-        <p>Updates an existing contract rule.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Standard Response Time - Business Hours",
-    "description": "Maximum 6-hour response time for standard service calls",
-    "parameters": {
-        "responseTimeHours": 6,
-        "businessHoursOnly": true
-    },
-    "notes": "Updated to provide faster response time during business hours"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated contract rule object.</p>
-
-        <h3>DELETE /contractrules/{id}</h3>
-        <p>Deletes a contract rule.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /contracts/{id}/rules</h3>
-        <p>Retrieves all rules for a specific contract. See <a href="contract.html">Contract</a> for details.</p>
-
-        <h3>GET /contractrules/{id}/compliance</h3>
-        <p>Retrieves compliance data for a specific contract rule.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contractrules/701/compliance?startDate=2023-01-01&endDate=2023-07-31
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "ruleId": 701,
-    "startDate": "2023-01-01",
-    "endDate": "2023-07-31",
-    "compliance": {
-        "requiredVisits": 2,
-        "completedVisits": 2,
-        "compliancePercentage": 100,
-        "status": "Compliant",
-        "visits": [
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "contractrules": [
             {
-                "jobId": 1001,
-                "date": "2023-01-15T09:30:00Z",
-                "status": "Completed",
-                "onTime": true
-            },
-            {
-                "jobId": 1045,
-                "date": "2023-04-12T10:15:00Z",
-                "status": "Completed",
-                "onTime": true
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/contractrule/123",
+                "name": "Example Contract Rule"
             }
         ]
     }
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
-</body>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Contract Rule</h4>
+            <pre><code>GET /contractrule/123
 
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/contractrule/123",
+        "name": "Example Contract Rule"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
+</body>
 </html>

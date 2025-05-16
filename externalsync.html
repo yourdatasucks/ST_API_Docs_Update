@@ -176,263 +176,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for ExternalSync management...</p>
 
-        <h3>GET /externalsyncs</h3>
-        <p>Retrieves a list of external sync operations. Supports filtering by externalSystemId, entityType, status,
-            date ranges, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/externalsyncs?externalSystemId=123&entityType=Customer&status=Completed
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 456,
-            "externalSystemId": 123,
-            "syncType": "Incremental",
-            "entityType": "Customer",
-            "direction": "Import",
-            "status": "Completed",
-            "startDate": "2023-08-15T09:30:00Z",
-            "endDate": "2023-08-15T09:45:00Z",
-            "initiatedBy": 101,
-            "totalRecords": 250,
-            "successCount": 248,
-            "errorCount": 2,
-            "warningCount": 5,
-            "progressPercentage": 100,
-            "notes": "Regular scheduled customer import from QuickBooks",
-            "errorDetails": {
-                "failedRecords": [
-                    {
-                        "externalId": "CUST-789",
-                        "reason": "Missing required field: primaryContactId",
-                        "data": { "name": "ABC Corporation", "type": "Commercial" }
-                    },
-                    {
-                        "externalId": "CUST-790",
-                        "reason": "Duplicate customer identifier",
-                        "data": { "name": "XYZ Industries", "type": "Industrial" }
-                    }
-                ],
-                "warningRecords": [
-                    {
-                        "externalId": "CUST-456",
-                        "reason": "Address format may be incorrect",
-                        "data": { "address": "123 Main St,, Suite 100" }
-                    }
-                    // Additional warning records...
-                ]
-            },
-            "syncParameters": {
-                "modifiedSince": "2023-08-14T00:00:00Z",
-                "includeInactive": false,
-                "batchSize": 50
-            },
-            "lastCheckpointData": {
-                "lastSyncId": "QB-SYNC-20230815-093000",
-                "lastModifiedDate": "2023-08-15T09:45:00Z"
-            },
-            "createdDate": "2023-08-15T09:30:00Z",
-            "lastModifiedDate": "2023-08-15T09:45:00Z"
-        },
-        // Additional external syncs...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-externalsync" class="resource-section">
+            <h3>ExternalSync</h3>
+            <p>The externalsync resource is used to manage ExternalSync data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /externalsync</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/externalsync</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/externalsync/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/externalsync/123</td>
+                        <td>404</td>
+                        <td>externalsync not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/externalsync</td>
+                        <td>200</td>
+                        <td>externalsync created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/externalsync</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/externalsync/123</td>
+                        <td>200</td>
+                        <td>externalsync updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/externalsync/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/externalsync/123</td>
+                        <td>404</td>
+                        <td>externalsync not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/externalsync/123</td>
+                        <td>204</td>
+                        <td>externalsync deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/externalsync/123</td>
+                        <td>404</td>
+                        <td>externalsync not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /externalsync/[externalsyncId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>externalsync entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the externalsync</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the externalsync</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve ExternalSyncs</h4>
+            <pre><code>GET /externalsync
 
-        <h3>GET /externalsyncs/{id}</h3>
-        <p>Retrieves a specific external sync operation by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/externalsyncs/456
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the external sync operation with the specified ID.</p>
-
-        <h3>POST /externalsyncs</h3>
-        <p>Initiates a new external sync operation.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "externalSystemId": 123,
-    "syncType": "Manual",
-    "entityType": "Invoice",
-    "direction": "Export",
-    "notes": "Manual export of all unpaid invoices",
-    "syncParameters": {
-        "status": ["Sent", "Overdue"],
-        "dateRange": {
-            "start": "2023-01-01",
-            "end": "2023-08-15"
-        },
-        "includeLineItems": true
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "externalsyncs": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/externalsync/123",
+                "name": "Example ExternalSync"
+            }
+        ]
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the created external sync operation (HTTP 201 Created).</p>
+}
+</code></pre>
+            
+            <h4>Retrieve specific ExternalSync</h4>
+            <pre><code>GET /externalsync/123
 
-        <h3>PUT /externalsyncs/{id}</h3>
-        <p>Updates an existing external sync operation. Limited to certain fields depending on sync status.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "status": "Cancelled",
-    "notes": "Cancelled due to server maintenance"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated external sync operation.</p>
-
-        <h3>GET /externalsyncs/{id}/details</h3>
-        <p>Retrieves detailed information about a specific sync operation, including record-level details.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/externalsyncs/456/details
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns detailed information about the sync operation, including processed records.</p>
-
-        <h3>GET /externalsyncs/{id}/logs</h3>
-        <p>Retrieves logs associated with a specific sync operation.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/externalsyncs/456/logs
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "timestamp": "2023-08-15T09:30:00Z",
-            "level": "INFO",
-            "message": "Sync operation started for Customer import"
-        },
-        {
-            "timestamp": "2023-08-15T09:30:05Z",
-            "level": "INFO",
-            "message": "Retrieved 250 customer records from QuickBooks"
-        },
-        {
-            "timestamp": "2023-08-15T09:35:10Z",
-            "level": "WARNING",
-            "message": "Customer CUST-456 has potentially incorrect address format"
-        },
-        {
-            "timestamp": "2023-08-15T09:40:15Z",
-            "level": "ERROR",
-            "message": "Failed to import customer CUST-789: Missing required field"
-        },
-        {
-            "timestamp": "2023-08-15T09:45:00Z",
-            "level": "INFO",
-            "message": "Sync operation completed: 248 successful, 2 errors, 5 warnings"
-        }
-    ],
-    "totalResults": 5,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-
-        <h3>POST /externalsyncs/{id}/cancel</h3>
-        <p>Cancels an in-progress sync operation.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "reason": "System maintenance required",
-    "notifyUsers": [101, 102]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated external sync operation with cancelled status.</p>
-
-        <h3>POST /externalsyncs/{id}/retry</h3>
-        <p>Retries a failed sync operation.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "retryFailedOnly": true,
-    "updateParameters": {
-        "timeout": 600,
-        "batchSize": 25
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/externalsync/123",
+        "name": "Example ExternalSync"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created external sync operation for the retry attempt.</p>
-
-        <h3>GET /externalsyncs/summary</h3>
-        <p>Retrieves a summary of sync operations, optionally grouped by different criteria.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/externalsyncs/summary?groupBy=entityType&dateRange=last30days
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "totalSyncs": 568,
-    "successfulSyncs": 542,
-    "failedSyncs": 26,
-    "averageDuration": "00:12:34",
-    "byEntityType": {
-        "Customer": {
-            "total": 120,
-            "successful": 118,
-            "failed": 2,
-            "averageDuration": "00:15:22"
-        },
-        "Invoice": {
-            "total": 245,
-            "successful": 232,
-            "failed": 13,
-            "averageDuration": "00:08:45"
-        },
-        "Job": {
-            "total": 203,
-            "successful": 192,
-            "failed": 11,
-            "averageDuration": "00:14:10"
-        }
-    }
-}</code></pre>
-
-        <h3>GET /externalsystems/{id}/externalsyncs</h3>
-        <p>Retrieves all sync operations for a specific external system.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/externalsystems/123/externalsyncs?status=Completed
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of external sync operations for the specified external system.</p>
-
-        <h3>GET /externalsyncs/status/{jobId}</h3>
-        <p>Checks the status of a long-running sync operation by its job ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/externalsyncs/status/sync-job-789
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "jobId": "sync-job-789",
-    "status": "In Progress",
-    "progress": 65,
-    "startTime": "2023-08-15T14:30:00Z",
-    "currentOperation": "Importing Customers",
-    "recordsProcessed": 162,
-    "totalRecords": 250,
-    "estimatedTimeRemaining": "00:05:45"
-}</code></pre>
-
-        <h3>POST /externalsyncs/schedule</h3>
-        <p>Schedules a recurring sync operation.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "externalSystemId": 123,
-    "entityType": "Customer",
-    "direction": "Import",
-    "schedule": {
-        "frequency": "Daily",
-        "time": "03:00:00",
-        "timeZone": "America/New_York",
-        "daysOfWeek": [1, 2, 3, 4, 5],
-        "startDate": "2023-08-16"
-    },
-    "syncParameters": {
-        "modifiedSince": "lastSync",
-        "includeInactive": false
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the created schedule configuration.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

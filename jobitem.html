@@ -223,322 +223,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Job Item management...</p>
 
-        <h3>GET /jobs/{jobId}/items</h3>
-        <p>Retrieves all items for a specific job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345/items
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 7001,
-            "jobId": 12345,
-            "description": "Fire Alarm System Inspection",
-            "quantity": 1,
-            "unitPrice": 1500.00,
-            "unitCost": 750.00,
-            "extendedPrice": 1500.00,
-            "extendedCost": 750.00,
-            "margin": 50.0,
-            "taxable": true,
-            "itemType": "Service",
-            "sequenceNumber": 1,
-            "serviceItemId": 501,
-            "isInvoiced": false,
-            "invoicedQuantity": 0,
-            "remainingQuantity": 1,
-            "createdDate": "2023-07-10T14:35:22Z"
-        },
-        {
-            "id": 7002,
-            "jobId": 12345,
-            "description": "Fire Alarm Annual Sticker",
-            "quantity": 1,
-            "unitPrice": 25.00,
-            "unitCost": 5.00,
-            "extendedPrice": 25.00,
-            "extendedCost": 5.00,
-            "margin": 80.0,
-            "taxable": true,
-            "itemType": "Material",
-            "sequenceNumber": 2,
-            "isInvoiced": false,
-            "invoicedQuantity": 0,
-            "remainingQuantity": 1,
-            "createdDate": "2023-07-10T14:36:05Z"
-        }
-        // Additional job items...
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-jobitem" class="resource-section">
+            <h3>Job Item</h3>
+            <p>The jobitem resource is used to manage Job Item data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /jobitem</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/jobitem</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/jobitem/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/jobitem/123</td>
+                        <td>404</td>
+                        <td>jobitem not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/jobitem</td>
+                        <td>200</td>
+                        <td>jobitem created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/jobitem</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/jobitem/123</td>
+                        <td>200</td>
+                        <td>jobitem updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/jobitem/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/jobitem/123</td>
+                        <td>404</td>
+                        <td>jobitem not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/jobitem/123</td>
+                        <td>204</td>
+                        <td>jobitem deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/jobitem/123</td>
+                        <td>404</td>
+                        <td>jobitem not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /jobitem/[jobitemId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>jobitem entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the jobitem</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the jobitem</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Job Items</h4>
+            <pre><code>GET /jobitem
 
-        <h3>GET /jobitems/{id}</h3>
-        <p>Retrieves a specific job item by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobitems/7001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 7001,
-    "jobId": 12345,
-    "description": "Fire Alarm System Inspection",
-    "quantity": 1,
-    "unitPrice": 1500.00,
-    "unitCost": 750.00,
-    "extendedPrice": 1500.00,
-    "extendedCost": 750.00,
-    "margin": 50.0,
-    "taxable": true,
-    "taxRateId": 301,
-    "itemType": "Service",
-    "sequenceNumber": 1,
-    "serviceItemId": 501,
-    "notes": "Comprehensive NFPA 72 fire alarm inspection including all initiating and notification devices.",
-    "assetId": 3001,
-    "invoiceItemIds": [],
-    "isInvoiced": false,
-    "invoicedQuantity": 0,
-    "remainingQuantity": 1,
-    "createdBy": 101,
-    "createdDate": "2023-07-10T14:35:22Z",
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2023-07-10T14:35:22Z",
-    "customFields": {
-        "department": "Fire Alarm",
-        "serviceCode": "FA-INSP-ANN",
-        "billable": "true"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "jobitems": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/jobitem/123",
+                "name": "Example Job Item"
+            }
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Job Item</h4>
+            <pre><code>GET /jobitem/123
 
-        <h3>POST /jobs/{jobId}/items</h3>
-        <p>Creates a new job item for the specified job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "description": "Replacement of Faulty Smoke Detector",
-    "quantity": 1,
-    "unitPrice": 125.00,
-    "unitCost": 45.00,
-    "taxable": true,
-    "itemType": "Material",
-    "sequenceNumber": 3,
-    "serviceItemId": 502,
-    "notes": "Replaced faulty smoke detector in east hallway 3rd floor",
-    "assetId": 3010,
-    "customFields": {
-        "department": "Fire Alarm",
-        "serviceCode": "FA-REP-SD",
-        "partNumber": "SD-345-T"
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/jobitem/123",
+        "name": "Example Job Item"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created job item (HTTP 201 Created).</p>
-
-        <h3>PUT /jobitems/{id}</h3>
-        <p>Updates an existing job item.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "description": "Replacement of Faulty Smoke Detector - Addressable",
-    "quantity": 1,
-    "unitPrice": 150.00,
-    "unitCost": 65.00,
-    "taxable": true,
-    "notes": "Replaced faulty smoke detector in east hallway 3rd floor with addressable model",
-    "customFields": {
-        "department": "Fire Alarm",
-        "serviceCode": "FA-REP-SD",
-        "partNumber": "SD-355-ADR"
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated job item.</p>
-
-        <h3>DELETE /jobitems/{id}</h3>
-        <p>Deletes a job item. This is typically only allowed for items that have not been invoiced.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /jobs/{jobId}/items/batch</h3>
-        <p>Creates multiple job items for the specified job in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "description": "Labor - Technician",
-            "quantity": 2.5,
-            "unitPrice": 95.00,
-            "unitCost": 45.00,
-            "taxable": true,
-            "itemType": "Labor",
-            "sequenceNumber": 4
-        },
-        {
-            "description": "Labor - Helper",
-            "quantity": 2.5,
-            "unitPrice": 65.00,
-            "unitCost": 30.00,
-            "taxable": true,
-            "itemType": "Labor",
-            "sequenceNumber": 5
-        },
-        {
-            "description": "Travel Charge",
-            "quantity": 1,
-            "unitPrice": 75.00,
-            "unitCost": 35.00,
-            "taxable": false,
-            "itemType": "Fee",
-            "sequenceNumber": 6
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created job items.</p>
-
-        <h3>PUT /jobs/{jobId}/items/reorder</h3>
-        <p>Reorders the line items in a job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "itemOrder": [7002, 7001, 7003, 7004, 7005, 7006]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns success message and updates the sequenceNumber property of the affected items.</p>
-
-        <h3>POST /jobs/{jobId}/items/from-service-items</h3>
-        <p>Creates job items from service items.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "serviceItemIds": [501, 502, 503],
-    "quantities": {
-        "501": 1,
-        "502": 2,
-        "503": 1
-    },
-    "overrides": {
-        "501": {
-            "description": "Custom description for service item 501",
-            "unitPrice": 1600.00
-        }
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created job items.</p>
-
-        <h3>POST /jobs/{jobId}/items/from-quote</h3>
-        <p>Creates job items from a quote.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "quoteId": 9001,
-    "includeAll": true,
-    "quoteItemIds": []
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created job items.</p>
-
-        <h3>GET /jobitems/{id}/invoice-history</h3>
-        <p>Retrieves the invoice history for a specific job item.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobitems/7001/invoice-history
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "invoices": [
-        {
-            "invoiceId": 8001,
-            "invoiceItemId": 9001,
-            "invoiceNumber": "INV-2023-0456",
-            "invoiceDate": "2023-08-16T10:00:00Z",
-            "quantity": 0.5,
-            "unitPrice": 1500.00,
-            "extendedPrice": 750.00,
-            "invoiceStatus": "Sent"
-        },
-        {
-            "invoiceId": 8002,
-            "invoiceItemId": 9025,
-            "invoiceNumber": "INV-2023-0489",
-            "invoiceDate": "2023-08-30T14:15:00Z",
-            "quantity": 0.5,
-            "unitPrice": 1500.00,
-            "extendedPrice": 750.00,
-            "invoiceStatus": "Draft"
-        }
-    ],
-    "totalInvoicedQuantity": 1.0,
-    "totalInvoicedAmount": 1500.00,
-    "remainingQuantity": 0,
-    "isFullyInvoiced": true
-}</code></pre>
-
-        <h3>GET /jobs/{jobId}/items/summary</h3>
-        <p>Retrieves summary information about items for a specific job.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/jobs/12345/items/summary
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "totalItems": 6,
-    "totalPrice": 2237.50,
-    "totalCost": 985.00,
-    "totalMargin": 56.0,
-    "byType": {
-        "Service": {
-            "count": 1,
-            "totalPrice": 1500.00,
-            "totalCost": 750.00,
-            "percentOfTotal": 67.0
-        },
-        "Material": {
-            "count": 1,
-            "totalPrice": 150.00,
-            "totalCost": 65.00,
-            "percentOfTotal": 6.7
-        },
-        "Labor": {
-            "count": 2,
-            "totalPrice": 512.50,
-            "totalCost": 243.75,
-            "percentOfTotal": 22.9
-        },
-        "Fee": {
-            "count": 1,
-            "totalPrice": 75.00,
-            "totalCost": 35.00,
-            "percentOfTotal": 3.4
-        }
-    },
-    "invoiceStatus": {
-        "invoiced": {
-            "count": 2,
-            "totalPrice": 1650.00
-        },
-        "uninvoiced": {
-            "count": 4,
-            "totalPrice": 587.50
-        }
-    }
-}</code></pre>
-
-        <h3>GET /assets/{assetId}/jobitems</h3>
-        <p>Retrieves all job items associated with a specific asset.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/assets/3001/jobitems
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of job items associated with the specified asset.</p>
-
-        <h3>GET /serviceitems/{serviceItemId}/jobitems</h3>
-        <p>Retrieves all job items associated with a specific service item.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/serviceitems/501/jobitems
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of job items associated with the specified service item.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

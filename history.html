@@ -217,433 +217,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for History management...</p>
 
-        <h3>GET /history</h3>
-        <p>Retrieves a list of history records. Supports filtering by entity type, entity ID, user, action, time range,
-            etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/history?entityType=Job&entityId=12345&startTime=2023-08-01T00:00:00Z&endTime=2023-08-15T23:59:59Z
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 987654,
-            "entityType": "Job",
-            "entityId": 12345,
-            "timestamp": "2023-08-15T14:30:22Z",
-            "userId": 101,
-            "userName": "John Smith",
-            "action": "Update",
-            "field": "status",
-            "oldValue": "Scheduled",
-            "newValue": "In Progress",
-            "ipAddress": "203.0.113.45",
-            "source": "Mobile App",
-            "isSystem": false
-        },
-        {
-            "id": 987653,
-            "entityType": "Job",
-            "entityId": 12345,
-            "timestamp": "2023-08-10T09:15:45Z",
-            "userId": 102,
-            "userName": "Jane Doe",
-            "action": "Update",
-            "changes": [
-                {
-                    "field": "scheduledStartDate",
-                    "oldValue": "2023-08-12T10:00:00Z",
-                    "newValue": "2023-08-15T09:00:00Z",
-                    "displayName": "Scheduled Start Date"
-                },
-                {
-                    "field": "scheduledEndDate",
-                    "oldValue": "2023-08-12T12:00:00Z",
-                    "newValue": "2023-08-15T11:00:00Z",
-                    "displayName": "Scheduled End Date"
-                }
-            ],
-            "ipAddress": "203.0.113.46",
-            "source": "Web App",
-            "notes": "Customer requested reschedule",
-            "isSystem": false
-        },
-        {
-            "id": 987652,
-            "entityType": "Job",
-            "entityId": 12345,
-            "timestamp": "2023-08-02T11:22:33Z",
-            "userId": 103,
-            "userName": "Robert Johnson",
-            "action": "Create",
-            "ipAddress": "203.0.113.47",
-            "source": "Web App",
-            "isSystem": false,
-            "relatedEntities": [
-                {
-                    "entityType": "Customer",
-                    "entityId": 5678,
-                    "relationship": "Customer"
-                },
-                {
-                    "entityType": "Location",
-                    "entityId": 9012,
-                    "relationship": "Service Location"
-                }
-            ]
-        }
-        // Additional history records...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-history" class="resource-section">
+            <h3>History</h3>
+            <p>The history resource is used to manage History data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /history</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/history</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/history/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/history/123</td>
+                        <td>404</td>
+                        <td>history not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/history</td>
+                        <td>200</td>
+                        <td>history created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/history</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/history/123</td>
+                        <td>200</td>
+                        <td>history updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/history/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/history/123</td>
+                        <td>404</td>
+                        <td>history not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/history/123</td>
+                        <td>204</td>
+                        <td>history deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/history/123</td>
+                        <td>404</td>
+                        <td>history not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /history/[historyId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>history entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the history</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the history</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Historys</h4>
+            <pre><code>GET /history
 
-        <h3>GET /history/{id}</h3>
-        <p>Retrieves a specific history record by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/history/987654
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the history record with the specified ID.</p>
-
-        <h3>GET /entities/{entityType}/{id}/history</h3>
-        <p>Retrieves the history records for a specific entity.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entities/Job/12345/history
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of history records for the specified entity.</p>
-
-        <h3>GET /users/{id}/history</h3>
-        <p>Retrieves history records for changes made by a specific user.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/users/101/history?startTime=2023-08-01T00:00:00Z
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of history records for changes made by the specified user.</p>
-
-        <h3>GET /history/summary</h3>
-        <p>Retrieves a summary of historical activity.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/history/summary?entityType=Job&period=daily&startDate=2023-08-01&endDate=2023-08-15
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "entityType": "Job",
-    "startDate": "2023-08-01",
-    "endDate": "2023-08-15",
-    "period": "daily",
-    "totalChanges": 1245,
-    "byAction": {
-        "Create": 132,
-        "Update": 867,
-        "Delete": 18,
-        "Status Change": 228
-    },
-    "byUser": [
-        {
-            "userId": 101,
-            "userName": "John Smith",
-            "total": 325
-        },
-        {
-            "userId": 102,
-            "userName": "Jane Doe",
-            "total": 297
-        },
-        {
-            "userId": 103,
-            "userName": "Robert Johnson",
-            "total": 218
-        }
-        // Additional users...
-    ],
-    "byDay": {
-        "2023-08-01": 78,
-        "2023-08-02": 92,
-        "2023-08-03": 85,
-        // Additional days...
-        "2023-08-15": 94
-    },
-    "mostChangedFields": [
-        {
-            "field": "status",
-            "count": 228,
-            "percentage": 18.3
-        },
-        {
-            "field": "scheduledStartDate",
-            "count": 156,
-            "percentage": 12.5
-        },
-        {
-            "field": "notes",
-            "count": 142,
-            "percentage": 11.4
-        }
-        // Additional fields...
-    ]
-}</code></pre>
-
-        <h3>GET /history/compare</h3>
-        <p>Compares an entity's state between two points in time.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/history/compare?entityType=Job&entityId=12345&startTime=2023-08-01T00:00:00Z&endTime=2023-08-15T23:59:59Z
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "entityType": "Job",
-    "entityId": 12345,
-    "startState": {
-        "id": 12345,
-        "number": "JOB-2023-0789",
-        "customerId": 5678,
-        "locationId": 9012,
-        "status": "Scheduled",
-        "scheduledStartDate": "2023-08-12T10:00:00Z",
-        "scheduledEndDate": "2023-08-12T12:00:00Z",
-        "description": "Annual fire alarm inspection",
-        "assignedUsers": [103, 104],
-        "priority": "Normal",
-        "createdDate": "2023-08-02T11:22:33Z"
-    },
-    "endState": {
-        "id": 12345,
-        "number": "JOB-2023-0789",
-        "customerId": 5678,
-        "locationId": 9012,
-        "status": "Completed",
-        "scheduledStartDate": "2023-08-15T09:00:00Z",
-        "scheduledEndDate": "2023-08-15T11:00:00Z",
-        "actualStartDate": "2023-08-15T09:15:22Z",
-        "actualEndDate": "2023-08-15T11:30:45Z",
-        "description": "Annual fire alarm inspection",
-        "notes": "All devices tested and functioning correctly. Customer signed off on inspection.",
-        "assignedUsers": [103, 105],
-        "priority": "Normal",
-        "createdDate": "2023-08-02T11:22:33Z",
-        "completedDate": "2023-08-15T11:30:45Z"
-    },
-    "changes": [
-        {
-            "field": "status",
-            "oldValue": "Scheduled",
-            "newValue": "Completed",
-            "changedBy": {
-                "userId": 103,
-                "userName": "Robert Johnson",
-                "timestamp": "2023-08-15T11:30:45Z"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "historys": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/history/123",
+                "name": "Example History"
             }
-        },
-        {
-            "field": "scheduledStartDate",
-            "oldValue": "2023-08-12T10:00:00Z",
-            "newValue": "2023-08-15T09:00:00Z",
-            "changedBy": {
-                "userId": 102,
-                "userName": "Jane Doe",
-                "timestamp": "2023-08-10T09:15:45Z"
-            }
-        },
-        {
-            "field": "scheduledEndDate",
-            "oldValue": "2023-08-12T12:00:00Z",
-            "newValue": "2023-08-15T11:00:00Z",
-            "changedBy": {
-                "userId": 102,
-                "userName": "Jane Doe",
-                "timestamp": "2023-08-10T09:15:45Z"
-            }
-        },
-        {
-            "field": "actualStartDate",
-            "oldValue": null,
-            "newValue": "2023-08-15T09:15:22Z",
-            "changedBy": {
-                "userId": 103,
-                "userName": "Robert Johnson",
-                "timestamp": "2023-08-15T09:15:22Z"
-            }
-        },
-        {
-            "field": "actualEndDate",
-            "oldValue": null,
-            "newValue": "2023-08-15T11:30:45Z",
-            "changedBy": {
-                "userId": 103,
-                "userName": "Robert Johnson",
-                "timestamp": "2023-08-15T11:30:45Z"
-            }
-        },
-        {
-            "field": "notes",
-            "oldValue": null,
-            "newValue": "All devices tested and functioning correctly. Customer signed off on inspection.",
-            "changedBy": {
-                "userId": 103,
-                "userName": "Robert Johnson",
-                "timestamp": "2023-08-15T11:25:18Z"
-            }
-        },
-        {
-            "field": "assignedUsers",
-            "oldValue": [103, 104],
-            "newValue": [103, 105],
-            "changedBy": {
-                "userId": 101,
-                "userName": "John Smith",
-                "timestamp": "2023-08-14T08:45:12Z"
-            }
-        },
-        {
-            "field": "completedDate",
-            "oldValue": null,
-            "newValue": "2023-08-15T11:30:45Z",
-            "changedBy": {
-                "userId": 103,
-                "userName": "Robert Johnson",
-                "timestamp": "2023-08-15T11:30:45Z"
-            }
-        }
-    ],
-    "changeCount": 8
-}</code></pre>
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific History</h4>
+            <pre><code>GET /history/123
 
-        <h3>GET /history/events</h3>
-        <p>Retrieves significant events based on history records.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/history/events?entityType=Job&entityId=12345
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "entityType": "Job",
-    "entityId": 12345,
-    "entityNumber": "JOB-2023-0789",
-    "events": [
-        {
-            "eventType": "Created",
-            "timestamp": "2023-08-02T11:22:33Z",
-            "userId": 103,
-            "userName": "Robert Johnson",
-            "details": "Job created"
-        },
-        {
-            "eventType": "Rescheduled",
-            "timestamp": "2023-08-10T09:15:45Z",
-            "userId": 102,
-            "userName": "Jane Doe",
-            "details": "Job rescheduled from 8/12/2023 to 8/15/2023",
-            "notes": "Customer requested reschedule"
-        },
-        {
-            "eventType": "Reassigned",
-            "timestamp": "2023-08-14T08:45:12Z",
-            "userId": 101,
-            "userName": "John Smith",
-            "details": "Technician Mike Wilson (104) replaced with Technician Sarah Anderson (105)"
-        },
-        {
-            "eventType": "Started",
-            "timestamp": "2023-08-15T09:15:22Z",
-            "userId": 103,
-            "userName": "Robert Johnson",
-            "details": "Job work started"
-        },
-        {
-            "eventType": "Completed",
-            "timestamp": "2023-08-15T11:30:45Z",
-            "userId": 103,
-            "userName": "Robert Johnson",
-            "details": "Job marked as completed"
-        }
-    ]
-}</code></pre>
-
-        <h3>POST /history/export</h3>
-        <p>Exports history records to a file format (CSV, Excel, PDF).</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "entityType": "Job",
-    "entityId": 12345,
-    "startTime": "2023-08-01T00:00:00Z",
-    "endTime": "2023-08-15T23:59:59Z",
-    "format": "csv",
-    "includeFields": ["timestamp", "userName", "action", "field", "oldValue", "newValue", "notes"],
-    "filename": "job_12345_history"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a link to download the exported file.</p>
-
-        <h3>GET /history/timeline</h3>
-        <p>Retrieves a timeline of activity across multiple related entities.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/history/timeline?entityType=Customer&entityId=5678&includeRelated=true&startTime=2023-08-01T00:00:00Z
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "primaryEntity": {
-        "type": "Customer",
-        "id": 5678,
-        "name": "ACME Corporation"
-    },
-    "timeline": [
-        {
-            "timestamp": "2023-08-15T11:30:45Z",
-            "entityType": "Job",
-            "entityId": 12345,
-            "entityLabel": "JOB-2023-0789",
-            "action": "Status Change",
-            "description": "Job completed",
-            "userId": 103,
-            "userName": "Robert Johnson"
-        },
-        {
-            "timestamp": "2023-08-10T09:15:45Z",
-            "entityType": "Job",
-            "entityId": 12345,
-            "entityLabel": "JOB-2023-0789",
-            "action": "Update",
-            "description": "Job rescheduled",
-            "userId": 102,
-            "userName": "Jane Doe",
-            "notes": "Customer requested reschedule"
-        },
-        {
-            "timestamp": "2023-08-05T15:22:10Z",
-            "entityType": "Invoice",
-            "entityId": 7890,
-            "entityLabel": "INV-2023-0456",
-            "action": "Create",
-            "description": "Invoice created",
-            "userId": 101,
-            "userName": "John Smith"
-        },
-        {
-            "timestamp": "2023-08-03T13:45:30Z",
-            "entityType": "Customer",
-            "entityId": 5678,
-            "entityLabel": "ACME Corporation",
-            "action": "Update",
-            "description": "Contact information updated",
-            "userId": 102,
-            "userName": "Jane Doe"
-        },
-        {
-            "timestamp": "2023-08-02T11:22:33Z",
-            "entityType": "Job",
-            "entityId": 12345,
-            "entityLabel": "JOB-2023-0789",
-            "action": "Create",
-            "description": "Job created",
-            "userId": 103,
-            "userName": "Robert Johnson"
-        }
-    ]
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/history/123",
+        "name": "Example History"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

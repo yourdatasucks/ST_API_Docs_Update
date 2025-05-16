@@ -218,170 +218,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Content management...</p>
 
-        <h3>GET /content</h3>
-        <p>Retrieves a list of content items. Supports filtering by type, category, tag, audience, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/content?contentType=Article&isPublished=true&categories=Marketing
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": "cnt-123-abc",
-            "title": "New Feature Announcement: Service Tracking",
-            "subtitle": "Introducing our enhanced service tracking capabilities",
-            "body": "&lt;h1&gt;New Service Tracking Features&lt;/h1&gt;&lt;p&gt;We're excited to announce several enhancements to our service tracking module...&lt;/p&gt;",
-            "contentType": "Article",
-            "format": "HTML",
-            "featuredImageUrl": "https://cdn.example.com/images/feature-announcement-hero.jpg",
-            "thumbnailUrl": "https://cdn.example.com/images/feature-announcement-thumb.jpg",
-            "externalUrl": null,
-            "categories": ["Marketing", "Product Updates"],
-            "tags": ["new features", "service tracking", "release notes"],
-            "audience": ["Admin", "Manager", "Technician"],
-            "authorId": 456,
-            "authorName": "Jane Smith",
-            "publishDate": "2023-07-15T09:00:00Z",
-            "expirationDate": null,
-            "isPublished": true,
-            "isFeatured": true,
-            "priority": 10,
-            "viewCount": 1250,
-            "relatedContentIds": ["cnt-456-def", "cnt-789-ghi"],
-            "companyId": null,
-            "createdDate": "2023-07-10T14:30:00Z",
-            "createdBy": 456,
-            "lastModifiedDate": "2023-07-14T16:45:00Z",
-            "lastModifiedBy": 456
-        },
-        // Additional content items...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-content" class="resource-section">
+            <h3>Content</h3>
+            <p>The content resource is used to manage Content data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /content</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/content</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/content/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/content/123</td>
+                        <td>404</td>
+                        <td>content not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/content</td>
+                        <td>200</td>
+                        <td>content created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/content</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/content/123</td>
+                        <td>200</td>
+                        <td>content updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/content/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/content/123</td>
+                        <td>404</td>
+                        <td>content not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/content/123</td>
+                        <td>204</td>
+                        <td>content deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/content/123</td>
+                        <td>404</td>
+                        <td>content not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /content/[contentId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>content entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the content</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the content</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Contents</h4>
+            <pre><code>GET /content
 
-        <h3>GET /content/{id}</h3>
-        <p>Retrieves a specific content item by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/content/cnt-123-abc
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": "cnt-123-abc",
-    "title": "New Feature Announcement: Service Tracking",
-    "subtitle": "Introducing our enhanced service tracking capabilities",
-    "body": "&lt;h1&gt;New Service Tracking Features&lt;/h1&gt;&lt;p&gt;We're excited to announce several enhancements to our service tracking module...&lt;/p&gt;",
-    "contentType": "Article",
-    "format": "HTML",
-    "featuredImageUrl": "https://cdn.example.com/images/feature-announcement-hero.jpg",
-    "thumbnailUrl": "https://cdn.example.com/images/feature-announcement-thumb.jpg",
-    "externalUrl": null,
-    "categories": ["Marketing", "Product Updates"],
-    "tags": ["new features", "service tracking", "release notes"],
-    "audience": ["Admin", "Manager", "Technician"],
-    "authorId": 456,
-    "authorName": "Jane Smith",
-    "publishDate": "2023-07-15T09:00:00Z",
-    "expirationDate": null,
-    "isPublished": true,
-    "isFeatured": true,
-    "priority": 10,
-    "viewCount": 1250,
-    "relatedContentIds": ["cnt-456-def", "cnt-789-ghi"],
-    "companyId": null,
-    "createdDate": "2023-07-10T14:30:00Z",
-    "createdBy": 456,
-    "lastModifiedDate": "2023-07-14T16:45:00Z",
-    "lastModifiedBy": 456
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "contents": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/content/123",
+                "name": "Example Content"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Content</h4>
+            <pre><code>GET /content/123
 
-        <h3>POST /content</h3>
-        <p>Creates a new content item.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "title": "Introducing Mobile App Updates",
-    "subtitle": "New features in our latest mobile app release",
-    "body": "&lt;h1&gt;Mobile App V2.5 Features&lt;/h1&gt;&lt;p&gt;Our latest mobile app release includes several exciting enhancements...&lt;/p&gt;",
-    "contentType": "Article",
-    "format": "HTML",
-    "featuredImageUrl": "https://cdn.example.com/images/mobile-app-update.jpg",
-    "thumbnailUrl": "https://cdn.example.com/images/mobile-app-update-thumb.jpg",
-    "categories": ["Product Updates", "Mobile"],
-    "tags": ["mobile app", "updates", "new features"],
-    "audience": ["All Users"],
-    "authorName": "Mobile Development Team",
-    "publishDate": "2023-08-01T09:00:00Z",
-    "isPublished": false,
-    "isFeatured": true,
-    "priority": 8
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created content item object (HTTP 201 Created).</p>
-
-        <h3>PUT /content/{id}</h3>
-        <p>Updates an existing content item.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "title": "Introducing Mobile App Updates - Version 2.5",
-    "body": "&lt;h1&gt;Mobile App V2.5 Features&lt;/h1&gt;&lt;p&gt;Our latest mobile app release includes several exciting enhancements and bug fixes...&lt;/p&gt;",
-    "isPublished": true,
-    "publishDate": "2023-08-02T09:00:00Z"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated content item object.</p>
-
-        <h3>DELETE /content/{id}</h3>
-        <p>Deletes a content item.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /content/{id}/view</h3>
-        <p>Records a view for a content item, incrementing its view count.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">POST /v1.0/content/cnt-123-abc/view
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated content item with an incremented view count.</p>
-
-        <h3>GET /content/categories</h3>
-        <p>Retrieves a list of all available content categories.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/content/categories
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        "Product Updates",
-        "Marketing",
-        "Help & Support",
-        "Tutorials",
-        "Case Studies",
-        "Mobile",
-        "Best Practices"
-    ]
-}</code></pre>
-
-        <h3>GET /content/tags</h3>
-        <p>Retrieves a list of all available content tags.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/content/tags
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        "new features",
-        "service tracking",
-        "release notes",
-        "mobile app",
-        "updates",
-        "tutorial",
-        "best practice"
-    ]
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/content/123",
+        "name": "Example Content"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

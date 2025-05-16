@@ -94,292 +94,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for User Group Label management...</p>
 
-        <h3>List User Group Labels</h3>
-        <p>Returns a list of user group labels.</p>
+        <section id="resource-usergrouplabel" class="resource-section">
+            <h3>User Group Label</h3>
+            <p>The usergrouplabel resource is used to manage User Group Label data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /usergrouplabel</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/usergrouplabel</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/usergrouplabel/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/usergrouplabel/123</td>
+                        <td>404</td>
+                        <td>usergrouplabel not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/usergrouplabel</td>
+                        <td>200</td>
+                        <td>usergrouplabel created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/usergrouplabel</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/usergrouplabel/123</td>
+                        <td>200</td>
+                        <td>usergrouplabel updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/usergrouplabel/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/usergrouplabel/123</td>
+                        <td>404</td>
+                        <td>usergrouplabel not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/usergrouplabel/123</td>
+                        <td>204</td>
+                        <td>usergrouplabel deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/usergrouplabel/123</td>
+                        <td>404</td>
+                        <td>usergrouplabel not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /usergrouplabel/[usergrouplabelId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>usergrouplabel entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the usergrouplabel</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the usergrouplabel</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve User Group Labels</h4>
+            <pre><code>GET /usergrouplabel
 
-        <h4>Request</h4>
-        <pre><code>GET /usergrouplabel</code></pre>
-
-        <h5>Query Parameters</h5>
-        <table>
-            <thead>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Required</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>limit</code></td>
-                    <td>integer</td>
-                    <td>Maximum number of records to return (default: 100, max: 1000).</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>offset</code></td>
-                    <td>integer</td>
-                    <td>Number of records to skip (default: 0).</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>sort</code></td>
-                    <td>string</td>
-                    <td>Field to sort by (e.g., "name", "createdDate").</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>order</code></td>
-                    <td>string</td>
-                    <td>Sort order, either "asc" or "desc" (default: "asc").</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>isActive</code></td>
-                    <td>boolean</td>
-                    <td>Filter by active status.</td>
-                    <td>false</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h4>Response</h4>
-        <p>Returns an array of user group label objects.</p>
-
-        <pre><code>{
-  "data": [
-    {
-      "id": 123,
-      "name": "Field Technicians",
-      "description": "All field-based service technicians",
-      "color": "#4287f5",
-      "createdDate": "2023-04-15T14:30:00Z",
-      "modifiedDate": "2023-08-22T09:15:27Z",
-      "isActive": true,
-      "userCount": 42
-    },
-    {
-      "id": 124,
-      "name": "HVAC Certified",
-      "description": "Users with HVAC certification",
-      "color": "#f5a742",
-      "createdDate": "2023-05-02T11:20:15Z",
-      "modifiedDate": "2023-05-02T11:20:15Z",
-      "isActive": true,
-      "userCount": 18
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "usergrouplabels": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/usergrouplabel/123",
+                "name": "Example User Group Label"
+            }
+        ]
     }
-  ],
-  "metadata": {
-    "resultCount": 2,
-    "offset": 0,
-    "limit": 100,
-    "totalCount": 2
-  }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific User Group Label</h4>
+            <pre><code>GET /usergrouplabel/123
 
-        <h3>Get User Group Label</h3>
-        <p>Returns a specific user group label by ID.</p>
-
-        <h4>Request</h4>
-        <pre><code>GET /usergrouplabel/{id}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the requested user group label object.</p>
-
-        <pre><code>{
-  "data": {
-    "id": 123,
-    "name": "Field Technicians",
-    "description": "All field-based service technicians",
-    "color": "#4287f5",
-    "createdDate": "2023-04-15T14:30:00Z",
-    "modifiedDate": "2023-08-22T09:15:27Z",
-    "isActive": true,
-    "userCount": 42
-  }
-}</code></pre>
-
-        <h3>Create User Group Label</h3>
-        <p>Creates a new user group label.</p>
-
-        <h4>Request</h4>
-        <pre><code>POST /usergrouplabel</code></pre>
-
-        <h5>Request Body</h5>
-        <pre><code>{
-  "name": "Remote Workers",
-  "description": "Employees who primarily work remotely",
-  "color": "#42f587",
-  "isActive": true
-}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the newly created user group label object.</p>
-
-        <pre><code>{
-  "data": {
-    "id": 125,
-    "name": "Remote Workers",
-    "description": "Employees who primarily work remotely",
-    "color": "#42f587",
-    "createdDate": "2023-09-01T10:45:33Z",
-    "modifiedDate": "2023-09-01T10:45:33Z",
-    "isActive": true,
-    "userCount": 0
-  }
-}</code></pre>
-
-        <h3>Update User Group Label</h3>
-        <p>Updates an existing user group label.</p>
-
-        <h4>Request</h4>
-        <pre><code>PUT /usergrouplabel/{id}</code></pre>
-
-        <h5>Request Body</h5>
-        <pre><code>{
-  "name": "Remote Workforce",
-  "description": "Employees who primarily work remotely or from home",
-  "color": "#42f5e0",
-  "isActive": true
-}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the updated user group label object.</p>
-
-        <pre><code>{
-  "data": {
-    "id": 125,
-    "name": "Remote Workforce",
-    "description": "Employees who primarily work remotely or from home",
-    "color": "#42f5e0",
-    "createdDate": "2023-09-01T10:45:33Z",
-    "modifiedDate": "2023-09-01T12:20:15Z",
-    "isActive": true,
-    "userCount": 0
-  }
-}</code></pre>
-
-        <h3>Delete User Group Label</h3>
-        <p>Removes a user group label.</p>
-
-        <h4>Request</h4>
-        <pre><code>DELETE /usergrouplabel/{id}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns a success message upon successful deletion.</p>
-
-        <pre><code>{
-  "success": true,
-  "message": "User group label successfully deleted"
-}</code></pre>
-
-        <h3>Assign Users to Group Label</h3>
-        <p>Assigns multiple users to a group label.</p>
-
-        <h4>Request</h4>
-        <pre><code>POST /usergrouplabel/{id}/users</code></pre>
-
-        <h5>Request Body</h5>
-        <pre><code>{
-  "userIds": [101, 102, 103]
-}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the updated user count and success status.</p>
-
-        <pre><code>{
-  "success": true,
-  "userCount": 3,
-  "message": "Users successfully assigned to group label"
-}</code></pre>
-
-        <h3>Remove Users from Group Label</h3>
-        <p>Removes users from a group label.</p>
-
-        <h4>Request</h4>
-        <pre><code>DELETE /usergrouplabel/{id}/users</code></pre>
-
-        <h5>Request Body</h5>
-        <pre><code>{
-  "userIds": [103]
-}</code></pre>
-
-        <h4>Response</h4>
-        <p>Returns the updated user count and success status.</p>
-
-        <pre><code>{
-  "success": true,
-  "userCount": 2,
-  "message": "Users successfully removed from group label"
-}</code></pre>
-
-        <h3>List Users by Group Label</h3>
-        <p>Returns a list of users assigned to a specific group label.</p>
-
-        <h4>Request</h4>
-        <pre><code>GET /usergrouplabel/{id}/users</code></pre>
-
-        <h5>Query Parameters</h5>
-        <table>
-            <thead>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Required</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>limit</code></td>
-                    <td>integer</td>
-                    <td>Maximum number of records to return (default: 100, max: 1000).</td>
-                    <td>false</td>
-                </tr>
-                <tr>
-                    <td><code>offset</code></td>
-                    <td>integer</td>
-                    <td>Number of records to skip (default: 0).</td>
-                    <td>false</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h4>Response</h4>
-        <p>Returns an array of user objects assigned to the group label.</p>
-
-        <pre><code>{
-  "data": [
-    {
-      "id": 101,
-      "username": "jsmith",
-      "firstName": "John",
-      "lastName": "Smith",
-      "email": "jsmith@example.com",
-      "displayName": "John Smith",
-      "isActive": true
-    },
-    {
-      "id": 102,
-      "username": "mjohnson",
-      "firstName": "Mary",
-      "lastName": "Johnson",
-      "email": "mjohnson@example.com",
-      "displayName": "Mary Johnson",
-      "isActive": true
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/usergrouplabel/123",
+        "name": "Example User Group Label"
     }
-  ],
-  "metadata": {
-    "resultCount": 2,
-    "offset": 0,
-    "limit": 100,
-    "totalCount": 2
-  }
-}</code></pre>
-
-        <h2>Related Resources</h2>
+}
+</code></pre>
+        </section><h2>Related Resources</h2>
         <ul>
             <li><a href="user.html">User</a></li>
             <li><a href="grouplabel.html">Group Label</a></li>

@@ -134,135 +134,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Budget Category management...</p>
 
-        <h3>GET /budgetcategories</h3>
-        <p>Retrieves a list of budget categories. Often filtered by budgetId.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/budgetcategories?budgetId=123
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 201,
-            "budgetId": 123,
-            "referenceNumber": "BC-001",
-            "name": "Construction",
-            "description": "Building and construction costs",
-            "cost": 150000.00,
-            "usedAmount": 45000.00,
-            "remainingAmount": 105000.00,
-            "orderIndex": 1,
-            "libItemType": "Construction",
-            "createdDate": "2023-05-15T14:35:00Z",
-            "createdBy": 101,
-            "lastModifiedDate": "2023-05-15T14:35:00Z",
-            "lastModifiedBy": 101
-        },
-        {
-            "id": 202,
-            "budgetId": 123,
-            "referenceNumber": "BC-002",
-            "name": "Equipment",
-            "description": "Equipment purchases and rentals",
-            "cost": 50000.00,
-            "usedAmount": 15000.00,
-            "remainingAmount": 35000.00,
-            "orderIndex": 2,
-            "libItemType": "Equipment",
-            // Other properties...
-        }
-        // Additional categories...
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-budgetcategory" class="resource-section">
+            <h3>Budget Category</h3>
+            <p>The budgetcategory resource is used to manage Budget Category data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /budgetcategory</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/budgetcategory</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/budgetcategory/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/budgetcategory/123</td>
+                        <td>404</td>
+                        <td>budgetcategory not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/budgetcategory</td>
+                        <td>200</td>
+                        <td>budgetcategory created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/budgetcategory</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/budgetcategory/123</td>
+                        <td>200</td>
+                        <td>budgetcategory updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/budgetcategory/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/budgetcategory/123</td>
+                        <td>404</td>
+                        <td>budgetcategory not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/budgetcategory/123</td>
+                        <td>204</td>
+                        <td>budgetcategory deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/budgetcategory/123</td>
+                        <td>404</td>
+                        <td>budgetcategory not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /budgetcategory/[budgetcategoryId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>budgetcategory entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the budgetcategory</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the budgetcategory</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Budget Categorys</h4>
+            <pre><code>GET /budgetcategory
 
-        <h3>GET /budgetcategories/{id}</h3>
-        <p>Retrieves a specific budget category by ID, including its line items.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/budgetcategories/201
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 201,
-    "budgetId": 123,
-    "referenceNumber": "BC-001",
-    "name": "Construction",
-    "description": "Building and construction costs",
-    "cost": 150000.00,
-    "usedAmount": 45000.00,
-    "remainingAmount": 105000.00,
-    "orderIndex": 1,
-    "libItemType": "Construction",
-    "createdDate": "2023-05-15T14:35:00Z",
-    "createdBy": 101,
-    "lastModifiedDate": "2023-05-15T14:35:00Z",
-    "lastModifiedBy": 101,
-    "lineItems": [
-        {
-            "id": 301,
-            "name": "Demolition",
-            "referenceNumber": "BLI-001",
-            "cost": 20000.00,
-            "quantity": 1,
-            "total": 20000.00,
-            // Other line item properties...
-        },
-        {
-            "id": 302,
-            "name": "Framing",
-            "referenceNumber": "BLI-002",
-            "cost": 35000.00,
-            "quantity": 1,
-            "total": 35000.00,
-            // Other line item properties...
-        }
-        // Additional line items...
-    ]
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "budgetcategorys": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/budgetcategory/123",
+                "name": "Example Budget Category"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Budget Category</h4>
+            <pre><code>GET /budgetcategory/123
 
-        <h3>POST /budgetcategories</h3>
-        <p>Creates a new budget category within a budget.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "budgetId": 123,
-    "name": "Permits and Fees",
-    "referenceNumber": "BC-003",
-    "description": "Regulatory permits and inspection fees",
-    "orderIndex": 3,
-    "libItemType": "Administrative"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created budget category object (HTTP 201 Created).</p>
-
-        <h3>PUT /budgetcategories/{id}</h3>
-        <p>Updates an existing budget category.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Permits, Fees, and Inspections",
-    "description": "Regulatory permits, inspection fees, and compliance costs",
-    "orderIndex": 4
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated budget category object.</p>
-
-        <h3>DELETE /budgetcategories/{id}</h3>
-        <p>Deletes a budget category. This may be disallowed if the category has line items or if the parent budget is
-            in certain statuses.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /budgetcategories/{id}/lineItems</h3>
-        <p>Retrieves all budget line items associated with a specific budget category.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/budgetcategories/201/lineItems
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="budgetlineitem.html">Budget Line Items</a> in this category.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/budgetcategory/123",
+        "name": "Example Budget Category"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

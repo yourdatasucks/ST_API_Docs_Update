@@ -254,272 +254,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Deficiency Report management...</p>
 
-        <h3>GET /deficiencyreports</h3>
-        <p>Retrieves a list of deficiency reports. Supports filtering by company, location, status, date ranges, etc.
-        </p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/deficiencyreports?companyId=123&status=Submitted
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 123,
-            "title": "Annual Safety Inspection - Main Office HVAC Systems",
-            "description": "Comprehensive safety and performance inspection of all HVAC equipment at the main office location.",
-            "companyId": 456,
-            "locationIds": [201],
-            "reportType": "Safety Inspection",
-            "status": "Submitted",
-            "inspectionDate": "2023-07-15",
-            "inspectedBy": [302, 303],
-            "approvedBy": null,
-            "approvedDate": null,
-            "dueDate": "2023-09-15",
-            "priority": "Medium",
-            "notes": "Multiple critical issues identified with rooftop units that require immediate attention.",
-            "reportUrl": "https://example.com/reports/safety-inspection-123.pdf",
-            "attachmentIds": [501, 502],
-            "jobId": 601,
-            "contractId": 701,
-            "deficiencyCount": {
-                "total": 17,
-                "byStatus": {
-                    "Open": 17,
-                    "Resolved": 0,
-                    "Waived": 0
-                },
-                "bySeverity": {
-                    "Critical": 2,
-                    "Major": 5,
-                    "Minor": 8,
-                    "Cosmetic": 2
-                },
-                "byCategory": {
-                    "Mechanical": 10,
-                    "Electrical": 4,
-                    "Safety": 3
-                }
-            },
-            "estimatedCost": 7850.00,
-            "customFields": {
-                "reportNumber": "SI-2023-072",
-                "inspectionType": "Annual",
-                "complianceReference": "ASHRAE 62.1"
-            },
-            "tags": ["HVAC", "Safety", "Annual Inspection"],
-            "createdDate": "2023-07-15T16:30:00Z",
-            "createdBy": 302,
-            "lastModifiedDate": "2023-07-16T10:15:00Z",
-            "lastModifiedBy": 305
-        },
-        // Additional deficiency reports...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-deficiencyreport" class="resource-section">
+            <h3>Deficiency Report</h3>
+            <p>The deficiencyreport resource is used to manage Deficiency Report data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /deficiencyreport</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/deficiencyreport</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/deficiencyreport/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/deficiencyreport/123</td>
+                        <td>404</td>
+                        <td>deficiencyreport not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/deficiencyreport</td>
+                        <td>200</td>
+                        <td>deficiencyreport created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/deficiencyreport</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/deficiencyreport/123</td>
+                        <td>200</td>
+                        <td>deficiencyreport updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/deficiencyreport/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/deficiencyreport/123</td>
+                        <td>404</td>
+                        <td>deficiencyreport not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/deficiencyreport/123</td>
+                        <td>204</td>
+                        <td>deficiencyreport deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/deficiencyreport/123</td>
+                        <td>404</td>
+                        <td>deficiencyreport not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /deficiencyreport/[deficiencyreportId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>deficiencyreport entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the deficiencyreport</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the deficiencyreport</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Deficiency Reports</h4>
+            <pre><code>GET /deficiencyreport
 
-        <h3>GET /deficiencyreports/{id}</h3>
-        <p>Retrieves a specific deficiency report by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/deficiencyreports/123
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 123,
-    "title": "Annual Safety Inspection - Main Office HVAC Systems",
-    "description": "Comprehensive safety and performance inspection of all HVAC equipment at the main office location.",
-    "companyId": 456,
-    "locationIds": [201],
-    "reportType": "Safety Inspection",
-    "status": "Submitted",
-    "inspectionDate": "2023-07-15",
-    "inspectedBy": [302, 303],
-    "approvedBy": null,
-    "approvedDate": null,
-    "dueDate": "2023-09-15",
-    "priority": "Medium",
-    "notes": "Multiple critical issues identified with rooftop units that require immediate attention.",
-    "reportUrl": "https://example.com/reports/safety-inspection-123.pdf",
-    "attachmentIds": [501, 502],
-    "jobId": 601,
-    "contractId": 701,
-    "deficiencyCount": {
-        "total": 17,
-        "byStatus": {
-            "Open": 17,
-            "Resolved": 0,
-            "Waived": 0
-        },
-        "bySeverity": {
-            "Critical": 2,
-            "Major": 5,
-            "Minor": 8,
-            "Cosmetic": 2
-        },
-        "byCategory": {
-            "Mechanical": 10,
-            "Electrical": 4,
-            "Safety": 3
-        }
-    },
-    "estimatedCost": 7850.00,
-    "customFields": {
-        "reportNumber": "SI-2023-072",
-        "inspectionType": "Annual",
-        "complianceReference": "ASHRAE 62.1"
-    },
-    "tags": ["HVAC", "Safety", "Annual Inspection"],
-    "createdDate": "2023-07-15T16:30:00Z",
-    "createdBy": 302,
-    "lastModifiedDate": "2023-07-16T10:15:00Z",
-    "lastModifiedBy": 305
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "deficiencyreports": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/deficiencyreport/123",
+                "name": "Example Deficiency Report"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Deficiency Report</h4>
+            <pre><code>GET /deficiencyreport/123
 
-        <h3>POST /deficiencyreports</h3>
-        <p>Creates a new deficiency report.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "title": "Quarterly Fire Safety Inspection - Building B",
-    "description": "Quarterly inspection of all fire safety systems and equipment in Building B.",
-    "companyId": 456,
-    "locationIds": [202],
-    "reportType": "Safety Inspection",
-    "status": "Draft",
-    "inspectionDate": "2023-07-20",
-    "inspectedBy": [304],
-    "dueDate": "2023-08-20",
-    "priority": "High",
-    "notes": "Required for compliance with local fire safety regulations.",
-    "jobId": 602,
-    "contractId": 701,
-    "customFields": {
-        "reportNumber": "FSI-2023-Q3-B",
-        "inspectionType": "Quarterly",
-        "complianceReference": "NFPA 25"
-    },
-    "tags": ["Fire Safety", "Quarterly Inspection", "Compliance"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created deficiency report object (HTTP 201 Created).</p>
-
-        <h3>PUT /deficiencyreports/{id}</h3>
-        <p>Updates an existing deficiency report.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "status": "Completed",
-    "approvedBy": 401,
-    "approvedDate": "2023-07-25",
-    "notes": "All deficiencies have been addressed. Final approval granted after site verification."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated deficiency report object.</p>
-
-        <h3>DELETE /deficiencyreports/{id}</h3>
-        <p>Deletes a deficiency report. This may also delete associated deficiencies.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /deficiencyreports/{id}/deficiencies</h3>
-        <p>Retrieves all deficiencies associated with a specific deficiency report.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/deficiencyreports/123/deficiencies
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="deficiency.html">Deficiencies</a> associated with this report.</p>
-
-        <h3>POST /deficiencyreports/{id}/deficiencies</h3>
-        <p>Adds a new deficiency to the report.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "assetId": 791,
-    "locationId": 201,
-    "title": "Fire Extinguisher Missing Inspection Tag",
-    "description": "Fire extinguisher in south corridor is missing current inspection tag. Last inspection date is over 12 months old.",
-    "severity": "Major",
-    "priority": "High",
-    "status": "Open",
-    "category": "Safety",
-    "subCategory": "Fire Protection",
-    "code": "S-FP-001",
-    "identifiedDate": "2023-07-15",
-    "identifiedBy": 302,
-    "dueDate": "2023-07-30",
-    "imageUrls": [
-        "https://example.com/images/deficiency/temp-fire-1.jpg"
-    ],
-    "tags": ["Fire Extinguisher", "Compliance", "Inspection Tag"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created <a href="deficiency.html">Deficiency</a> object.</p>
-
-        <h3>POST /deficiencyreports/{id}/generate</h3>
-        <p>Generates a formatted PDF report of the deficiency report and its deficiencies.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "includeImages": true,
-    "includeCosts": false,
-    "includeRecommendations": true,
-    "format": "PDF",
-    "template": "standard"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the deficiency report object with updated reportUrl property.</p>
-
-        <h3>POST /deficiencyreports/{id}/submit</h3>
-        <p>Submits the report, changing its status from Draft to Submitted.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "notes": "Completed all inspections and documented all identified issues.",
-    "notifyIds": [401, 402],
-    "generatePdf": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated deficiency report object with Submitted status.</p>
-
-        <h3>POST /deficiencyreports/{id}/approve</h3>
-        <p>Approves the deficiency report.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "approvedBy": 401,
-    "approvedDate": "2023-07-25",
-    "notes": "Approved after review of all findings and recommendations.",
-    "notifyIds": [302, 303, 501]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated deficiency report object with approved information.</p>
-
-        <h3>GET /deficiencyreports/{id}/attachments</h3>
-        <p>Retrieves attachments associated with a specific deficiency report.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/deficiencyreports/123/attachments
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="attachment.html">Attachments</a> associated with this report.</p>
-
-        <h3>POST /deficiencyreports/{id}/attachments</h3>
-        <p>Adds an attachment to a deficiency report.</p>
-        <h4>Request</h4>
-        <p>Multipart form data with file and metadata.</p>
-        <h4>Response</h4>
-        <p>Returns the created <a href="attachment.html">Attachment</a> object and updates the report's attachmentIds.
-        </p>
-
-        <h3>POST /deficiencyreports/{id}/export</h3>
-        <p>Exports the deficiency report data to an external format (CSV, Excel, etc.).</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "format": "Excel",
-    "includeDeficiencies": true,
-    "includeResolvedDeficiencies": true,
-    "includeCosts": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a URL to download the exported file.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/deficiencyreport/123",
+        "name": "Example Deficiency Report"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

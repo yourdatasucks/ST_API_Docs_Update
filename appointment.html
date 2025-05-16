@@ -121,56 +121,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Appointment management...</p>
 
-        <h3>GET /appointments</h3>
-        <p>Retrieves a list of appointments. Supports filtering by date range, attendees, status, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/appointments?StartTime>=2023-04-01T00:00:00Z&EndTime<=2023-04-30T23:59:59Z
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "Id": 101,
-            "Subject": "Sales Meeting with Client X",
-            "StartTime": "2023-04-15T10:00:00Z",
-            "EndTime": "2023-04-15T11:00:00Z",
-            "Location": "Client X Office / Zoom Link",
-            "Attendees": [{"UserId": 55}, {"ContactId": 123}],
-            "Status": "Scheduled",
-            // ... other properties
-        }
-    ],
-    "totalResults": 1,
-    // ... pagination info
-}</code></pre>
+        <section id="resource-appointment" class="resource-section">
+            <h3>Appointment</h3>
+            <p>The appointment resource is used to manage Appointment data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /appointment</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/appointment</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/appointment/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/appointment/123</td>
+                        <td>404</td>
+                        <td>appointment not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/appointment</td>
+                        <td>200</td>
+                        <td>appointment created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/appointment</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/appointment/123</td>
+                        <td>200</td>
+                        <td>appointment updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/appointment/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/appointment/123</td>
+                        <td>404</td>
+                        <td>appointment not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/appointment/123</td>
+                        <td>204</td>
+                        <td>appointment deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/appointment/123</td>
+                        <td>404</td>
+                        <td>appointment not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /appointment/[appointmentId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>appointment entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the appointment</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the appointment</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Appointments</h4>
+            <pre><code>GET /appointment
 
-        <h3>POST /appointments</h3>
-        <p>Creates a new appointment.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "Subject": "Service Call - AC Unit Inspection",
-    "StartTime": "2023-05-10T14:00:00Z",
-    "EndTime": "2023-05-10T16:00:00Z",
-    "Location": "123 Main St, Anytown, USA",
-    "Attendees": [{"UserId": 77}],
-    "RelatedEntityType": "Asset",
-    "RelatedEntityId": 987
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created appointment object (HTTP 201 Created).</p>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "appointments": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/appointment/123",
+                "name": "Example Appointment"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Appointment</h4>
+            <pre><code>GET /appointment/123
 
-        <h3>GET /appointments/{id}</h3>
-        <p>Retrieves a specific appointment by its ID.</p>
-
-        <h3>PUT /appointments/{id}</h3>
-        <p>Updates an existing appointment.</p>
-
-        <h3>DELETE /appointments/{id}</h3>
-        <p>Deletes (or cancels) an appointment.</p>
-
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/appointment/123",
+        "name": "Example Appointment"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

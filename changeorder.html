@@ -175,180 +175,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Change Order management...</p>
 
-        <h3>GET /changeorders</h3>
-        <p>Retrieves a list of change orders. Often filtered by jobId or status.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/changeorders?jobId=456&status=Approved
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 789,
-            "number": "CO-001",
-            "title": "Additional Wall Modifications",
-            "description": "Client requested removal of non-load-bearing wall between kitchen and dining room",
-            "jobId": 456,
-            "categoryId": 101,
-            "status": "Approved",
-            "totalAmount": 2500.00,
-            "taxAmount": 200.00,
-            "grandTotal": 2700.00,
-            "affectsSchedule": true,
-            "scheduleImpactDays": 2,
-            "requestedBy": 201,
-            "requestedDate": "2023-07-10",
-            "approvedBy": 102,
-            "approvedDate": "2023-07-15",
-            "createdDate": "2023-07-10T09:15:00Z",
-            "createdBy": 102,
-            "lastModifiedDate": "2023-07-15T14:30:00Z",
-            "lastModifiedBy": 102
-        },
-        // Additional change orders...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-changeorder" class="resource-section">
+            <h3>Change Order</h3>
+            <p>The changeorder resource is used to manage Change Order data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /changeorder</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/changeorder</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/changeorder/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/changeorder/123</td>
+                        <td>404</td>
+                        <td>changeorder not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/changeorder</td>
+                        <td>200</td>
+                        <td>changeorder created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/changeorder</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/changeorder/123</td>
+                        <td>200</td>
+                        <td>changeorder updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/changeorder/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/changeorder/123</td>
+                        <td>404</td>
+                        <td>changeorder not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/changeorder/123</td>
+                        <td>204</td>
+                        <td>changeorder deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/changeorder/123</td>
+                        <td>404</td>
+                        <td>changeorder not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /changeorder/[changeorderId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>changeorder entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the changeorder</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the changeorder</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Change Orders</h4>
+            <pre><code>GET /changeorder
 
-        <h3>GET /changeorders/{id}</h3>
-        <p>Retrieves a specific change order by ID, including its line items.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/changeorders/789
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 789,
-    "number": "CO-001",
-    "title": "Additional Wall Modifications",
-    "description": "Client requested removal of non-load-bearing wall between kitchen and dining room",
-    "jobId": 456,
-    "categoryId": 101,
-    "status": "Approved",
-    "totalAmount": 2500.00,
-    "taxAmount": 200.00,
-    "grandTotal": 2700.00,
-    "affectsSchedule": true,
-    "scheduleImpactDays": 2,
-    "requestedBy": 201,
-    "requestedDate": "2023-07-10",
-    "approvedBy": 102,
-    "approvedDate": "2023-07-15",
-    "createdDate": "2023-07-10T09:15:00Z",
-    "createdBy": 102,
-    "lastModifiedDate": "2023-07-15T14:30:00Z",
-    "lastModifiedBy": 102,
-    "lineItems": [
-        {
-            "id": 901,
-            "changeOrderId": 789,
-            "description": "Labor for wall removal",
-            "quantity": 8,
-            "unit": "hours",
-            "unitPrice": 125.00,
-            "total": 1000.00,
-            // Other line item properties...
-        },
-        {
-            "id": 902,
-            "changeOrderId": 789,
-            "description": "Additional materials",
-            "quantity": 1,
-            "unit": "package",
-            "unitPrice": 750.00,
-            "total": 750.00,
-            // Other line item properties...
-        },
-        {
-            "id": 903,
-            "changeOrderId": 789,
-            "description": "Disposal fees",
-            "quantity": 1,
-            "unit": "load",
-            "unitPrice": 750.00,
-            "total": 750.00,
-            // Other line item properties...
-        }
-        // Additional line items...
-    ],
-    "attachments": [
-        {
-            "id": 501,
-            "fileName": "wall_removal_diagram.pdf",
-            "fileSize": 245678,
-            "contentType": "application/pdf",
-            "uploadDate": "2023-07-10T10:20:00Z",
-            "url": "https://api.example.com/attachments/501/download"
-        }
-        // Additional attachments...
-    ]
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "changeorders": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/changeorder/123",
+                "name": "Example Change Order"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Change Order</h4>
+            <pre><code>GET /changeorder/123
 
-        <h3>POST /changeorders</h3>
-        <p>Creates a new change order.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "title": "Upgrade Cabinet Hardware",
-    "description": "Client requested upgrade from standard cabinet hardware to premium fixtures",
-    "jobId": 456,
-    "categoryId": 102,
-    "status": "Draft",
-    "affectsSchedule": false,
-    "requestedBy": 201,
-    "requestedDate": "2023-07-25"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created change order object (HTTP 201 Created).</p>
-
-        <h3>PUT /changeorders/{id}</h3>
-        <p>Updates an existing change order.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "title": "Upgrade Cabinet Hardware and Fixtures",
-    "description": "Client requested upgrade from standard cabinet hardware to premium fixtures including handles and hinges",
-    "status": "Pending Approval",
-    "affectsSchedule": true,
-    "scheduleImpactDays": 1
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated change order object.</p>
-
-        <h3>DELETE /changeorders/{id}</h3>
-        <p>Deletes a change order. This may be disallowed for approved change orders or those in certain statuses.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /changeorders/{id}/approve</h3>
-        <p>Approves a change order, updating its status and recording approval information.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "approverNotes": "Approved as discussed with client on 7/28/2023"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated change order with approved status.</p>
-
-        <h3>POST /changeorders/{id}/reject</h3>
-        <p>Rejects a change order, updating its status and recording rejection information.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "rejectionReason": "Cost exceeds budget allowance",
-    "additionalNotes": "Please revise with lower cost options"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated change order with rejected status.</p>
-
-        <h3>GET /changeorders/{id}/lineItems</h3>
-        <p>Retrieves all line items associated with a specific change order.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/changeorders/789/lineItems
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="changeorderlineitem.html">Change Order Line Items</a> in this change order.
-        </p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/changeorder/123",
+        "name": "Example Change Order"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

@@ -182,139 +182,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Change Order Line Item management...</p>
 
-        <h3>GET /changeorderlineitems</h3>
-        <p>Retrieves a list of change order line items. Usually filtered by changeOrderId.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/changeorderlineitems?changeOrderId=789
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 901,
-            "changeOrderId": 789,
-            "description": "Labor for wall removal",
-            "type": "Add",
-            "quantity": 8,
-            "unit": "hours",
-            "unitPrice": 125.00,
-            "markupPercentage": 0,
-            "markupAmount": 0,
-            "total": 1000.00,
-            "taxable": true,
-            "taxRate": 8.0,
-            "taxAmount": 80.00,
-            "orderIndex": 1,
-            "createdDate": "2023-07-10T09:20:00Z",
-            "createdBy": 102,
-            "lastModifiedDate": "2023-07-10T09:20:00Z",
-            "lastModifiedBy": 102
-        },
-        {
-            "id": 902,
-            "changeOrderId": 789,
-            "description": "Additional materials",
-            "type": "Add",
-            "quantity": 1,
-            "unit": "package",
-            "unitPrice": 750.00,
-            "markupPercentage": 0,
-            "markupAmount": 0,
-            "total": 750.00,
-            "taxable": true,
-            "taxRate": 8.0,
-            "taxAmount": 60.00,
-            "orderIndex": 2,
-            // Other properties...
-        },
-        {
-            "id": 903,
-            "changeOrderId": 789,
-            "description": "Disposal fees",
-            "type": "Add",
-            "quantity": 1,
-            "unit": "load",
-            "unitPrice": 750.00,
-            "markupPercentage": 0,
-            "markupAmount": 0,
-            "total": 750.00,
-            "taxable": true,
-            "taxRate": 8.0,
-            "taxAmount": 60.00,
-            "orderIndex": 3,
-            // Other properties...
-        }
-        // Additional line items...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-changeorderlineitem" class="resource-section">
+            <h3>Change Order Line Item</h3>
+            <p>The changeorderlineitem resource is used to manage Change Order Line Item data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /changeorderlineitem</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/changeorderlineitem</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/changeorderlineitem/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/changeorderlineitem/123</td>
+                        <td>404</td>
+                        <td>changeorderlineitem not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/changeorderlineitem</td>
+                        <td>200</td>
+                        <td>changeorderlineitem created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/changeorderlineitem</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/changeorderlineitem/123</td>
+                        <td>200</td>
+                        <td>changeorderlineitem updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/changeorderlineitem/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/changeorderlineitem/123</td>
+                        <td>404</td>
+                        <td>changeorderlineitem not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/changeorderlineitem/123</td>
+                        <td>204</td>
+                        <td>changeorderlineitem deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/changeorderlineitem/123</td>
+                        <td>404</td>
+                        <td>changeorderlineitem not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /changeorderlineitem/[changeorderlineitemId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>changeorderlineitem entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the changeorderlineitem</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the changeorderlineitem</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Change Order Line Items</h4>
+            <pre><code>GET /changeorderlineitem
 
-        <h3>GET /changeorderlineitems/{id}</h3>
-        <p>Retrieves a specific change order line item by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/changeorderlineitems/901
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 901,
-    "changeOrderId": 789,
-    "description": "Labor for wall removal",
-    "type": "Add",
-    "quantity": 8,
-    "unit": "hours",
-    "unitPrice": 125.00,
-    "markupPercentage": 0,
-    "markupAmount": 0,
-    "total": 1000.00,
-    "taxable": true,
-    "taxRate": 8.0,
-    "taxAmount": 80.00,
-    "orderIndex": 1,
-    "createdDate": "2023-07-10T09:20:00Z",
-    "createdBy": 102,
-    "lastModifiedDate": "2023-07-10T09:20:00Z",
-    "lastModifiedBy": 102
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "changeorderlineitems": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/changeorderlineitem/123",
+                "name": "Example Change Order Line Item"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Change Order Line Item</h4>
+            <pre><code>GET /changeorderlineitem/123
 
-        <h3>POST /changeorderlineitems</h3>
-        <p>Creates a new change order line item.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "changeOrderId": 789,
-    "description": "Upgrade electrical fixtures",
-    "type": "Add",
-    "quantity": 5,
-    "unit": "each",
-    "unitPrice": 120.00,
-    "markupPercentage": 10,
-    "taxable": true,
-    "taxRate": 8.0,
-    "orderIndex": 4
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created change order line item object (HTTP 201 Created).</p>
-
-        <h3>PUT /changeorderlineitems/{id}</h3>
-        <p>Updates an existing change order line item.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "description": "Upgrade premium electrical fixtures",
-    "quantity": 6,
-    "unitPrice": 135.00
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated change order line item object.</p>
-
-        <h3>DELETE /changeorderlineitems/{id}</h3>
-        <p>Deletes a change order line item. This may be disallowed if the parent change order is in certain statuses.
-        </p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/changeorderlineitem/123",
+        "name": "Example Change Order Line Item"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

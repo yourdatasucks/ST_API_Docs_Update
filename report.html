@@ -251,664 +251,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Report management...</p>
 
-        <h3>GET /reports</h3>
-        <p>Retrieves a list of reports. Supports filtering by type, category, creator, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/reports?type=Custom&category=Financial
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 1001,
-            "name": "Monthly Revenue Analysis",
-            "description": "Analysis of revenue by service line with month-over-month comparison",
-            "type": "Custom",
-            "category": "Financial",
-            "entityType": "Invoice",
-            "format": "Chart",
-            "isPublic": true,
-            "lastRunDate": "2023-06-30T08:15:00Z",
-            "createdBy": 101,
-            "createdDate": "2023-01-15T11:30:00Z"
-        },
-        {
-            "id": 1002,
-            "name": "Accounts Receivable Aging",
-            "description": "Detailed aging of accounts receivable by customer",
-            "type": "Custom",
-            "category": "Financial",
-            "entityType": "Invoice",
-            "format": "Table",
-            "isPublic": true,
-            "lastRunDate": "2023-06-30T08:20:00Z",
-            "createdBy": 102,
-            "createdDate": "2023-01-16T09:45:00Z"
-        },
-        {
-            "id": 1003,
-            "name": "Customer Profitability",
-            "description": "Analysis of profitability by customer and job type",
-            "type": "Custom",
-            "category": "Financial",
-            "entityType": "Job",
-            "format": "Matrix",
-            "isPublic": false,
-            "lastRunDate": "2023-06-29T14:30:00Z",
-            "createdBy": 101,
-            "createdDate": "2023-02-05T10:15:00Z"
-        }
-        // Additional reports...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-report" class="resource-section">
+            <h3>Report</h3>
+            <p>The report resource is used to manage Report data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /report</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/report</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/report/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/report/123</td>
+                        <td>404</td>
+                        <td>report not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/report</td>
+                        <td>200</td>
+                        <td>report created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/report</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/report/123</td>
+                        <td>200</td>
+                        <td>report updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/report/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/report/123</td>
+                        <td>404</td>
+                        <td>report not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/report/123</td>
+                        <td>204</td>
+                        <td>report deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/report/123</td>
+                        <td>404</td>
+                        <td>report not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /report/[reportId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>report entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the report</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the report</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Reports</h4>
+            <pre><code>GET /report
 
-        <h3>GET /reports/{id}</h3>
-        <p>Retrieves a specific report definition by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/reports/1001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 1001,
-    "name": "Monthly Revenue Analysis",
-    "description": "Analysis of revenue by service line with month-over-month comparison",
-    "type": "Custom",
-    "category": "Financial",
-    "entityType": "Invoice",
-    "format": "Chart",
-    "columns": [
-        {
-            "field": "invoiceDate",
-            "label": "Month",
-            "dataType": "date",
-            "format": "MMM YYYY",
-            "groupByFormat": "month"
-        },
-        {
-            "field": "serviceLine",
-            "label": "Service Line",
-            "dataType": "string"
-        },
-        {
-            "field": "totalAmount",
-            "label": "Revenue",
-            "dataType": "currency",
-            "format": "$#,##0.00"
-        }
-    ],
-    "filters": [
-        {
-            "field": "invoiceDate",
-            "operator": "greaterThanOrEqual",
-            "value": "{{lastYear}}"
-        },
-        {
-            "field": "status",
-            "operator": "equals",
-            "value": "Paid"
-        }
-    ],
-    "sortBy": "invoiceDate",
-    "sortDirection": "ASC",
-    "groupBy": ["invoiceDate", "serviceLine"],
-    "aggregations": [
-        {
-            "function": "sum",
-            "field": "totalAmount",
-            "label": "Total Revenue"
-        }
-    ],
-    "chartType": "Bar",
-    "chartOptions": {
-        "stacked": true,
-        "showLegend": true,
-        "showLabels": true,
-        "colorScheme": "categorical"
-    },
-    "isPublic": true,
-    "isScheduled": true,
-    "schedule": {
-        "frequency": "Monthly",
-        "dayOfMonth": 1,
-        "time": "08:00:00",
-        "timezone": "America/New_York"
-    },
-    "recipients": [
-        {
-            "type": "user",
-            "id": 101
-        },
-        {
-            "type": "user",
-            "id": 102
-        },
-        {
-            "type": "email",
-            "address": "finance@example.com"
-        }
-    ],
-    "lastRunDate": "2023-06-30T08:15:00Z",
-    "lastRunStatus": "Success",
-    "lastRunDuration": 12,
-    "exportFormats": ["PDF", "XLSX", "CSV"],
-    "isTemplate": false,
-    "createdBy": 101,
-    "createdDate": "2023-01-15T11:30:00Z",
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2023-03-10T15:45:00Z",
-    "customFields": {
-        "department": "Finance",
-        "confidentiality": "Internal",
-        "reviewedBy": "CFO"
-    }
-}</code></pre>
-
-        <h3>POST /reports</h3>
-        <p>Creates a new report definition.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Service Technician Performance",
-    "description": "Analysis of technician productivity and customer satisfaction ratings",
-    "type": "Custom",
-    "category": "Operational",
-    "entityType": "Job",
-    "format": "Table",
-    "columns": [
-        {
-            "field": "assignedTechnician",
-            "label": "Technician",
-            "dataType": "string"
-        },
-        {
-            "field": "jobCount",
-            "label": "Jobs Completed",
-            "dataType": "integer"
-        },
-        {
-            "field": "averageCompletionTime",
-            "label": "Avg. Completion Time (hrs)",
-            "dataType": "decimal",
-            "format": "#0.0"
-        },
-        {
-            "field": "customerRating",
-            "label": "Customer Rating",
-            "dataType": "decimal",
-            "format": "#0.0"
-        },
-        {
-            "field": "revenueGenerated",
-            "label": "Revenue Generated",
-            "dataType": "currency",
-            "format": "$#,##0.00"
-        }
-    ],
-    "filters": [
-        {
-            "field": "completionDate",
-            "operator": "between",
-            "value": ["{{lastMonth}}", "{{today}}"]
-        },
-        {
-            "field": "status",
-            "operator": "equals",
-            "value": "Complete"
-        }
-    ],
-    "sortBy": "revenueGenerated",
-    "sortDirection": "DESC",
-    "groupBy": ["assignedTechnician"],
-    "aggregations": [
-        {
-            "function": "count",
-            "field": "id",
-            "label": "Job Count"
-        },
-        {
-            "function": "avg",
-            "field": "completionTime",
-            "label": "Avg. Completion Time"
-        },
-        {
-            "function": "avg",
-            "field": "customerRating",
-            "label": "Avg. Rating"
-        },
-        {
-            "function": "sum",
-            "field": "invoiceAmount",
-            "label": "Revenue Generated"
-        }
-    ],
-    "isPublic": true,
-    "isScheduled": true,
-    "schedule": {
-        "frequency": "Weekly",
-        "dayOfWeek": "Monday",
-        "time": "07:00:00",
-        "timezone": "America/New_York"
-    },
-    "recipients": [
-        {
-            "type": "user",
-            "id": 103
-        },
-        {
-            "type": "email",
-            "address": "operations@example.com"
-        }
-    ],
-    "exportFormats": ["PDF", "XLSX"],
-    "customFields": {
-        "department": "Operations",
-        "confidentiality": "Management Only",
-        "reviewFrequency": "Weekly"
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created report definition (HTTP 201 Created).</p>
-
-        <h3>PUT /reports/{id}</h3>
-        <p>Updates an existing report definition.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Service Technician Performance and Efficiency",
-    "description": "Enhanced analysis of technician productivity, efficiency, and customer satisfaction ratings",
-    "filters": [
-        {
-            "field": "completionDate",
-            "operator": "between",
-            "value": ["{{last3Months}}", "{{today}}"]
-        },
-        {
-            "field": "status",
-            "operator": "equals",
-            "value": "Complete"
-        }
-    ],
-    "columns": [
-        {
-            "field": "assignedTechnician",
-            "label": "Technician",
-            "dataType": "string"
-        },
-        {
-            "field": "jobCount",
-            "label": "Jobs Completed",
-            "dataType": "integer"
-        },
-        {
-            "field": "averageCompletionTime",
-            "label": "Avg. Completion Time (hrs)",
-            "dataType": "decimal",
-            "format": "#0.0"
-        },
-        {
-            "field": "onTimePercent",
-            "label": "On-Time %",
-            "dataType": "percent",
-            "format": "#0.0%"
-        },
-        {
-            "field": "customerRating",
-            "label": "Customer Rating",
-            "dataType": "decimal",
-            "format": "#0.0"
-        },
-        {
-            "field": "revenueGenerated",
-            "label": "Revenue Generated",
-            "dataType": "currency",
-            "format": "$#,##0.00"
-        },
-        {
-            "field": "partsUsed",
-            "label": "Parts Cost",
-            "dataType": "currency",
-            "format": "$#,##0.00"
-        },
-        {
-            "field": "laborHours",
-            "label": "Labor Hours",
-            "dataType": "decimal",
-            "format": "#0.0"
-        }
-    ],
-    "aggregations": [
-        {
-            "function": "count",
-            "field": "id",
-            "label": "Job Count"
-        },
-        {
-            "function": "avg",
-            "field": "completionTime",
-            "label": "Avg. Completion Time"
-        },
-        {
-            "function": "percent",
-            "field": "onTime",
-            "label": "On-Time %"
-        },
-        {
-            "function": "avg",
-            "field": "customerRating",
-            "label": "Avg. Rating"
-        },
-        {
-            "function": "sum",
-            "field": "invoiceAmount",
-            "label": "Revenue Generated"
-        },
-        {
-            "function": "sum",
-            "field": "partsCost",
-            "label": "Parts Cost"
-        },
-        {
-            "function": "sum",
-            "field": "laborHours",
-            "label": "Labor Hours"
-        }
-    ],
-    "schedule": {
-        "frequency": "Weekly",
-        "dayOfWeek": "Monday",
-        "time": "06:00:00",
-        "timezone": "America/New_York"
-    },
-    "recipients": [
-        {
-            "type": "user",
-            "id": 103
-        },
-        {
-            "type": "user",
-            "id": 104
-        },
-        {
-            "type": "email",
-            "address": "operations@example.com"
-        },
-        {
-            "type": "email",
-            "address": "service.managers@example.com"
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated report definition.</p>
-
-        <h3>DELETE /reports/{id}</h3>
-        <p>Deletes a report definition.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /reports/{id}/run</h3>
-        <p>Executes a report and returns the results.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "parameters": {
-        "startDate": "2023-01-01",
-        "endDate": "2023-06-30",
-        "serviceLineId": 5
-    },
-    "overrideFilters": [
-        {
-            "field": "customerType",
-            "operator": "equals",
-            "value": "Commercial"
-        }
-    ],
-    "maxRows": 1000,
-    "includeChartData": true,
-    "includeRawData": true
-}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "reportId": 1001,
-    "reportName": "Monthly Revenue Analysis",
-    "executionId": "exec-2023-07-05-12345",
-    "executionDate": "2023-07-05T10:30:45Z",
-    "executionDuration": 3.5,
-    "status": "Success",
-    "parameters": {
-        "startDate": "2023-01-01",
-        "endDate": "2023-06-30",
-        "serviceLineId": 5
-    },
-    "totalRows": 24,
-    "aggregates": {
-        "totalRevenue": 875000.00,
-        "averageMonthlyRevenue": 145833.33
-    },
-    "data": [
-        {
-            "month": "Jan 2023",
-            "serviceLine": "HVAC Maintenance",
-            "revenue": 125000.00
-        },
-        {
-            "month": "Feb 2023",
-            "serviceLine": "HVAC Maintenance",
-            "revenue": 132000.00
-        },
-        // Additional data rows...
-    ],
-    "chartData": {
-        "labels": ["Jan 2023", "Feb 2023", "Mar 2023", "Apr 2023", "May 2023", "Jun 2023"],
-        "datasets": [
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "reports": [
             {
-                "label": "HVAC Maintenance",
-                "data": [125000.00, 132000.00, 140000.00, 138000.00, 145000.00, 150000.00]
-            },
-            {
-                "label": "Emergency Service",
-                "data": [15000.00, 18000.00, 12000.00, 20000.00, 22000.00, 18000.00]
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/report/123",
+                "name": "Example Report"
             }
         ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Report</h4>
+            <pre><code>GET /report/123
 
-        <h3>GET /reports/{id}/results/{executionId}</h3>
-        <p>Retrieves the results of a previously executed report.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/reports/1001/results/exec-2023-07-05-12345
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the report execution results similar to the run endpoint response.</p>
-
-        <h3>GET /reports/{id}/executions</h3>
-        <p>Retrieves a list of executions for a specific report.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/reports/1001/executions
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "executionId": "exec-2023-07-05-12345",
-            "executionDate": "2023-07-05T10:30:45Z",
-            "executedBy": 101,
-            "status": "Success",
-            "duration": 3.5,
-            "rowCount": 24
-        },
-        {
-            "executionId": "exec-2023-06-30-56789",
-            "executionDate": "2023-06-30T08:15:00Z",
-            "executedBy": "system",
-            "status": "Success",
-            "duration": 4.2,
-            "rowCount": 24
-        },
-        {
-            "executionId": "exec-2023-06-15-24680",
-            "executionDate": "2023-06-15T14:20:30Z",
-            "executedBy": 102,
-            "status": "Success",
-            "duration": 3.8,
-            "rowCount": 24
-        }
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
-
-        <h3>POST /reports/{id}/export</h3>
-        <p>Exports a report in the specified format.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "format": "PDF",
-    "parameters": {
-        "startDate": "2023-01-01",
-        "endDate": "2023-06-30"
-    },
-    "options": {
-        "paperSize": "Letter",
-        "orientation": "Landscape",
-        "includeCharts": true,
-        "includeCompanyLogo": true,
-        "includePageNumbers": true
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/report/123",
+        "name": "Example Report"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a download URL for the exported report.</p>
-
-        <h3>POST /reports/{id}/schedule</h3>
-        <p>Configures the schedule for automatic report generation.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "enabled": true,
-    "frequency": "Weekly",
-    "dayOfWeek": "Monday",
-    "time": "07:00:00",
-    "timezone": "America/New_York",
-    "startDate": "2023-07-10",
-    "endDate": null,
-    "parameters": {
-        "datePeriod": "Previous Week"
-    },
-    "exportFormat": "PDF",
-    "recipients": [
-        {
-            "type": "user",
-            "id": 103
-        },
-        {
-            "type": "email",
-            "address": "operations@example.com"
-        }
-    ],
-    "subject": "Weekly Service Technician Performance Report",
-    "message": "Please find attached the weekly performance report for service technicians."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated report schedule configuration.</p>
-
-        <h3>GET /reports/categories</h3>
-        <p>Retrieves a list of available report categories.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/reports/categories
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {"name": "Financial", "count": 12},
-        {"name": "Operational", "count": 15},
-        {"name": "Customer", "count": 8},
-        {"name": "Service", "count": 10},
-        {"name": "Sales", "count": 7},
-        {"name": "Marketing", "count": 5},
-        {"name": "Compliance", "count": 3}
-    ],
-    "totalResults": 7
-}</code></pre>
-
-        <h3>GET /reports/templates</h3>
-        <p>Retrieves a list of available report templates.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/reports/templates?category=Financial
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of report templates matching the specified criteria.</p>
-
-        <h3>POST /reports/{id}/clone</h3>
-        <p>Creates a new report by cloning an existing report.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Technician Performance - Eastern Region",
-    "description": "Technician performance analysis for the Eastern Region",
-    "additionalFilters": [
-        {
-            "field": "region",
-            "operator": "equals",
-            "value": "East"
-        }
-    ],
-    "preserveSchedule": false
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created report based on the cloned template.</p>
-
-        <h3>POST /reports/subscriptions</h3>
-        <p>Subscribes a user to receive scheduled report deliveries.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "reportId": 1001,
-    "userId": 105,
-    "email": "jane.smith@example.com",
-    "format": "PDF",
-    "frequency": "Weekly"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the created subscription information.</p>
-
-        <h3>DELETE /reports/subscriptions/{subscriptionId}</h3>
-        <p>Cancels a report subscription.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful cancellation.</p>
-
-        <h3>GET /reports/dashboard/{dashboardId}</h3>
-        <p>Retrieves a dashboard containing multiple reports.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/reports/dashboard/5001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the dashboard definition and associated report data.</p>
-
-        <h3>POST /reports/batch</h3>
-        <p>Creates multiple report definitions in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "reports": [
-        {
-            "name": "Revenue by Customer Type",
-            "type": "Custom",
-            "category": "Financial",
-            "entityType": "Invoice",
-            "format": "Chart",
-            "chartType": "Pie"
-        },
-        {
-            "name": "Revenue by Service Line",
-            "type": "Custom",
-            "category": "Financial",
-            "entityType": "Invoice",
-            "format": "Chart",
-            "chartType": "Bar"
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created report definitions.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

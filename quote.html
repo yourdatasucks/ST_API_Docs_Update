@@ -301,478 +301,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Quote management...</p>
 
-        <h3>GET /quotes</h3>
-        <p>Retrieves a list of quotes. Supports filtering by customer, status, date range, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/quotes?customerId=1001&status=Approved&startDate=2023-01-01&endDate=2023-06-30
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 2001,
-            "number": "Q-2023-001",
-            "title": "Annual HVAC Maintenance",
-            "customerId": 1001,
-            "locationId": 2001,
-            "status": "Approved",
-            "issuedDate": "2023-01-15",
-            "approvedDate": "2023-01-22",
-            "totalAmount": 5750.00,
-            "createdDate": "2023-01-10T14:30:00Z"
-        },
-        {
-            "id": 2002,
-            "number": "Q-2023-010",
-            "title": "Fire System Upgrade",
-            "customerId": 1001,
-            "locationId": 2002,
-            "status": "Approved",
-            "issuedDate": "2023-03-05",
-            "approvedDate": "2023-03-15",
-            "totalAmount": 12850.00,
-            "createdDate": "2023-03-01T09:45:00Z"
-        },
-        {
-            "id": 2003,
-            "number": "Q-2023-022",
-            "title": "Emergency Generator Installation",
-            "customerId": 1001,
-            "locationId": 2001,
-            "status": "Approved",
-            "issuedDate": "2023-05-12",
-            "approvedDate": "2023-05-18",
-            "totalAmount": 28500.00,
-            "createdDate": "2023-05-10T11:20:00Z"
-        }
-        // Additional quotes...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-quote" class="resource-section">
+            <h3>Quote</h3>
+            <p>The quote resource is used to manage Quote data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /quote</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quote</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quote/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quote/123</td>
+                        <td>404</td>
+                        <td>quote not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/quote</td>
+                        <td>200</td>
+                        <td>quote created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/quote</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quote/123</td>
+                        <td>200</td>
+                        <td>quote updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quote/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quote/123</td>
+                        <td>404</td>
+                        <td>quote not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/quote/123</td>
+                        <td>204</td>
+                        <td>quote deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/quote/123</td>
+                        <td>404</td>
+                        <td>quote not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /quote/[quoteId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>quote entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the quote</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the quote</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Quotes</h4>
+            <pre><code>GET /quote
 
-        <h3>GET /quotes/{id}</h3>
-        <p>Retrieves a specific quote by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/quotes/2001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 2001,
-    "number": "Q-2023-001",
-    "title": "Annual HVAC Maintenance",
-    "customerId": 1001,
-    "locationId": 2001,
-    "status": "Approved",
-    "issuedDate": "2023-01-15",
-    "expirationDate": "2023-02-15",
-    "approvedDate": "2023-01-22",
-    "approvedBy": "Jane Smith",
-    "description": "Annual maintenance and service contract for HVAC equipment at the main facility.",
-    "notes": "Customer requested a breakdown of quarterly service visits.",
-    "terms": "Valid for 30 days. Payment due within 30 days of invoice date.",
-    "subtotal": 5500.00,
-    "discountPercent": 0,
-    "discountAmount": 0,
-    "taxRate": 4.5,
-    "taxAmount": 250.00,
-    "totalAmount": 5750.00,
-    "currency": "USD",
-    "paymentTermsId": 1001,
-    "validityPeriod": 30,
-    "primaryContactId": 3001,
-    "responsibleUserId": 101,
-    "jobId": 3001,
-    "attachmentIds": [4001, 4002],
-    "lineItems": [
-        {
-            "id": 5001,
-            "description": "Spring Maintenance Visit",
-            "quantity": 1,
-            "unitPrice": 1375.00,
-            "unitOfMeasure": "Service",
-            "lineTotal": 1375.00,
-            "tax": true,
-            "notes": "Includes filter replacement"
-        },
-        {
-            "id": 5002,
-            "description": "Summer Maintenance Visit",
-            "quantity": 1,
-            "unitPrice": 1375.00,
-            "unitOfMeasure": "Service",
-            "lineTotal": 1375.00,
-            "tax": true,
-            "notes": "Includes coil cleaning"
-        },
-        {
-            "id": 5003,
-            "description": "Fall Maintenance Visit",
-            "quantity": 1,
-            "unitPrice": 1375.00,
-            "unitOfMeasure": "Service",
-            "lineTotal": 1375.00,
-            "tax": true,
-            "notes": "Includes heating system inspection"
-        },
-        {
-            "id": 5004,
-            "description": "Winter Maintenance Visit",
-            "quantity": 1,
-            "unitPrice": 1375.00,
-            "unitOfMeasure": "Service",
-            "lineTotal": 1375.00,
-            "tax": true,
-            "notes": "Includes belt inspection and replacement"
-        }
-    ],
-    "presentationUrl": "https://example.com/quotes/customer-view/2001",
-    "conversionStatus": "Fully Converted",
-    "createdBy": 101,
-    "createdDate": "2023-01-10T14:30:00Z",
-    "lastModifiedBy": 101,
-    "lastModifiedDate": "2023-01-22T10:15:00Z",
-    "customFields": {
-        "department": "Maintenance",
-        "contractType": "Annual Service",
-        "priority": "Standard",
-        "customerPoNumber": "PO-2023-112"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "quotes": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/quote/123",
+                "name": "Example Quote"
+            }
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Quote</h4>
+            <pre><code>GET /quote/123
 
-        <h3>POST /quotes</h3>
-        <p>Creates a new quote.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "number": "Q-2023-045",
-    "title": "Rooftop Unit Replacement",
-    "customerId": 1002,
-    "locationId": 2005,
-    "status": "Draft",
-    "description": "Replacement of aging rooftop HVAC unit with new high-efficiency model.",
-    "notes": "Customer is considering financing options.",
-    "terms": "Quote valid for 60 days. 50% deposit required to begin work.",
-    "taxRate": 4.5,
-    "currency": "USD",
-    "paymentTermsId": 1002,
-    "validityPeriod": 60,
-    "primaryContactId": 3025,
-    "responsibleUserId": 102,
-    "lineItems": [
-        {
-            "description": "15-ton High-Efficiency Rooftop Unit",
-            "quantity": 1,
-            "unitPrice": 22500.00,
-            "unitOfMeasure": "Each",
-            "lineTotal": 22500.00,
-            "tax": true,
-            "notes": "Carrier Model XYZ15"
-        },
-        {
-            "description": "Removal and Disposal of Existing Unit",
-            "quantity": 1,
-            "unitPrice": 3500.00,
-            "unitOfMeasure": "Service",
-            "lineTotal": 3500.00,
-            "tax": true,
-            "notes": "Includes environmentally-friendly disposal"
-        },
-        {
-            "description": "Installation and Commissioning",
-            "quantity": 1,
-            "unitPrice": 8750.00,
-            "unitOfMeasure": "Service",
-            "lineTotal": 8750.00,
-            "tax": true,
-            "notes": "Includes crane service and testing"
-        },
-        {
-            "description": "Extended Warranty - 5 Years",
-            "quantity": 1,
-            "unitPrice": 2500.00,
-            "unitOfMeasure": "Each",
-            "lineTotal": 2500.00,
-            "tax": false,
-            "notes": "Parts and labor"
-        }
-    ],
-    "customFields": {
-        "projectType": "Equipment Replacement",
-        "estimatedDuration": "3 days",
-        "equipmentManufacturer": "Carrier"
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/quote/123",
+        "name": "Example Quote"
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created quote (HTTP 201 Created).</p>
-
-        <h3>PUT /quotes/{id}</h3>
-        <p>Updates an existing quote.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "title": "Rooftop Unit Replacement with Energy Recovery",
-    "description": "Replacement of aging rooftop HVAC unit with new high-efficiency model including energy recovery ventilation.",
-    "notes": "Customer has approved financing through XYZ Finance.",
-    "lineItems": [
-        {
-            "id": 5011,
-            "description": "15-ton High-Efficiency Rooftop Unit",
-            "quantity": 1,
-            "unitPrice": 22500.00,
-            "unitOfMeasure": "Each",
-            "lineTotal": 22500.00,
-            "tax": true,
-            "notes": "Carrier Model XYZ15"
-        },
-        {
-            "id": 5012,
-            "description": "Energy Recovery Ventilation System",
-            "quantity": 1,
-            "unitPrice": 4500.00,
-            "unitOfMeasure": "Each",
-            "lineTotal": 4500.00,
-            "tax": true,
-            "notes": "Improves efficiency by 20%"
-        },
-        {
-            "id": 5013,
-            "description": "Removal and Disposal of Existing Unit",
-            "quantity": 1,
-            "unitPrice": 3500.00,
-            "unitOfMeasure": "Service",
-            "lineTotal": 3500.00,
-            "tax": true,
-            "notes": "Includes environmentally-friendly disposal"
-        },
-        {
-            "id": 5014,
-            "description": "Installation and Commissioning",
-            "quantity": 1,
-            "unitPrice": 9750.00,
-            "unitOfMeasure": "Service",
-            "lineTotal": 9750.00,
-            "tax": true,
-            "notes": "Includes crane service and testing"
-        },
-        {
-            "id": 5015,
-            "description": "Extended Warranty - 5 Years",
-            "quantity": 1,
-            "unitPrice": 2800.00,
-            "unitOfMeasure": "Each",
-            "lineTotal": 2800.00,
-            "tax": false,
-            "notes": "Parts and labor"
-        }
-    ],
-    "customFields": {
-        "projectType": "Equipment Replacement",
-        "estimatedDuration": "4 days",
-        "equipmentManufacturer": "Carrier",
-        "energySavingsEstimate": "25%"
-    }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated quote.</p>
-
-        <h3>DELETE /quotes/{id}</h3>
-        <p>Deletes a quote. This is typically only allowed for quotes in "Draft" status.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /quotes/{id}/send</h3>
-        <p>Sends a quote to the customer, updating its status to "Sent".</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "recipients": ["jane.smith@customer.com", "facilities@customer.com"],
-    "subject": "Quote for Rooftop Unit Replacement",
-    "message": "Please find attached our quote for the rooftop unit replacement project we discussed. Let me know if you have any questions.",
-    "attachAdditionalDocuments": true,
-    "notifyResponsibleUser": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated quote with status changed to "Sent" and sending details.</p>
-
-        <h3>POST /quotes/{id}/approve</h3>
-        <p>Marks a quote as approved by the customer.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "approvedBy": "Jane Smith",
-    "approvedDate": "2023-07-15",
-    "approvalNotes": "Approved via email confirmation.",
-    "attachCustomerApproval": true,
-    "attachmentId": 4025
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated quote with status changed to "Approved" and approval details.</p>
-
-        <h3>POST /quotes/{id}/reject</h3>
-        <p>Marks a quote as rejected by the customer.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "rejectedBy": "Jane Smith",
-    "rejectedDate": "2023-07-15",
-    "rejectionReason": "Budget constraints; will reconsider next quarter.",
-    "rejectionNotes": "Customer requested a follow-up in September."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated quote with status changed to "Rejected" and rejection details.</p>
-
-        <h3>POST /quotes/{id}/convert-to-job</h3>
-        <p>Converts an approved quote to a job.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "jobTitle": "Rooftop Unit Replacement",
-    "scheduledStartDate": "2023-08-15",
-    "scheduledEndDate": "2023-08-18",
-    "jobDescription": "Replacement of aging rooftop HVAC unit with new high-efficiency model including energy recovery ventilation.",
-    "jobTypeId": 102,
-    "priorityId": 2,
-    "assignToUserIds": [201, 202, 203],
-    "includeAllLineItems": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns information about the created job and updated quote.</p>
-
-        <h3>POST /quotes/{id}/convert-to-invoice</h3>
-        <p>Converts an approved quote directly to an invoice.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "invoiceDate": "2023-07-20",
-    "dueDate": "2023-08-19",
-    "invoiceDescription": "Rooftop Unit Replacement project as approved in Quote Q-2023-045",
-    "includeAllLineItems": true,
-    "requiresDeposit": true,
-    "depositPercentage": 50
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns information about the created invoice and updated quote.</p>
-
-        <h3>GET /quotes/{id}/line-items</h3>
-        <p>Retrieves all line items for a specific quote.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/quotes/2001/line-items
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of line items belonging to the specified quote.</p>
-
-        <h3>POST /quotes/{id}/line-items</h3>
-        <p>Adds a new line item to a quote.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "description": "Premium Service Plan Upgrade",
-    "quantity": 1,
-    "unitPrice": 1250.00,
-    "unitOfMeasure": "Each",
-    "lineTotal": 1250.00,
-    "tax": true,
-    "notes": "Includes 24/7 emergency response"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created line item and updated quote totals.</p>
-
-        <h3>GET /quotes/{id}/attachments</h3>
-        <p>Retrieves all attachments for a specific quote.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/quotes/2001/attachments
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of attachments associated with the specified quote.</p>
-
-        <h3>POST /quotes/{id}/attachments</h3>
-        <p>Adds a new attachment to a quote.</p>
-        <h4>Request</h4>
-        <p>A multipart/form-data request containing the file to upload and metadata.</p>
-        <h4>Response</h4>
-        <p>Returns the uploaded attachment information.</p>
-
-        <h3>GET /customers/{customerId}/quotes</h3>
-        <p>Retrieves all quotes for a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/1001/quotes
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of quotes belonging to the specified customer.</p>
-
-        <h3>GET /quotes/{id}/history</h3>
-        <p>Retrieves the history of changes made to a quote.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/quotes/2001/history
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of historical changes made to the specified quote.</p>
-
-        <h3>POST /quotes/{id}/duplicate</h3>
-        <p>Creates a duplicate of an existing quote.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "newNumber": "Q-2023-046",
-    "newTitle": "Rooftop Unit Replacement - Building 2",
-    "customerId": 1002,
-    "locationId": 2006,
-    "copyLineItems": true,
-    "copyAttachments": true,
-    "resetStatus": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created duplicate quote.</p>
-
-        <h3>GET /quotes/expiring</h3>
-        <p>Retrieves quotes that are expiring within a specified time period.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/quotes/expiring?days=15
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of quotes expiring within the specified number of days.</p>
-
-        <h3>POST /quotes/batch</h3>
-        <p>Creates multiple quotes in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "quotes": [
-        {
-            "number": "Q-2023-050",
-            "title": "Monthly Facility Inspection",
-            "customerId": 1001,
-            "locationId": 2001,
-            "status": "Draft",
-            "description": "Monthly inspection of facility systems",
-            "lineItems": [
-                {
-                    "description": "Monthly Facility Inspection",
-                    "quantity": 1,
-                    "unitPrice": 750.00,
-                    "unitOfMeasure": "Service",
-                    "lineTotal": 750.00,
-                    "tax": true
-                }
-            ]
-        },
-        {
-            "number": "Q-2023-051",
-            "title": "Annual Fire System Inspection",
-            "customerId": 1001,
-            "locationId": 2002,
-            "status": "Draft",
-            "description": "Annual fire system inspection and testing",
-            "lineItems": [
-                {
-                    "description": "Annual Fire System Inspection",
-                    "quantity": 1,
-                    "unitPrice": 1250.00,
-                    "unitOfMeasure": "Service",
-                    "lineTotal": 1250.00,
-                    "tax": true
-                }
-            ]
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created quotes.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

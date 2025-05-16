@@ -328,468 +328,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Import management...</p>
 
-        <h3>GET /imports</h3>
-        <p>Retrieves a list of imports. Supports filtering by type, status, user, date range, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/imports?type=Customer&status=Completed
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 12345,
-            "name": "Customer Import - August 2023",
-            "type": "Customer",
-            "status": "Completed",
-            "source": "CSV",
-            "sourceFile": "customers-aug-2023.csv",
-            "userId": 101,
-            "createdDate": "2023-08-15T10:30:00Z",
-            "startDate": "2023-08-15T10:30:05Z",
-            "completedDate": "2023-08-15T10:32:45Z",
-            "totalRecords": 250,
-            "successCount": 245,
-            "errorCount": 3,
-            "warningCount": 2,
-            "progressPercentage": 100,
-            "resultsUrl": "https://api.servicetrade.com/imports/12345/results",
-            "errorReportUrl": "https://api.servicetrade.com/imports/12345/errorReport"
-        },
-        {
-            "id": 12346,
-            "name": "Location Import - August 2023",
-            "type": "Location",
-            "status": "Completed",
-            "source": "CSV",
-            "sourceFile": "locations-aug-2023.csv",
-            "userId": 101,
-            "createdDate": "2023-08-15T11:00:00Z",
-            "startDate": "2023-08-15T11:00:05Z",
-            "completedDate": "2023-08-15T11:01:30Z",
-            "totalRecords": 180,
-            "successCount": 178,
-            "errorCount": 2,
-            "warningCount": 0,
-            "progressPercentage": 100,
-            "resultsUrl": "https://api.servicetrade.com/imports/12346/results",
-            "errorReportUrl": "https://api.servicetrade.com/imports/12346/errorReport"
-        }
-        // Additional imports...
-    ],
-    "totalResults": 2,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-import" class="resource-section">
+            <h3>Import</h3>
+            <p>The import resource is used to manage Import data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /import</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/import</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/import/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/import/123</td>
+                        <td>404</td>
+                        <td>import not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/import</td>
+                        <td>200</td>
+                        <td>import created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/import</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/import/123</td>
+                        <td>200</td>
+                        <td>import updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/import/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/import/123</td>
+                        <td>404</td>
+                        <td>import not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/import/123</td>
+                        <td>204</td>
+                        <td>import deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/import/123</td>
+                        <td>404</td>
+                        <td>import not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /import/[importId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>import entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the import</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the import</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Imports</h4>
+            <pre><code>GET /import
 
-        <h3>GET /imports/{id}</h3>
-        <p>Retrieves a specific import by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/imports/12345
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the import with the specified ID, including detailed information about the import process.</p>
-
-        <h3>POST /imports</h3>
-        <p>Creates a new import operation.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Asset Import - August 2023",
-    "type": "Asset",
-    "source": "CSV",
-    "sourceFileUrl": "https://example.com/myfiles/assets-aug-2023.csv",
-    "options": {
-        "updateExisting": true,
-        "createMissing": true,
-        "identifierField": "externalId",
-        "skipHeaderRow": true,
-        "delimiter": ",",
-        "dateFormat": "MM/DD/YYYY",
-        "batchSize": 100,
-        "stopOnError": false,
-        "errorThreshold": 50,
-        "notifyOnCompletion": true,
-        "notificationEmails": ["admin@example.com", "user@example.com"]
-    },
-    "fieldMapping": {
-        "Asset ID": "externalId",
-        "Asset Name": "name",
-        "Manufacturer": "manufacturer",
-        "Model": "model",
-        "Serial Number": "serialNumber",
-        "Installation Date": "installDate",
-        "Location ID": "locationId",
-        "Description": "description",
-        "Custom Field 1": "customFields.field1",
-        "Custom Field 2": "customFields.field2"
-    },
-    "notes": "Monthly asset data update from inventory system"
-}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 12347,
-    "name": "Asset Import - August 2023",
-    "type": "Asset",
-    "status": "Pending",
-    "source": "CSV",
-    "sourceFileUrl": "https://example.com/myfiles/assets-aug-2023.csv",
-    "userId": 101,
-    "createdDate": "2023-08-16T14:30:00Z",
-    "options": {
-        "updateExisting": true,
-        "createMissing": true,
-        "identifierField": "externalId",
-        "skipHeaderRow": true,
-        "delimiter": ",",
-        "dateFormat": "MM/DD/YYYY",
-        "batchSize": 100,
-        "stopOnError": false,
-        "errorThreshold": 50,
-        "notifyOnCompletion": true,
-        "notificationEmails": ["admin@example.com", "user@example.com"]
-    },
-    "fieldMapping": {
-        "Asset ID": "externalId",
-        "Asset Name": "name",
-        "Manufacturer": "manufacturer",
-        "Model": "model",
-        "Serial Number": "serialNumber",
-        "Installation Date": "installDate",
-        "Location ID": "locationId",
-        "Description": "description",
-        "Custom Field 1": "customFields.field1",
-        "Custom Field 2": "customFields.field2"
-    },
-    "notes": "Monthly asset data update from inventory system",
-    "templateUrl": "https://api.servicetrade.com/imports/templates/Asset"
-}</code></pre>
-
-        <h3>POST /imports/upload</h3>
-        <p>Uploads a file for import.</p>
-        <h4>Request</h4>
-        <p>A multipart/form-data request containing the file to import.</p>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "fileId": "imp-file-12347",
-    "fileName": "assets-aug-2023.csv",
-    "fileSize": 45678,
-    "fileUrl": "https://api.servicetrade.com/imports/files/imp-file-12347",
-    "contentType": "text/csv",
-    "uploadDate": "2023-08-16T14:25:30Z",
-    "expirationDate": "2023-08-16T15:25:30Z"
-}</code></pre>
-
-        <h3>PUT /imports/{id}</h3>
-        <p>Updates an existing import operation. Limited to certain fields depending on import status.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "name": "Asset Import - August 2023 (Updated)",
-    "options": {
-        "errorThreshold": 100,
-        "notificationEmails": ["admin@example.com", "user@example.com", "manager@example.com"]
-    },
-    "notes": "Monthly asset data update from inventory system - Added new assets from warehouse"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated import object.</p>
-
-        <h3>DELETE /imports/{id}</h3>
-        <p>Deletes an import operation. This is only allowed for imports that haven't started processing yet.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /imports/{id}/start</h3>
-        <p>Starts processing a pending import operation.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "priority": "normal"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated import object with status changed to "Processing".</p>
-
-        <h3>POST /imports/{id}/cancel</h3>
-        <p>Cancels an in-progress import operation.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "reason": "Source data needs review",
-    "preserveProcessedRecords": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated import object with status changed to "Cancelled".</p>
-
-        <h3>GET /imports/{id}/status</h3>
-        <p>Checks the current status of an import operation.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/imports/12347/status
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 12347,
-    "status": "Processing",
-    "progressPercentage": 45,
-    "processedRecords": 112,
-    "totalRecords": 250,
-    "successCount": 110,
-    "errorCount": 2,
-    "warningCount": 0,
-    "startDate": "2023-08-16T14:35:00Z",
-    "estimatedTimeRemaining": "00:03:25",
-    "currentBatch": 2,
-    "totalBatches": 3
-}</code></pre>
-
-        <h3>GET /imports/{id}/preview</h3>
-        <p>Previews the data to be imported without actually performing the import.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/imports/12347/preview?limit=5
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 12347,
-    "totalRecords": 250,
-    "previewLimit": 5,
-    "fields": ["externalId", "name", "manufacturer", "model", "serialNumber", "installDate", "locationId", "description", "customFields.field1", "customFields.field2"],
-    "records": [
-        {
-            "externalId": "AST-001",
-            "name": "Fire Alarm Control Panel",
-            "manufacturer": "Simplex",
-            "model": "4100ES",
-            "serialNumber": "SN12345678",
-            "installDate": "05/15/2020",
-            "locationId": "LOC-001",
-            "description": "Main fire alarm control panel",
-            "customFields.field1": "Floor 1",
-            "customFields.field2": "Equipment Room"
-        },
-        {
-            "externalId": "AST-002",
-            "name": "Fire Alarm Annunciator",
-            "manufacturer": "Simplex",
-            "model": "4603-9101",
-            "serialNumber": "SN23456789",
-            "installDate": "05/15/2020",
-            "locationId": "LOC-001",
-            "description": "Remote annunciator at main entrance",
-            "customFields.field1": "Floor 1",
-            "customFields.field2": "Main Lobby"
-        },
-        // Additional preview records...
-    ],
-    "possibleIssues": [
-        {
-            "rowNumber": 4,
-            "field": "installDate",
-            "value": "15/05/2020",
-            "issue": "Date format mismatch. Expected MM/DD/YYYY, got DD/MM/YYYY",
-            "severity": "Warning"
-        },
-        {
-            "rowNumber": 5,
-            "field": "locationId",
-            "value": "LOC-005",
-            "issue": "Referenced location does not exist in the system",
-            "severity": "Error"
-        }
-    ]
-}</code></pre>
-
-        <h3>GET /imports/{id}/results</h3>
-        <p>Retrieves the results of a completed import operation.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/imports/12345/results
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 12345,
-    "name": "Customer Import - August 2023",
-    "status": "Completed",
-    "totalRecords": 250,
-    "successCount": 245,
-    "errorCount": 3,
-    "warningCount": 2,
-    "successfulRecords": [
-        {
-            "rowNumber": 1,
-            "externalId": "CUST-001",
-            "entityId": 5001,
-            "entityUrl": "https://api.servicetrade.com/customers/5001",
-            "action": "Created"
-        },
-        {
-            "rowNumber": 2,
-            "externalId": "CUST-002",
-            "entityId": 5002,
-            "entityUrl": "https://api.servicetrade.com/customers/5002",
-            "action": "Created"
-        }
-        // Additional successful records...
-    ],
-    "failedRecords": [
-        {
-            "rowNumber": 12,
-            "externalId": "CUST-012",
-            "data": {
-                "name": "",
-                "address": "123 Main St",
-                "city": "Raleigh",
-                "state": "NC",
-                "zip": "27601"
-            },
-            "errors": [
-                {
-                    "field": "name",
-                    "message": "Name is required"
-                }
-            ]
-        },
-        {
-            "rowNumber": 25,
-            "externalId": "CUST-025",
-            "data": {
-                "name": "Duplicate Customer LLC",
-                "address": "456 Oak Ave",
-                "city": "Durham",
-                "state": "NC",
-                "zip": "27701"
-            },
-            "errors": [
-                {
-                    "field": "name",
-                    "message": "Customer with this name already exists (ID: 4802)"
-                }
-            ]
-        }
-        // Additional failed records...
-    ],
-    "recordsWithWarnings": [
-        {
-            "rowNumber": 18,
-            "externalId": "CUST-018",
-            "entityId": 5018,
-            "entityUrl": "https://api.servicetrade.com/customers/5018",
-            "action": "Created",
-            "warnings": [
-                {
-                    "field": "phone",
-                    "message": "Phone number format is incorrect"
-                }
-            ]
-        }
-        // Additional records with warnings...
-    ]
-}</code></pre>
-
-        <h3>GET /imports/templates</h3>
-        <p>Retrieves available import templates.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/imports/templates
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "type": "Customer",
-            "name": "Customer Import Template",
-            "description": "Template for importing customers",
-            "url": "https://api.servicetrade.com/imports/templates/Customer",
-            "formats": ["CSV", "Excel"],
-            "requiredFields": ["name"],
-            "optionalFields": ["address", "city", "state", "zip", "phone", "email", "website", "externalId"]
-        },
-        {
-            "type": "Location",
-            "name": "Location Import Template",
-            "description": "Template for importing locations",
-            "url": "https://api.servicetrade.com/imports/templates/Location",
-            "formats": ["CSV", "Excel"],
-            "requiredFields": ["name", "customerId"],
-            "optionalFields": ["address", "city", "state", "zip", "phone", "email", "externalId"]
-        },
-        {
-            "type": "Asset",
-            "name": "Asset Import Template",
-            "description": "Template for importing assets",
-            "url": "https://api.servicetrade.com/imports/templates/Asset",
-            "formats": ["CSV", "Excel"],
-            "requiredFields": ["name", "locationId"],
-            "optionalFields": ["manufacturer", "model", "serialNumber", "installDate", "externalId"]
-        }
-        // Additional templates...
-    ]
-}</code></pre>
-
-        <h3>GET /imports/templates/{type}</h3>
-        <p>Downloads a specific import template.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/imports/templates/Asset?format=xlsx
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the template file for download.</p>
-
-        <h3>POST /imports/validate</h3>
-        <p>Validates import data without actually performing the import.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "type": "Asset",
-    "source": "CSV",
-    "sourceFileUrl": "https://api.servicetrade.com/imports/files/imp-file-12347",
-    "options": {
-        "updateExisting": true,
-        "createMissing": true,
-        "identifierField": "externalId",
-        "skipHeaderRow": true
-    },
-    "fieldMapping": {
-        "Asset ID": "externalId",
-        "Asset Name": "name",
-        "Manufacturer": "manufacturer",
-        "Model": "model",
-        "Serial Number": "serialNumber",
-        "Installation Date": "installDate",
-        "Location ID": "locationId",
-        "Description": "description"
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "imports": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/import/123",
+                "name": "Example Import"
+            }
+        ]
     }
-}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "isValid": false,
-    "totalRecords": 250,
-    "validRecords": 245,
-    "invalidRecords": 5,
-    "warningRecords": 8,
-    "issues": [
-        {
-            "rowNumber": 5,
-            "field": "locationId",
-            "value": "LOC-005",
-            "message": "Referenced location does not exist in the system",
-            "severity": "Error"
-        },
-        {
-            "rowNumber": 12,
-            "field": "installDate",
-            "value": "15/05/2020",
-            "message": "Date format mismatch. Expected MM/DD/YYYY, got DD/MM/YYYY",
-            "severity": "Warning"
-        }
-        // Additional issues...
-    ],
-    "suggestions": [
-        {
-            "type": "dateFormat",
-            "message": "Some date values appear to be in DD/MM/YYYY format. Consider setting dateFormat option to match or correcting the values.",
-            "affectedRows": [12, 45, 67]
-        },
-        {
-            "type": "missingField",
-            "message": "Location IDs not found in system: LOC-005, LOC-008, LOC-012. Ensure these locations exist before importing.",
-            "affectedRows": [5, 18, 29]
-        }
-    ]
-}</code></pre>
-    </div>
-    <script src="js/shared.js" defer></script>
-</body>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Import</h4>
+            <pre><code>GET /import/123
 
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/import/123",
+        "name": "Example Import"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
+</body>
 </html>

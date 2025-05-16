@@ -309,236 +309,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Customer management...</p>
 
-        <h3>GET /customers</h3>
-        <p>Retrieves a list of customers. Supports filtering by various properties.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers?status=Active&type=Commercial
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 123,
-            "companyId": 456,
-            "customerNumber": "CUST-001",
-            "type": "Commercial",
-            "status": "Active",
-            "accountManagerId": 201,
-            "salesRepId": 202,
-            "primaryLocationId": 301,
-            "primaryContactId": 401,
-            "billingContactId": 402,
-            "billingLocationId": 301,
-            "notes": "Key account with multiple locations.",
-            "source": "Referral",
-            "industry": "Healthcare",
-            "segment": "Mid-Market",
-            "size": "Medium",
-            "annualRevenue": 5000000.00,
-            "employeeCount": 250,
-            "website": "https://acmehealthcare.example.com",
-            "taxExempt": true,
-            "taxExemptionNumber": "TX-12345-HC",
-            "creditLimit": 50000.00,
-            "paymentTerms": "Net 30",
-            "preferredPaymentMethod": "ACH",
-            "customFields": {
-                "serviceLevel": "Premium",
-                "preferredTechnicianId": 501,
-                "specialInstructions": "Call facilities manager before dispatch"
-            },
-            "tags": ["Healthcare", "Premium", "Multi-Location"],
-            "customerSince": "2018-03-15",
-            "lastServiceDate": "2023-07-12",
-            "lifetime": {
-                "revenue": 450000.00,
-                "jobCount": 124,
-                "quoteCount": 35,
-                "quoteAcceptanceRate": 85.7,
-                "averageResponseTime": 2.4,
-                "contractValue": 175000.00
-            },
-            "createdDate": "2018-03-15T10:30:00Z",
-            "createdBy": 202,
-            "lastModifiedDate": "2023-05-20T15:45:00Z",
-            "lastModifiedBy": 201
-        },
-        // Additional customers...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-customer" class="resource-section">
+            <h3>Customer</h3>
+            <p>The customer resource is used to manage Customer data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /customer</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/customer</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/customer/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/customer/123</td>
+                        <td>404</td>
+                        <td>customer not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/customer</td>
+                        <td>200</td>
+                        <td>customer created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/customer</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/customer/123</td>
+                        <td>200</td>
+                        <td>customer updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/customer/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/customer/123</td>
+                        <td>404</td>
+                        <td>customer not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/customer/123</td>
+                        <td>204</td>
+                        <td>customer deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/customer/123</td>
+                        <td>404</td>
+                        <td>customer not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /customer/[customerId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>customer entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the customer</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the customer</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Customers</h4>
+            <pre><code>GET /customer
 
-        <h3>GET /customers/{id}</h3>
-        <p>Retrieves a specific customer by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/123
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 123,
-    "companyId": 456,
-    "customerNumber": "CUST-001",
-    "type": "Commercial",
-    "status": "Active",
-    "accountManagerId": 201,
-    "salesRepId": 202,
-    "primaryLocationId": 301,
-    "primaryContactId": 401,
-    "billingContactId": 402,
-    "billingLocationId": 301,
-    "notes": "Key account with multiple locations.",
-    "source": "Referral",
-    "industry": "Healthcare",
-    "segment": "Mid-Market",
-    "size": "Medium",
-    "annualRevenue": 5000000.00,
-    "employeeCount": 250,
-    "website": "https://acmehealthcare.example.com",
-    "taxExempt": true,
-    "taxExemptionNumber": "TX-12345-HC",
-    "creditLimit": 50000.00,
-    "paymentTerms": "Net 30",
-    "preferredPaymentMethod": "ACH",
-    "customFields": {
-        "serviceLevel": "Premium",
-        "preferredTechnicianId": 501,
-        "specialInstructions": "Call facilities manager before dispatch"
-    },
-    "tags": ["Healthcare", "Premium", "Multi-Location"],
-    "customerSince": "2018-03-15",
-    "lastServiceDate": "2023-07-12",
-    "lifetime": {
-        "revenue": 450000.00,
-        "jobCount": 124,
-        "quoteCount": 35,
-        "quoteAcceptanceRate": 85.7,
-        "averageResponseTime": 2.4,
-        "contractValue": 175000.00
-    },
-    "createdDate": "2018-03-15T10:30:00Z",
-    "createdBy": 202,
-    "lastModifiedDate": "2023-05-20T15:45:00Z",
-    "lastModifiedBy": 201
-}</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "customers": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/customer/123",
+                "name": "Example Customer"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Customer</h4>
+            <pre><code>GET /customer/123
 
-        <h3>POST /customers</h3>
-        <p>Creates a new customer.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "companyId": 457,
-    "customerNumber": "CUST-002",
-    "type": "Industrial",
-    "status": "Active",
-    "accountManagerId": 201,
-    "salesRepId": 203,
-    "primaryLocationId": 302,
-    "primaryContactId": 403,
-    "billingContactId": 404,
-    "billingLocationId": 302,
-    "notes": "New manufacturing facility, high service volume expected.",
-    "source": "Trade Show",
-    "industry": "Manufacturing",
-    "segment": "Enterprise",
-    "size": "Large",
-    "website": "https://acmemanufacturing.example.com",
-    "taxExempt": true,
-    "taxExemptionNumber": "TX-67890-MFG",
-    "paymentTerms": "Net 45",
-    "customerSince": "2023-08-01",
-    "tags": ["Manufacturing", "Enterprise", "New Customer"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created customer object (HTTP 201 Created).</p>
-
-        <h3>PUT /customers/{id}</h3>
-        <p>Updates an existing customer.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "status": "Active",
-    "accountManagerId": 204,
-    "primaryContactId": 405,
-    "notes": "Customer has expanded operations. Account transferred to enterprise account manager.",
-    "creditLimit": 75000.00,
-    "paymentTerms": "Net 60"
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated customer object.</p>
-
-        <h3>DELETE /customers/{id}</h3>
-        <p>Deletes a customer. This is typically a soft delete that changes the status rather than removing the record.
-        </p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion/deactivation.</p>
-
-        <h3>GET /customers/{id}/locations</h3>
-        <p>Retrieves all locations associated with a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/123/locations
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="location.html">Locations</a> associated with this customer.</p>
-
-        <h3>GET /customers/{id}/contacts</h3>
-        <p>Retrieves all contacts associated with a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/123/contacts
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="contact.html">Contacts</a> associated with this customer.</p>
-
-        <h3>GET /customers/{id}/assets</h3>
-        <p>Retrieves all assets associated with a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/123/assets
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="asset.html">Assets</a> associated with this customer.</p>
-
-        <h3>GET /customers/{id}/contracts</h3>
-        <p>Retrieves all contracts associated with a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/123/contracts
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of <a href="contract.html">Contracts</a> associated with this customer.</p>
-
-        <h3>GET /customers/{id}/jobs</h3>
-        <p>Retrieves all jobs (past and current) associated with a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/123/jobs
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of Jobs associated with this customer.</p>
-
-        <h3>GET /customers/{id}/invoices</h3>
-        <p>Retrieves all invoices associated with a specific customer.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/customers/123/invoices
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of Invoices associated with this customer.</p>
-
-        <h3>POST /customers/{id}/merge</h3>
-        <p>Merges another customer record into this customer, consolidating history and relationships.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "sourceCustomerId": 124,
-    "mergeOptions": {
-        "mergeContacts": true,
-        "mergeLocations": true,
-        "mergeAssets": true,
-        "mergeContracts": true,
-        "retainSourceHistory": true
-    },
-    "notes": "Duplicate customer record created during system migration."
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated customer object with merged data.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/customer/123",
+        "name": "Example Customer"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

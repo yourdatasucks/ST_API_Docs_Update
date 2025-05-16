@@ -101,140 +101,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Asset Definition management...</p>
 
-        <h3>GET /assetdefinitions</h3>
-        <p>Retrieves a list of all Asset Definitions.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/assetdefinitions
-        Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-            "items": [
-                {
-                    "Id": 1,
-                    "Name": "Laptop",
-                    "IsActive": true,
-                    "CreateDate": "2023-01-15T10:00:00Z",
-                    "CreatedBy": 101,
-                    "LastModifiedDate": "2023-01-16T11:30:00Z",
-                    "LastModifiedBy": 102,
-                    "CustomFields": []
-                },
-                {
-                    "Id": 2,
-                    "Name": "Monitor",
-                    "IsActive": true,
-                    // ... other properties
-                }
-            ],
-            "totalResults": 2,
-            "itemsPerPage": 100,
-            "startIndex": 1
-        }</code></pre>
+        <section id="resource-assetdefinition" class="resource-section">
+            <h3>Asset Definition</h3>
+            <p>The assetdefinition resource is used to manage Asset Definition data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /assetdefinition</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/assetdefinition</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/assetdefinition/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/assetdefinition/123</td>
+                        <td>404</td>
+                        <td>assetdefinition not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/assetdefinition</td>
+                        <td>200</td>
+                        <td>assetdefinition created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/assetdefinition</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/assetdefinition/123</td>
+                        <td>200</td>
+                        <td>assetdefinition updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/assetdefinition/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/assetdefinition/123</td>
+                        <td>404</td>
+                        <td>assetdefinition not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/assetdefinition/123</td>
+                        <td>204</td>
+                        <td>assetdefinition deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/assetdefinition/123</td>
+                        <td>404</td>
+                        <td>assetdefinition not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /assetdefinition/[assetdefinitionId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>assetdefinition entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the assetdefinition</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the assetdefinition</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Asset Definitions</h4>
+            <pre><code>GET /assetdefinition
 
-        <h3>GET /assetdefinitions/{id}</h3>
-        <p>Retrieves a specific Asset Definition by its ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/assetdefinitions/{id}
-        Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-            "Id": 1,
-            "Name": "Laptop",
-            "IsActive": true,
-            "CreateDate": "2023-01-15T10:00:00Z",
-            "CreatedBy": 101,
-            "LastModifiedDate": "2023-01-16T11:30:00Z",
-            "LastModifiedBy": 102,
-            "CustomFields": [
-                {
-                    "Id": 55,
-                    "FieldName": "Screen Size",
-                    "FieldType": "Number",
-                    // ... other CustomField properties
-                },
-                {
-                    "Id": 56,
-                    "FieldName": "RAM",
-                    "FieldType": "Text",
-                    // ... other CustomField properties
-                }
-            ]
-        }</code></pre>
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "assetdefinitions": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/assetdefinition/123",
+                "name": "Example Asset Definition"
+            }
+        ]
+    }
+}
+</code></pre>
+            
+            <h4>Retrieve specific Asset Definition</h4>
+            <pre><code>GET /assetdefinition/123
 
-        <h3>POST /assetdefinitions</h3>
-        <p>Creates a new Asset Definition.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-            "Name": "Projector",
-            "IsActive": true,
-            "CustomFields": [ // Optional: Define custom fields during creation
-                {
-                    "FieldName": "Lumens",
-                    "FieldType": "Number",
-                    "IsRequired": false
-                }
-            ]
-        }</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created Asset Definition object (HTTP 201 Created).</p>
-        <pre><code class="language-json">{
-            "Id": 3,
-            "Name": "Projector",
-            "IsActive": true,
-            "CreateDate": "2023-01-17T09:00:00Z",
-            "CreatedBy": 103,
-            "LastModifiedDate": "2023-01-17T09:00:00Z",
-            "LastModifiedBy": 103,
-            "CustomFields": [
-                 {
-                    "Id": 57,
-                    "FieldName": "Lumens",
-                    "FieldType": "Number",
-                    "IsRequired": false,
-                    // ... other CustomField properties
-                }
-            ]
-        }</code></pre>
-
-        <h3>PUT /assetdefinitions/{id}</h3>
-        <p>Updates an existing Asset Definition.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-            "Name": "High-Performance Laptop", // Change name
-            "IsActive": false, // Deactivate
-            "CustomFields": [ // Update custom fields (can add, modify, or remove)
-                // To modify an existing custom field, include its Id
-                {
-                    "Id": 55, // Assuming this was "Screen Size"
-                    "FieldName": "Display Size (inches)",
-                    "FieldType": "Number"
-                },
-                // To add a new custom field, omit the Id
-                {
-                    "FieldName": "Processor",
-                    "FieldType": "Text"
-                }
-                // To remove a custom field, you might need a separate mechanism or
-                // pass a specific instruction if the API supports it, or simply omit it
-                // if the PUT replaces the entire CustomFields array.
-                // (API behavior for list updates varies)
-            ]
-        }</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated Asset Definition object.</p>
-
-        <h3>DELETE /assetdefinitions/{id}</h3>
-        <p>Deletes an Asset Definition. This is typically a soft delete if Assets are using this definition, or it
-            might be disallowed if in use. Check API specific documentation on deletion constraints.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">DELETE /v1.0/assetdefinitions/{id}
-        Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-        <!-- /AssetDefinition -->
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/assetdefinition/123",
+        "name": "Example Asset Definition"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

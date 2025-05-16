@@ -210,151 +210,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Contact management...</p>
 
-        <h3>GET /contacts</h3>
-        <p>Retrieves a list of contacts. Supports filtering by company, contact type, and more.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contacts?companyId=123&isActive=true
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 456,
-            "firstName": "John",
-            "lastName": "Doe",
-            "companyId": 123,
-            "title": "Facilities Manager",
-            "department": "Facilities",
-            "email": "john.doe@acmecorp.example.com",
-            "phone": "555-123-4567",
-            "mobile": "555-987-6543",
-            "fax": null,
-            "notes": "Prefers to be contacted in the mornings.",
-            "isPrimary": true,
-            "isActive": true,
-            "preferredContactMethod": "Email",
-            "contactTypes": [101, 102],
-            "locationIds": [201, 202],
-            "customFields": {
-                "assistantName": "Jane Smith",
-                "assistantPhone": "555-123-5555"
-            },
-            "tags": ["VIP", "Decision Maker"],
-            "portalAccess": true,
-            "portalUsername": "john.doe@acmecorp.example.com",
-            "lastLoginDate": "2023-07-15T10:30:00Z",
-            "createdDate": "2020-05-15T14:30:00Z",
-            "createdBy": 101,
-            "lastModifiedDate": "2023-01-10T15:45:00Z",
-            "lastModifiedBy": 102
-        },
-        // Additional contacts...
-    ],
-    "totalResults": 1,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-contact" class="resource-section">
+            <h3>Contact</h3>
+            <p>The contact resource is used to manage Contact data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /contact</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contact</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contact/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/contact/123</td>
+                        <td>404</td>
+                        <td>contact not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/contact</td>
+                        <td>200</td>
+                        <td>contact created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/contact</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contact/123</td>
+                        <td>200</td>
+                        <td>contact updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contact/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/contact/123</td>
+                        <td>404</td>
+                        <td>contact not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/contact/123</td>
+                        <td>204</td>
+                        <td>contact deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/contact/123</td>
+                        <td>404</td>
+                        <td>contact not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /contact/[contactId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>contact entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the contact</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the contact</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Contacts</h4>
+            <pre><code>GET /contact
 
-        <h3>GET /contacts/{id}</h3>
-        <p>Retrieves a specific contact by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/contacts/456
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 456,
-    "firstName": "John",
-    "lastName": "Doe",
-    "companyId": 123,
-    "title": "Facilities Manager",
-    "department": "Facilities",
-    "email": "john.doe@acmecorp.example.com",
-    "phone": "555-123-4567",
-    "mobile": "555-987-6543",
-    "fax": null,
-    "notes": "Prefers to be contacted in the mornings.",
-    "isPrimary": true,
-    "isActive": true,
-    "preferredContactMethod": "Email",
-    "contactTypes": [101, 102],
-    "locationIds": [201, 202],
-    "customFields": {
-        "assistantName": "Jane Smith",
-        "assistantPhone": "555-123-5555"
-    },
-    "tags": ["VIP", "Decision Maker"],
-    "portalAccess": true,
-    "portalUsername": "john.doe@acmecorp.example.com",
-    "lastLoginDate": "2023-07-15T10:30:00Z",
-    "createdDate": "2020-05-15T14:30:00Z",
-    "createdBy": 101,
-    "lastModifiedDate": "2023-01-10T15:45:00Z",
-    "lastModifiedBy": 102
-}</code></pre>
-
-        <h3>POST /contacts</h3>
-        <p>Creates a new contact.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "firstName": "Sarah",
-    "lastName": "Johnson",
-    "companyId": 123,
-    "title": "Chief Financial Officer",
-    "department": "Finance",
-    "email": "sarah.johnson@acmecorp.example.com",
-    "phone": "555-123-7890",
-    "mobile": "555-456-7890",
-    "isPrimary": false,
-    "isActive": true,
-    "preferredContactMethod": "Phone",
-    "contactTypes": [101, 103],
-    "locationIds": [201],
-    "tags": ["Finance", "Executive"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created contact object (HTTP 201 Created).</p>
-
-        <h3>PUT /contacts/{id}</h3>
-        <p>Updates an existing contact.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "title": "Senior Financial Officer",
-    "email": "sarah.johnson@acmecorp.example.com",
-    "notes": "Promoted to Senior Financial Officer in July 2023.",
-    "portalAccess": true
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated contact object.</p>
-
-        <h3>DELETE /contacts/{id}</h3>
-        <p>Deletes a contact.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>GET /companies/{id}/contacts</h3>
-        <p>Retrieves all contacts for a specific company. See <a href="company.html">Company</a> for details.</p>
-
-        <h3>POST /contacts/{id}/portalAccess</h3>
-        <p>Grants customer portal access to a contact and sends portal credentials.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "sendWelcomeEmail": true,
-    "notificationPreferences": {
-        "receiveJobUpdates": true,
-        "receiveInvoices": true,
-        "receiveQuotes": true
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "contacts": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/contact/123",
+                "name": "Example Contact"
+            }
+        ]
     }
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated contact object with portal access details.</p>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Contact</h4>
+            <pre><code>GET /contact/123
 
-        <h3>DELETE /contacts/{id}/portalAccess</h3>
-        <p>Revokes portal access for a contact.</p>
-        <h4>Response</h4>
-        <p>Returns the updated contact object with portal access revoked.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/contact/123",
+        "name": "Example Contact"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>

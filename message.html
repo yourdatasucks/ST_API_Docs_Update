@@ -220,294 +220,151 @@
         </table>
 
         <h2>Endpoints</h2>
+        <p>API endpoints for Message management...</p>
 
-        <h3>GET /messages</h3>
-        <p>Retrieves a list of messages. Supports filtering by sender, recipient, type, entity, etc.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/messages?type=Internal&recipientId=101
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "items": [
-        {
-            "id": 5001,
-            "subject": "Job Schedule Update",
-            "senderId": 102,
-            "senderName": "Jane Smith",
-            "recipientIds": [101, 103],
-            "sentDate": "2023-06-15T14:30:00Z",
-            "type": "Internal",
-            "status": "Read",
-            "entityType": "Job",
-            "entityId": 3001,
-            "threadId": 4001
-        },
-        {
-            "id": 5002,
-            "subject": "Customer Feedback",
-            "senderId": 103,
-            "senderName": "Bob Johnson",
-            "recipientIds": [101, 102],
-            "sentDate": "2023-06-16T09:45:00Z",
-            "type": "Internal",
-            "status": "Read",
-            "entityType": "Job",
-            "entityId": 3002,
-            "threadId": 4002
-        },
-        {
-            "id": 5003,
-            "subject": "Quote Approval Needed",
-            "senderId": 102,
-            "senderName": "Jane Smith",
-            "recipientIds": [101],
-            "sentDate": "2023-06-17T11:20:00Z",
-            "type": "Internal",
-            "status": "Unread",
-            "entityType": "Quote",
-            "entityId": 2001,
-            "threadId": 4003
-        }
-        // Additional messages...
-    ],
-    "totalResults": 3,
-    "itemsPerPage": 50,
-    "startIndex": 1
-}</code></pre>
+        <section id="resource-message" class="resource-section">
+            <h3>Message</h3>
+            <p>The message resource is used to manage Message data within ServiceTrade.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /message</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/message</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/message/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/message/123</td>
+                        <td>404</td>
+                        <td>message not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/message</td>
+                        <td>200</td>
+                        <td>message created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/message</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/message/123</td>
+                        <td>200</td>
+                        <td>message updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/message/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/message/123</td>
+                        <td>404</td>
+                        <td>message not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/message/123</td>
+                        <td>204</td>
+                        <td>message deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/message/123</td>
+                        <td>404</td>
+                        <td>message not found</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Returned Elements for /message/[messageId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>message entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the message</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the message</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Retrieve Messages</h4>
+            <pre><code>GET /message
 
-        <h3>GET /messages/{id}</h3>
-        <p>Retrieves a specific message by ID.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/messages/5001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "id": 5001,
-    "subject": "Job Schedule Update",
-    "body": "<p>We need to reschedule the maintenance visit for ABC Corp. They've requested to move it from Monday to Wednesday next week.</p><p>Please update the schedule and notify the technicians.</p>",
-    "senderId": 102,
-    "senderName": "Jane Smith",
-    "senderEmail": "jane.smith@example.com",
-    "recipientIds": [101, 103],
-    "recipientEmails": ["john.doe@example.com", "bob.johnson@example.com"],
-    "sentDate": "2023-06-15T14:30:00Z",
-    "type": "Internal",
-    "priority": "High",
-    "status": "Read",
-    "entityType": "Job",
-    "entityId": 3001,
-    "threadId": 4001,
-    "parentMessageId": null,
-    "attachmentIds": [],
-    "isInternal": true,
-    "deliveryChannels": ["In-App"],
-    "deliveryStatus": {
-        "101": {"In-App": {"status": "Delivered", "timestamp": "2023-06-15T14:30:05Z", "readTimestamp": "2023-06-15T15:02:18Z"}},
-        "103": {"In-App": {"status": "Delivered", "timestamp": "2023-06-15T14:30:06Z", "readTimestamp": "2023-06-15T16:45:32Z"}}
-    },
-    "tags": ["Schedule", "Maintenance"],
-    "createdBy": 102,
-    "createdDate": "2023-06-15T14:28:00Z",
-    "lastModifiedBy": 102,
-    "lastModifiedDate": "2023-06-15T14:28:00Z"
-}</code></pre>
-
-        <h3>POST /messages</h3>
-        <p>Creates a new message.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "subject": "Equipment Recommendation",
-    "body": "<p>Based on our inspection, I recommend replacing the aging cooling tower within the next 6 months. I've attached a preliminary quote for your review.</p><p>Let me know if you have any questions.</p>",
-    "recipientIds": [105, 106],
-    "recipientEmails": ["facility.manager@customer.com", "operations@customer.com"],
-    "type": "Customer",
-    "priority": "Normal",
-    "entityType": "Job",
-    "entityId": 3005,
-    "attachmentIds": [9001],
-    "isInternal": false,
-    "deliveryChannels": ["Email", "In-App"],
-    "tags": ["Equipment", "Recommendation", "Quote"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created message (HTTP 201 Created).</p>
-
-        <h3>PUT /messages/{id}</h3>
-        <p>Updates an existing message. This is typically only allowed for messages with "Draft" status.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "subject": "Equipment Recommendation Update",
-    "body": "<p>Based on our inspection, I recommend replacing the aging cooling tower within the next 6 months. I've attached a detailed quote and timeline for your review.</p><p>Please let me know if you have any questions or would like to discuss this further.</p>",
-    "priority": "High",
-    "attachmentIds": [9001, 9002]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the updated message.</p>
-
-        <h3>DELETE /messages/{id}</h3>
-        <p>Deletes a message. This is typically only allowed for messages with "Draft" status or by administrators.</p>
-        <h4>Response</h4>
-        <p>HTTP 204 No Content on successful deletion.</p>
-
-        <h3>POST /messages/{id}/send</h3>
-        <p>Sends a message that was previously saved as a draft.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "deliveryChannels": ["Email", "In-App"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the sent message with updated status.</p>
-
-        <h3>POST /messages/{id}/reply</h3>
-        <p>Creates a reply to an existing message.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "body": "<p>Thanks for the recommendation. We'll review the quote and get back to you next week after our budget meeting.</p>",
-    "recipientIds": [102],
-    "attachmentIds": [],
-    "isInternal": false,
-    "deliveryChannels": ["Email", "In-App"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created reply message.</p>
-
-        <h3>POST /messages/{id}/forward</h3>
-        <p>Forwards an existing message to new recipients.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "recipientIds": [104, 107],
-    "recipientEmails": ["maintenance.manager@example.com"],
-    "body": "<p>FYI - Please review this equipment recommendation and provide your input.</p>",
-    "attachmentIds": [9001, 9002, 9003],
-    "isInternal": true,
-    "deliveryChannels": ["Email", "In-App"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the newly created forwarded message.</p>
-
-        <h3>GET /messages/threads/{threadId}</h3>
-        <p>Retrieves all messages in a specific thread.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/messages/threads/4001
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of messages belonging to the specified thread.</p>
-
-        <h3>POST /messages/{id}/mark-read</h3>
-        <p>Marks a message as read for the current user.</p>
-        <h4>Response</h4>
-        <p>Returns the updated message with read status.</p>
-
-        <h3>POST /messages/{id}/mark-unread</h3>
-        <p>Marks a message as unread for the current user.</p>
-        <h4>Response</h4>
-        <p>Returns the updated message with unread status.</p>
-
-        <h3>GET /messages/unread-count</h3>
-        <p>Retrieves the count of unread messages for the current user.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/messages/unread-count
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <pre><code class="language-json">{
-    "unreadCount": 12,
-    "byType": {
-        "Internal": 5,
-        "Customer": 3,
-        "System": 4
-    },
-    "byPriority": {
-        "High": 2,
-        "Normal": 7,
-        "Low": 3
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "messages": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/message/123",
+                "name": "Example Message"
+            }
+        ]
     }
-}</code></pre>
+}
+</code></pre>
+            
+            <h4>Retrieve specific Message</h4>
+            <pre><code>GET /message/123
 
-        <h3>GET /entities/{entityType}/{entityId}/messages</h3>
-        <p>Retrieves messages related to a specific entity.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/entities/Job/3001/messages
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of messages related to the specified entity.</p>
-
-        <h3>POST /messages/batch</h3>
-        <p>Creates multiple messages in a single request.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "messages": [
-        {
-            "subject": "Preventive Maintenance Reminder",
-            "body": "<p>This is a reminder that your quarterly preventive maintenance is scheduled for next Monday.</p>",
-            "recipientIds": [201, 202],
-            "type": "Customer",
-            "entityType": "Job",
-            "entityId": 3010,
-            "deliveryChannels": ["Email"]
-        },
-        {
-            "subject": "Service Agreement Renewal",
-            "body": "<p>Your service agreement is up for renewal next month. I've attached the renewal quote for your review.</p>",
-            "recipientIds": [201],
-            "type": "Customer",
-            "entityType": "Quote",
-            "entityId": 2015,
-            "attachmentIds": [9010],
-            "deliveryChannels": ["Email"]
-        }
-    ]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns an array of the created messages.</p>
-
-        <h3>POST /messages/notify</h3>
-        <p>Sends a notification message to multiple recipients based on criteria.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "template": "job_scheduled",
-    "parameters": {
-        "jobId": 3020,
-        "scheduledDate": "2023-07-15",
-        "scheduledTime": "10:00 AM"
-    },
-    "recipientFilter": {
-        "roles": ["Technician", "Dispatcher"],
-        "regions": ["Northeast"],
-        "assigned": true
-    },
-    "deliveryChannels": ["Email", "SMS", "In-App"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns information about the sent notifications.</p>
-
-        <h3>GET /message-templates</h3>
-        <p>Retrieves a list of available message templates.</p>
-        <h4>Request</h4>
-        <pre><code class="language-http">GET /v1.0/message-templates?type=Customer
-Authorization: Bearer {access_token}</code></pre>
-        <h4>Response</h4>
-        <p>Returns a collection of message templates matching the specified criteria.</p>
-
-        <h3>POST /messages/from-template</h3>
-        <p>Creates a message using a template.</p>
-        <h4>Request Body</h4>
-        <pre><code class="language-json">{
-    "templateId": 101,
-    "parameters": {
-        "customerName": "ABC Corporation",
-        "jobNumber": "JOB-2023-0456",
-        "scheduledDate": "July 15, 2023",
-        "contactName": "John Smith"
-    },
-    "recipientIds": [201],
-    "entityType": "Job",
-    "entityId": 3020,
-    "deliveryChannels": ["Email"]
-}</code></pre>
-        <h4>Response</h4>
-        <p>Returns the created message based on the template.</p>
-    </div>
-    <script src="js/shared.js" defer></script>
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/message/123",
+        "name": "Example Message"
+    }
+}
+</code></pre>
+        </section></div>
+<script src="js/shared.js" defer></script>
 </body>
-
 </html>
