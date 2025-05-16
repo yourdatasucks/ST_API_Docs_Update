@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('accountsettings.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="AccountSettings">Account Settings</h1>
+        <p>The Account Settings resource allows for managing various settings related to an account. These settings
+            often dictate feature availability and behavior across the platform.</p>
+
+        <h2>Properties</h2>
+        <p>Account Settings are typically presented as a collection of key-value pairs. The specific keys and their
+            possible values will vary depending on the feature they control. Examples might include:</p>
+        <ul>
+            <li><code>feature_assets_enabled</code>: boolean (true/false) - Controls if the Assets feature is active.
+            </li>
+            <li><code>default_currency</code>: string (e.g., "USD", "EUR") - Sets the default currency for financial
+                transactions.</li>
+            <li><code>notification_preferences</code>: object - Contains sub-settings for various notification types.
+            </li>
+        </ul>
+        <p><em>Consult the specific API documentation for a comprehensive list of available account settings.</em></p>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /account/settings</h3>
+        <p>Retrieves all current account settings for the authenticated account.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/account/settings
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "feature_assets_enabled": true,
+    "default_currency": "USD",
+    "session_timeout_minutes": 60,
+    "email_notifications": {
+        "new_lead_assigned": true,
+        "task_completed": false
+    }
+    // ... other settings
+}</code></pre>
+
+        <h3>PUT /account/settings</h3>
+        <p>Updates one or more account settings. Only include the settings you wish to change in the request body.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "feature_assets_enabled": false,
+    "session_timeout_minutes": 120
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated account settings object (HTTP 200 OK).</p>
+        <pre><code class="language-json">{
+    "feature_assets_enabled": false,
+    "default_currency": "USD",
+    "session_timeout_minutes": 120,
+    "email_notifications": {
+        "new_lead_assigned": true,
+        "task_completed": false
+    }
+    // ... other settings reflecting the update
+}</code></pre>
+        <p><strong>Note:</strong> Access to modify account settings typically requires administrative privileges.</p>
+
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

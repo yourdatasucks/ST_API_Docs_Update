@@ -1,0 +1,2438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>ServiceTrade API Documentation</title>
+    <link rel="stylesheet" href="css/styles.css"> <!-- Corrected CSS path -->
+    <!-- Removed inline script for scrollFunction and setActiveLink -->
+</head>
+
+<body onload="loadSidebarAndInit('index.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+    <div id="top-of-page"></div> <!-- Anchor for back-to-top, good to keep -->
+
+    <div id="sidebar-placeholder"></div> <!-- Placeholder for the shared sidebar -->
+
+    <div id="main-content">
+        <header>
+            <h1>ServiceTrade API Documentation</h1>
+        </header>
+
+        <section id="getting-started-anchor">
+            <!-- Content from lines 106-301 of original api docs.html -->
+            <!-- ... (Existing Getting Started content) ... -->
+            <h3>Getting Started</h3>
+            <p>The ServiceTrade API (henceforth "API") is a RESTful web service that allows interaction with
+                ServiceTrade's system.</p>
+            <h4>Requests</h4>
+            <p>An API request consists of an HTTP verb ("GET", "POST", "PUT", "DELETE"), an endpoint host
+                ("https://api.servicetrade.com/api"), a resource URL ("/foo/123"), optional query parameters and
+                optional request data. If a request requires request data, the data must be a provided in a valid JSON
+                string and appear in the body of the request.</p>
+            <p>All API requests return a JSON response with optional "messages" and "data" properties. The "messages"
+                property may contain a "success" property and/or an "error" property. The value of these properties is
+                an array of strings.</p>
+            <h4>Here is a sample HTTP request</h4>
+            <p>The sample includes headers to demonstrate a few important points for making sending requests to the API:
+            </p>
+            <pre><code>POST /api/foo/123 HTTP/1.1
+Host: api.servicetrade.com
+Content-Type: application/json
+Cookie: PHPSESSID=the_access_token_from_the_auth_endpoint
+
+{"name":"Object Name","radius":321,"createdAt":12345235}
+</code></pre>
+            <p>Note that the body of the request is sent as a JSON object. Also, this is an authenticated request, so it
+                sends a "Cookie" header called "PHPSESSID" with an authentication token value from the <a
+                    href="auth.html">Authentication</a> endpoint.</p>
+            <p>We <em>strongly encourage</em> you to reuse the_access_token_from_the_auth_endpoint for all API calls you
+                make after getting this token. Our access tokens are very long lived, therefore you should be able to
+                make all of the API requests you need with just one PHPSESSID token.</p>
+            <p>The way you will store and reuse this PHPSESSID token will depend on the programming language you are
+                using and the type of application you have. You may have an easy way to store this token in memory, for
+                example as a static variable in some global object, or perhaps you are already using a cache object or
+                server, or some other simple key-value database table.</p>
+            <p>If your application stays up and running continuously for very long periods of time, you may want your
+                application code to check that your authentication token is still valid on some interval or other
+                logical point in your app process, like at the beginning of a worker thread or request handler. This
+                simple API call:</p>
+            <pre><code>GET /api/auth HTTP/1.1
+Host: api.servicetrade.com
+Content-Type: application/json
+Cookie: PHPSESSID=the_access_token_from_the_auth_endpoint
+</code></pre>
+            <p>will return a 200 OK response if your token is still valid, which means you can continue using it. If GET
+                /api/auth returns a 404, then you need a new authentication token, and can get one by making a POST to
+                /api/auth.</p>
+            <p>In summary, call the <a href="auth.html">Authentication</a> endpoint once; re-use the authentication
+                token you get from this endpoint; only get a new authentication token when you need one, and you will
+                maximize the reliability and performance of your API usage.</p>
+            <h4>Response Codes Common to All Requests</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>200</td>
+                        <td>request successful, response body contains results</td>
+                    </tr>
+                    <tr>
+                        <td>204</td>
+                        <td>request successful, empty response body</td>
+                    </tr>
+                    <tr>
+                        <td>400</td>
+                        <td>missing, incomplete or invalid parameters</td>
+                    </tr>
+                    <tr>
+                        <td>401</td>
+                        <td>unauthorized request</td>
+                    </tr>
+                    <tr>
+                        <td>403</td>
+                        <td>not allowed to perform action</td>
+                    </tr>
+                    <tr>
+                        <td>404</td>
+                        <td>requested URI not found</td>
+                    </tr>
+                    <tr>
+                        <td>405</td>
+                        <td>method not implemented</td>
+                    </tr>
+                    <tr>
+                        <td>429</td>
+                        <td>too many requests</td>
+                    </tr>
+                    <tr>
+                        <td>500</td>
+                        <td>unknown application error</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>Returned Elements Common to All Requests</h4>
+            <p>The "data" property contains any response data as a JSON object.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>messages</td>
+                        <td>object</td>
+                        <td>top-level container for system messages</td>
+                    </tr>
+                    <tr>
+                        <td>messages.success</td>
+                        <td>array (string)</td>
+                        <td>individual success messages</td>
+                    </tr>
+                    <tr>
+                        <td>messages.error</td>
+                        <td>array (string)</td>
+                        <td>individual error messages</td>
+                    </tr>
+                    <tr>
+                        <td>messages.validation</td>
+                        <td>object</td>
+                        <td>keyed by parameter, list of parameters that failed to validate</td>
+                    </tr>
+                    <tr>
+                        <td>data</td>
+                        <td>object</td>
+                        <td>container for data returned by a request</td>
+                    </tr>
+                    <tr>
+                        <td>data.totalPages</td>
+                        <td>integer</td>
+                        <td>number of pages for list resources</td>
+                    </tr>
+                    <tr>
+                        <td>data.page</td>
+                        <td>integer</td>
+                        <td>current page of a list resource</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>In the resource descriptions below, returned elements are assumed to be inside the "data" container.</p>
+            <h4>Here is a sample response:</h4>
+            <pre><code>{
+  "messages": {
+    "success": [
+      "Success message one",
+      "Another success message"
+    ],
+    "error": [
+      "This is the only error"
+    ],
+    "validation": {
+      "fieldA": ["Must be numeric"],
+      "fieldB": ["Must be timestamp", "Must be later than current time"],
+    }
+  },
+  "data": {
+    "foo": "bar",
+    "baz": "qux",
+    "someObject": {
+      "name": "Bob",
+      "occupation": "API Example"
+    },
+    "anArray": [
+      "first value",
+      "second value"
+    ]
+  }
+}
+</code></pre>
+            <h4>Throttling</h4>
+            <p>In case there is high load from a given user, API requests may be throttled. In this case, the API will
+                respond with a 429 code error. If an API request is throttled, the <em>Retry-After</em> header will
+                indicate how long to wait before making another request.</p>
+            <p>Each user will have 30 seconds of availability and 15 seconds of recovery each minute.</p>
+            <p>For example, if your request takes 100 milliseconds to complete, you will be able to make 150 requests
+                per minute without any limitation.
+                However, if you have 350 requests per minute, your requests will be throttled during the 2nd minute of
+                using the API.
+                For the first minute your requests require 350 x 100 ms = 35000 ms. At the end of the first minute you
+                will have 30000 ms initial availablity + 15000 recovery = 45000 ms. Remaining availablity = 10000 ms
+                For the second minute your requests still require 35000 ms. But at the start of the second minute, you
+                only have 10000 ms of availability.
+                So by the end of the second minute you will only have 10000 ms (initial) + 15000 ms (recovery), which is
+                25000 ms, which is less than the required 35000 ms, thus by the end of this second minute, requests will
+                be throttled.</p>
+        </section>
+
+        <section id="conventions-anchor">
+            <!-- Content from lines 302-636 of original api docs.html -->
+            <!-- ... (Existing Conventions and Units content) ... -->
+            <h3>Conventions and Units</h3>
+            <p>The following unit and type conventions apply to data and parameters sent in requests and data returned
+                in responses.</p>
+            <h4>Pagination</h4>
+            <p>The response "data" element for a list resource will contain a "totalPages" count and a "page" number.
+                Page numbers start at 1. If totalPages is greater than 1, a client can send a "page=n" parameter with a
+                GET request where n is the desired page. Note that different resources may have different numbers of
+                results per page.</p>
+            <h4>Dates and Times</h4>
+            <p>Dates and date-times are represented as <a href="https://en.wikipedia.org/wiki/Unix_time" target="_blank"
+                    rel="noopener noreferrer">Unix timestamps</a> (seconds since January 1, 1970 at midnight UTC.) These
+                will be represented as type "integer" in responses.</p>
+            <h4>Distance</h4>
+            <p>The unit of distance is miles. These will be represented as type "double" in responses.</p>
+            <p>Distances of less than a mile are represented as a decimal, e. g. 31.7 feet = .006 miles</p>
+            <h4>Latitude and Longitude</h4>
+            <p>All latitude and longitude values are represented in decimal degrees. These will be represented as type
+                "double" in responses.</p>
+            <h4>Constants</h4>
+            <p>Some endpoints may require passing a constant as either a query parameter or field in the request body.
+                Where indicated, those constants are mapped here.</p>
+            <p><a id="constants-entity-type"></a></p>
+            <h5>Entity Types</h5>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Asset Type</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Asset</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Job</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>User</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Company</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Invoice</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Invoice Item</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Quote Request</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Quote</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Deficiency</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Location</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Attachment</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>Account</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Import</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Clock Event</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>Appointment</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>Service Line</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Service Request</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td>Job Context</td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>Service Recurrence</td>
+                    </tr>
+                    <tr>
+                        <td>21</td>
+                        <td>Comment</td>
+                    </tr>
+                    <tr>
+                        <td>22</td>
+                        <td>Contact</td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td>Job Item</td>
+                    </tr>
+                    <tr>
+                        <td>24</td>
+                        <td>Lib Item</td>
+                    </tr>
+                    <tr>
+                        <td>25</td>
+                        <td>Tag</td>
+                    </tr>
+                    <tr>
+                        <td>26</td>
+                        <td>Webhook</td>
+                    </tr>
+                    <tr>
+                        <td>27</td>
+                        <td>Region</td>
+                    </tr>
+                    <tr>
+                        <td>28</td>
+                        <td>ServiceItem</td>
+                    </tr>
+                    <tr>
+                        <td>29</td>
+                        <td>Message</td>
+                    </tr>
+                    <tr>
+                        <td>30</td>
+                        <td>Contract</td>
+                    </tr>
+                    <tr>
+                        <td>31</td>
+                        <td>PriceModel</td>
+                    </tr>
+                    <tr>
+                        <td>32</td>
+                        <td>QuoteItem</td>
+                    </tr>
+                    <tr>
+                        <td>33</td>
+                        <td>External ID</td>
+                    </tr>
+                    <tr>
+                        <td>34</td>
+                        <td>Terms</td>
+                    </tr>
+                    <tr>
+                        <td>35</td>
+                        <td>Role</td>
+                    </tr>
+                    <tr>
+                        <td>36</td>
+                        <td>ExternalSync</td>
+                    </tr>
+                    <tr>
+                        <td>37</td>
+                        <td>Warehouse</td>
+                    </tr>
+                    <tr>
+                        <td>38</td>
+                        <td>Brand</td>
+                    </tr>
+                    <tr>
+                        <td>39</td>
+                        <td>Invoice Recurrence</td>
+                    </tr>
+                    <tr>
+                        <td>40</td>
+                        <td>Invoice Recurrence Item</td>
+                    </tr>
+                    <tr>
+                        <td>41</td>
+                        <td>Mailing Address</td>
+                    </tr>
+                    <tr>
+                        <td>42</td>
+                        <td>Payment Terms</td>
+                    </tr>
+                    <tr>
+                        <td>43</td>
+                        <td>Payment</td>
+                    </tr>
+                    <tr>
+                        <td>44</td>
+                        <td>Tax Group</td>
+                    </tr>
+                    <tr>
+                        <td>45</td>
+                        <td>Tax Group Postal Code</td>
+                    </tr>
+                    <tr>
+                        <td>46</td>
+                        <td>Budget</td>
+                    </tr>
+                    <tr>
+                        <td>47</td>
+                        <td>Budget Category</td>
+                    </tr>
+                    <tr>
+                        <td>48</td>
+                        <td>Budget Line Item</td>
+                    </tr>
+                    <tr>
+                        <td>49</td>
+                        <td>Change Order</td>
+                    </tr>
+                    <tr>
+                        <td>50</td>
+                        <td>Change Order Category</td>
+                    </tr>
+                    <tr>
+                        <td>51</td>
+                        <td>Change Order Line Item</td>
+                    </tr>
+                    <tr>
+                        <td>52</td>
+                        <td>Entity Filter</td>
+                    </tr>
+                    <tr>
+                        <td>53</td>
+                        <td>Project</td>
+                    </tr>
+                    <tr>
+                        <td>54</td>
+                        <td>DeficiencyReport</td>
+                    </tr>
+                    <tr>
+                        <td>55</td>
+                        <td>TaskList</td>
+                    </tr>
+                    <tr>
+                        <td>56</td>
+                        <td>Task</td>
+                    </tr>
+                    <tr>
+                        <td>57</td>
+                        <td>TaskInstance</td>
+                    </tr>
+                    <tr>
+                        <td>58</td>
+                        <td>TimeCard</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a id="constants-attachment-purpose"></a></p>
+            <h5>Attachment Purpose</h5>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Job Paperwork</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Job Vendor Bill</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Job Quality Control Picture</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Deficiency Repair Proposal</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Generic Attachment (attachments that do not fall into a more specific category)</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Avatar Image</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Import</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Blank Paperwork</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Work Acknowledgement</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Logo</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Job Invoice</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="embedded-object-ref-anchor">
+            <!-- Content from lines 637-2654 of original api docs.html -->
+            <!-- ... (Existing Embedded Object Reference content) ... -->
+            <h3>Embedded Object Reference</h3>
+            <p>Many resources will contain sub-objects that are a more lightweight version of a larger resource. For
+                example, Location resources contain a Company embedded object, which contains a subset of the full
+                Company resource information.</p>
+            <p>In the returned elements reference sections of each reference, if a resource contains an embedded object,
+                its type will be listed as one of the types below. If a specific resource provides more data in the
+                embedded object than is listed here, it will be listed in the resources return values.</p>
+            <p><a href="index.html#embedded-account"></a></p>
+            <h4>Account</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the account</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the account</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the account</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-account-type"></a></p>
+            <h4>Account Type</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the account type</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the account type</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-activity"></a></p>
+            <h4>Activity</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the activity</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the activity</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>description of the activity</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-address"></a></p>
+            <h4>Address</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>street</td>
+                        <td>string</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>city</td>
+                        <td>string</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>state</td>
+                        <td>string</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>postalCode</td>
+                        <td>string</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-appointment"></a></p>
+            <h4>Appointment</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the appointment</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the appointment</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the appointment</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-asset"></a></p>
+            <h4>Asset</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the asset</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the asset</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the asset</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-assetDefinition"></a></p>
+            <h4>Asset Definition</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the asset definition</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the asset definition</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>string</td>
+                        <td>type of the asset</td>
+                    </tr>
+                    <tr>
+                        <td>display</td>
+                        <td>string</td>
+                        <td>display name for the asset type</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-brand"></a></p>
+            <h4>Brand</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the brand</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the brand</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the brand</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-budget"></a></p>
+            <h4>Budget</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the budget</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the budget</td>
+                    </tr>
+                    <tr>
+                        <td>referenceNumber</td>
+                        <td>string</td>
+                        <td>reference number that this budget line is known by</td>
+                    </tr>
+                    <tr>
+                        <td>sequence</td>
+                        <td>integer</td>
+                        <td>0 for baseline, otherwise the revision number of the budget</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>status of the budget</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>string</td>
+                        <td>type of the budget</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-budget-category"></a></p>
+            <h4>Budget Category</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the budget category</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the budget category</td>
+                    </tr>
+                    <tr>
+                        <td>referenceNumber</td>
+                        <td>string</td>
+                        <td>reference number that this budget line is known by</td>
+                    </tr>
+                    <tr>
+                        <td>cost</td>
+                        <td>double</td>
+                        <td>cost of category</td>
+                    </tr>
+                    <tr>
+                        <td>libItemType</td>
+                        <td>string</td>
+                        <td>lib item type for category</td>
+                    </tr>
+                    <tr>
+                        <td>orderIndex</td>
+                        <td>integer</td>
+                        <td>order to display</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-budget-line-item"></a></p>
+            <h4>Budget Line Item</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the budget line item</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the budget line item</td>
+                    </tr>
+                    <tr>
+                        <td>referenceNumber</td>
+                        <td>string</td>
+                        <td>reference number that this budget line is known by</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of line item</td>
+                    </tr>
+                    <tr>
+                        <td>cost</td>
+                        <td>double</td>
+                        <td>cost of line item</td>
+                    </tr>
+                    <tr>
+                        <td>quantity</td>
+                        <td>double</td>
+                        <td>quantity of line item</td>
+                    </tr>
+                    <tr>
+                        <td>total</td>
+                        <td>double</td>
+                        <td>cost total of line item</td>
+                    </tr>
+                    <tr>
+                        <td>libItemType</td>
+                        <td>string</td>
+                        <td>lib item type for line item</td>
+                    </tr>
+                    <tr>
+                        <td>orderIndex</td>
+                        <td>integer</td>
+                        <td>order to display</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-company"></a></p>
+            <h4>Company</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the company</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the company</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the company</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>one of pending, active, on_hold, or inactive</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-change-order"></a></p>
+            <h4>Change Order</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the company</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the company</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>one of draft, pending, rejected, approved, or applied</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>string</td>
+                        <td>one of external or internal</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-change-order-line-item"></a></p>
+            <h4>Change Order Line Item</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the company</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the company</td>
+                    </tr>
+                    <tr>
+                        <td>referenceNumber</td>
+                        <td>string</td>
+                        <td>reference number that the affected budget line is known by</td>
+                    </tr>
+                    <tr>
+                        <td>changeAction</td>
+                        <td>string</td>
+                        <td>action taken by this change order line item</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of line item</td>
+                    </tr>
+                    <tr>
+                        <td>cost</td>
+                        <td>double</td>
+                        <td>cost of line item</td>
+                    </tr>
+                    <tr>
+                        <td>quantity</td>
+                        <td>double</td>
+                        <td>quantity of line item</td>
+                    </tr>
+                    <tr>
+                        <td>libItemType</td>
+                        <td>string</td>
+                        <td>lib item type for line item</td>
+                    </tr>
+                    <tr>
+                        <td>orderIndex</td>
+                        <td>integer</td>
+                        <td>order to display</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-deficiency"></a></p>
+            <h4>Deficiency</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the deficiency</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the deficiency</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the deficiency</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>description of the deficiency</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-contact"></a></p>
+            <h4>Contact</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the contact</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the contact</td>
+                    </tr>
+                    <tr>
+                        <td>firstName</td>
+                        <td>string</td>
+                        <td>contact first name</td>
+                    </tr>
+                    <tr>
+                        <td>lastName</td>
+                        <td>string</td>
+                        <td>contact last name</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>string</td>
+                        <td>contact type, free form string describing what type of contact this is</td>
+                    </tr>
+                    <tr>
+                        <td>types</td>
+                        <td>array(string)</td>
+                        <td>contact types, free form array of strings describing what type of contact this is</td>
+                    </tr>
+                    <tr>
+                        <td>phone</td>
+                        <td>string</td>
+                        <td>contact phone</td>
+                    </tr>
+                    <tr>
+                        <td>mobile</td>
+                        <td>string</td>
+                        <td>contact mobile</td>
+                    </tr>
+                    <tr>
+                        <td>alternatePhone</td>
+                        <td>string</td>
+                        <td>contact alternate phone</td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td>string</td>
+                        <td>contact email</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-entityfilter"></a></p>
+            <h4>Entity Filter</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the entity filter</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the entity filter</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the entity filter</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-invoice"></a></p>
+            <h4>Invoice</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the invoice</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the invoice</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the invoice</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-job"></a></p>
+            <h4>Job</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the job</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the job</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>assigned or generated name of the job</td>
+                    </tr>
+                    <tr>
+                        <td>customName</td>
+                        <td>string</td>
+                        <td>assigned name of the job</td>
+                    </tr>
+                    <tr>
+                        <td>number</td>
+                        <td>integer</td>
+                        <td>external job identifier</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>string</td>
+                        <td>one of: unknown, repair, construction, upgrade, service_call, urgent_service_call,
+                            priority_service_call, emergency_service_call, cleaning, inspection, survey,
+                            preventative_maintenance, delivery, sales, installation</td>
+                    </tr>
+                    <tr>
+                        <td>primaryContact</td>
+                        <td><a href="index.html#embedded-contact">Contact</a></td>
+                        <td>the primary contact of this job</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-job-item"></a></p>
+            <h4>Job Item</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the item</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the item</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>name of the item</td>
+                    </tr>
+                    <tr>
+                        <td>cost</td>
+                        <td>double</td>
+                        <td>cost of the item</td>
+                    </tr>
+                    <tr>
+                        <td>usedOn</td>
+                        <td>integer (timestamp)</td>
+                        <td>date on which the item was used</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-invoiceitem"></a></p>
+            <h4>Invoice Item</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>item id</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the given item</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>item description</td>
+                    </tr>
+                    <tr>
+                        <td>quantity</td>
+                        <td>double</td>
+                        <td>item quantity</td>
+                    </tr>
+                    <tr>
+                        <td>price</td>
+                        <td>double</td>
+                        <td>item unit price</td>
+                    </tr>
+                    <tr>
+                        <td>subtotal</td>
+                        <td>double</td>
+                        <td>total price (quantity * price) not including taxes</td>
+                    </tr>
+                    <tr>
+                        <td>taxRate</td>
+                        <td>double</td>
+                        <td>tax rate as a percentage (5.5 indicates 5.5%)</td>
+                    </tr>
+                    <tr>
+                        <td>taxRateDetails</td>
+                        <td>array (object)</td>
+                        <td>Array of rates. E.g. [{"name": "tax1", "taxRate": 0.1}, {"name": "tax2", "taxRate": 0.2}]
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>taxGroup</td>
+                        <td><a href="index.html#embedded-tax-group">Tax Group</a></td>
+                        <td>tax group applying to this item</td>
+                    </tr>
+                    <tr>
+                        <td>taxAmount</td>
+                        <td>double</td>
+                        <td>tax amount in dollars</td>
+                    </tr>
+                    <tr>
+                        <td>totalPrice</td>
+                        <td>double</td>
+                        <td>total including taxes</td>
+                    </tr>
+                    <tr>
+                        <td>orderIndex</td>
+                        <td>integer</td>
+                        <td>order in which item appears in list of invoice items</td>
+                    </tr>
+                    <tr>
+                        <td>libItem</td>
+                        <td><a href="index.html#embedded-libitem">Libitem</a></td>
+                        <td>libitem that this item is an instance of</td>
+                    </tr>
+                    <tr>
+                        <td>serviceLine</td>
+                        <td><a href="index.html#embedded-service-line">Service Line</a></td>
+                        <td>service line associated with this item</td>
+                    </tr>
+                    <tr>
+                        <td>jobItem</td>
+                        <td><a href="index.html#embedded-job-item">Job Item</a></td>
+                        <td>jobItem this item was created from</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-invoice-recurrence"></a></p>
+            <h4>Invoice Recurrence</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the item</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the item</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-invoice-recurrence-item"></a></p>
+            <h4>Invoice Recurrence Item</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the item</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the item</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>name of the item</td>
+                    </tr>
+                    <tr>
+                        <td>quantity</td>
+                        <td>double</td>
+                        <td>quantity of the item</td>
+                    </tr>
+                    <tr>
+                        <td>price</td>
+                        <td>double</td>
+                        <td>price of the item</td>
+                    </tr>
+                    <tr>
+                        <td>cost</td>
+                        <td>double</td>
+                        <td>cost of the item</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-libitem"></a></p>
+            <h4>LibItem</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the item</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the item</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the item</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>type</td>
+                        <td>type of the item</td>
+                    </tr>
+                    <tr>
+                        <td>code</td>
+                        <td>string</td>
+                        <td>lib item code</td>
+                    </tr>
+                    <tr>
+                        <td>isGeneric</td>
+                        <td>boolean</td>
+                        <td>true indicates this item is used for representing generic or ad-hoc items</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-location"></a></p>
+            <h4>Location</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the location</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the location</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the location</td>
+                    </tr>
+                    <tr>
+                        <td>legacyId</td>
+                        <td>string</td>
+                        <td>legacy identifier for the location</td>
+                    </tr>
+                    <tr>
+                        <td>lat</td>
+                        <td>double</td>
+                        <td>location geocode latitude</td>
+                    </tr>
+                    <tr>
+                        <td>lon</td>
+                        <td>double</td>
+                        <td>location geocode longitude</td>
+                    </tr>
+                    <tr>
+                        <td>address</td>
+                        <td><a href="index.html#embedded-address">Address</a></td>
+                        <td>address of the location</td>
+                    </tr>
+                    <tr>
+                        <td>phoneNumber</td>
+                        <td>string</td>
+                        <td>phone number of the location formatted as (XXX) XXX-XXXX</td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td>string</td>
+                        <td>email address of the location</td>
+                    </tr>
+                    <tr>
+                        <td>primaryContact</td>
+                        <td><a href="index.html#embedded-contact">Contact</a></td>
+                        <td>information for the primary contact at the location</td>
+                    </tr>
+                    <tr>
+                        <td>taxable</td>
+                        <td>boolean</td>
+                        <td>should invoice items for invoices at this location be taxable by default?</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>one of pending, active, or inactive</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-paymentterms"></a></p>
+            <h4>Payment Terms</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the payment terms</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the payment terms</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>payment terms name</td>
+                    </tr>
+                    <tr>
+                        <td>orderIndex</td>
+                        <td>integer</td>
+                        <td>payment terms order index</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-quote"></a></p>
+            <h4>Quote</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the quote</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the quote</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the quote</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>status of the quote</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-quote-item"></a></p>
+            <h4>Quote Item</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the item</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the item</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>name of the item</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-quotetemplateitem"></a></p>
+            <h4>Quote Template Item</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the item</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the item</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>name of the item</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-quote-request"></a></p>
+            <h4>Quote Request</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the quote request</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the quote request</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the quote request</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>status, one of: canceled, unsent, approved, quote_received, all_canceled, all_rejected,
+                            waiting</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-role"></a></p>
+            <h4>Role</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the role</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the role</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the role</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-region"></a></p>
+            <h4>Region</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the region</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the region</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the region</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-service-item"></a></p>
+            <h4>Service Item</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>item id</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the given item</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>item description</td>
+                    </tr>
+                    <tr>
+                        <td>quantity</td>
+                        <td>double</td>
+                        <td>item quantity</td>
+                    </tr>
+                    <tr>
+                        <td>price</td>
+                        <td>double</td>
+                        <td>item unit price</td>
+                    </tr>
+                    <tr>
+                        <td>orderIndex</td>
+                        <td>integer</td>
+                        <td>order in which item appears in list of invoice items</td>
+                    </tr>
+                    <tr>
+                        <td>libItem</td>
+                        <td><a href="index.html#embedded-libitem">Libitem</a></td>
+                        <td>libitem that this item is an instance of</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-service-line"></a></p>
+            <h4>Service Line</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the service line</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the service line</td>
+                    </tr>
+                    <tr>
+                        <td>trade</td>
+                        <td>string</td>
+                        <td>general trade category to which this service line belongs (e. g. Fire Protection, HVAC)</td>
+                    </tr>
+                    <tr>
+                        <td>abbr</td>
+                        <td>string</td>
+                        <td>service line abbreviation</td>
+                    </tr>
+                    <tr>
+                        <td>icon</td>
+                        <td>string</td>
+                        <td>url to image of the visual representaion of this service line</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-service-recurrence"></a></p>
+            <h4>Service Recurrence</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the service recurrence</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the service recurrence</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>description of the service</td>
+                    </tr>
+                    <tr>
+                        <td>frequency</td>
+                        <td>string</td>
+                        <td>frequency of recurrence, one of: daily, weekly, monthly, quarterly, semiannually, yearly
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>interval</td>
+                        <td>integer</td>
+                        <td>interval of recurrence</td>
+                    </tr>
+                    <tr>
+                        <td>repeatWeekday</td>
+                        <td>boolean</td>
+                        <td>recurrence repeats on a specific day or date (e. g. the 1st Tuesday, or the 3rd Friday)</td>
+                    </tr>
+                    <tr>
+                        <td>schedulingType</td>
+                        <td>string</td>
+                        <td>type of scheduling (default or task_list)</td>
+                    </tr>
+                    <tr>
+                        <td>tasks</td>
+                        <td>array</td>
+                        <td>array of tasks</td>
+                    </tr>
+                    <tr>
+                        <td>taskLists</td>
+                        <td>array</td>
+                        <td>array of task lists</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-service-request"></a></p>
+            <h4>Service Request</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the service request</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the service request</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>description of the service request</td>
+                    </tr>
+                    <tr>
+                        <td>taskInstances</td>
+                        <td>array</td>
+                        <td>array of task instances</td>
+                    </tr>
+                    <tr>
+                        <td>taskLists</td>
+                        <td>array</td>
+                        <td>array of task lists</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-service-template"></a></p>
+            <h4>Service Template</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the service template</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the service template</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the template</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>description of the service</td>
+                    </tr>
+                    <tr>
+                        <td>frequency</td>
+                        <td>string</td>
+                        <td>frequency of template , one of: daily, weekly, monthly, quarterly, semiannually, yearly</td>
+                    </tr>
+                    <tr>
+                        <td>interval</td>
+                        <td>integer</td>
+                        <td>interval of template</td>
+                    </tr>
+                    <tr>
+                        <td>repeatWeekday</td>
+                        <td>boolean</td>
+                        <td>template repeats on a specific day or date (e. g. the 1st Tuesday, or the 3rd Friday)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-tag"></a></p>
+            <h4>Tag</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the tag</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the tag</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the tag</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-task"></a></p>
+            <h4>Task</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the tag</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the tag</td>
+                    </tr>
+                    <tr>
+                        <td>referenceNumber</td>
+                        <td>string</td>
+                        <td>reference number of the task</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the task</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>status of task, one of ('active', 'inactive')</td>
+                    </tr>
+                    <tr>
+                        <td>orderIndex</td>
+                        <td>integer</td>
+                        <td>order index of the task, used to determine display order</td>
+                    </tr>
+                    <tr>
+                        <td>choiceType</td>
+                        <td>string</td>
+                        <td>type of choice ('choose_many','choose_one') for inputType ('multiple_choice')</td>
+                    </tr>
+                    <tr>
+                        <td>options</td>
+                        <td>array(string)</td>
+                        <td>values of choice for inputType ('multiple_choice')</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-task-instance"></a></p>
+            <h4>TaskInstance</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the task instance</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the instance</td>
+                    </tr>
+                    <tr>
+                        <td>referenceNumber</td>
+                        <td>string</td>
+                        <td>reference number of the instance</td>
+                    </tr>
+                    <tr>
+                        <td>section_name</td>
+                        <td>string</td>
+                        <td>section name of instance</td>
+                    </tr>
+                    <tr>
+                        <td>frequency_category</td>
+                        <td>string</td>
+                        <td>frequency of instance one of ('quarterly', 'monthly', 'semi-annually', annually,
+                            multi-year')</td>
+                    </tr>
+                    <tr>
+                        <td>estimated_duration</td>
+                        <td>integer</td>
+                        <td>duration of task defined in minutes.</td>
+                    </tr>
+                    <tr>
+                        <td>orderIndex</td>
+                        <td>integer</td>
+                        <td>order index of the task, used to determine display order</td>
+                    </tr>
+                    <tr>
+                        <td>response</td>
+                        <td>string</td>
+                        <td>user response</td>
+                    </tr>
+                    <tr>
+                        <td>choiceType</td>
+                        <td>string</td>
+                        <td>type of choice ('choose_many','choose_one') for inputType ('multiple_choice')</td>
+                    </tr>
+                    <tr>
+                        <td>options</td>
+                        <td>array(string)</td>
+                        <td>values of choice for inputType ('multiple_choice')</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-task-list"></a></p>
+            <h4>Task List</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the task list</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the task list</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the task list</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>status of task list, one of ('active', 'inactive')</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>string</td>
+                        <td>type of task list, one of ('template', 'tasklist', 'section')</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-time-card"></a></p>
+            <h4>Time Card</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>uuid</td>
+                        <td>id of the time card</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>current status of time card, one of ('changes_requested', 'approved','submitted')</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>string</td>
+                        <td>type of time card, one of ('labor_item', 'clock_event', 'expense')</td>
+                    </tr>
+                    <tr>
+                        <td>startDate</td>
+                        <td>integer</td>
+                        <td>start date for time card</td>
+                    </tr>
+                    <tr>
+                        <td>endDate</td>
+                        <td>integer</td>
+                        <td>end date for time card</td>
+                    </tr>
+                    <tr>
+                        <td>user</td>
+                        <td><a href="index.html#embedded-user">User</a></td>
+                        <td>user assigned to time card</td>
+                    </tr>
+                    <tr>
+                        <td>created</td>
+                        <td>integer</td>
+                        <td>creation date for time card</td>
+                    </tr>
+                    <tr>
+                        <td>updated</td>
+                        <td>integer</td>
+                        <td>last updated date for time card</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-tax-group"></a></p>
+            <h4>Tax Group</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the tax group</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the tax group</td>
+                    </tr>
+                    <tr>
+                        <td>code</td>
+                        <td>string</td>
+                        <td>Tax Group Code</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>Tax Group Name</td>
+                    </tr>
+                    <tr>
+                        <td>combinedRate</td>
+                        <td>double</td>
+                        <td>Combined tax rate as a decimal (e.g. 8.5% rate is represented as 0.085)</td>
+                    </tr>
+                    <tr>
+                        <td>state</td>
+                        <td>string</td>
+                        <td>State abbreviation</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-terms"></a></p>
+            <h4>Terms</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the terms</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the terms</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>terms name</td>
+                    </tr>
+                    <tr>
+                        <td>content</td>
+                        <td>string</td>
+                        <td>terms content</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-user"></a></p>
+            <h4>User</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the user</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the user</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the user</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>status of the user: active, inactive</td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td>string</td>
+                        <td>email address of the user</td>
+                    </tr>
+                    <tr>
+                        <td>avatar</td>
+                        <td>object</td>
+                        <td>list of urls for user avatars</td>
+                    </tr>
+                    <tr>
+                        <td>avatar.small</td>
+                        <td>string</td>
+                        <td>32 x 32 avatar image</td>
+                    </tr>
+                    <tr>
+                        <td>avatar.medium</td>
+                        <td>string</td>
+                        <td>64 x 64 avatar image</td>
+                    </tr>
+                    <tr>
+                        <td>avatar.large</td>
+                        <td>string</td>
+                        <td>128 x 128 avatar image</td>
+                    </tr>
+                    <tr>
+                        <td>isTech</td>
+                        <td>boolean</td>
+                        <td>is the user technician</td>
+                    </tr>
+                    <tr>
+                        <td>isHelper</td>
+                        <td>boolean</td>
+                        <td>is the user helper</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="index.html#embedded-webhook"></a></p>
+            <h4>Webhook</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the webhook</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier of the webhook</td>
+                    </tr>
+                    <tr>
+                        <td>hookUrl</td>
+                        <td>string</td>
+                        <td>endpoint url for the webhook</td>
+                    </tr>
+                    <tr>
+                        <td>enabled</td>
+                        <td>boolean</td>
+                        <td>is the webhook currently active?</td>
+                    </tr>
+                    <tr>
+                        <td>confirmed</td>
+                        <td>boolean</td>
+                        <td>has the webhook been confirmed?</td>
+                    </tr>
+                    <tr>
+                        <td>includeChangesets</td>
+                        <td>boolean</td>
+                        <td>will changesets be included in <code>updated</code> webhook messages?</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="resource-reference-sidebar">
+            <!-- This ID is for the sidebar link to jump here, actual content is in sidebar -->
+            <h2>Resource Reference</h2>
+            <p>Please select a resource from the sidebar navigation to view its details.</p>
+        </section>
+
+    </div> <!-- End #main-content -->
+
+    <script src="js/shared.js" defer></script> <!-- Corrected path to shared.js -->
+    <!-- Removed original smooth scroll script block as shared.js handles index.html# links -->
+</body>
+
+</html>

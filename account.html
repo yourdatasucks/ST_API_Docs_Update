@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('account.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Account">Account</h1>
+        <p>Details about the Account object and its endpoints...</p>
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Id</code></td>
+                    <td>integer</td>
+                    <td>The unique identifier for the Account.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+        <p>API endpoints for accounts...</p>
+        <section id="resource-account" class="resource-section">
+            <h3>Account</h3>
+            <p>The account resource is used to retrieve account settings.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /account</li>
+                <li><strong>Available Verbs</strong>: GET</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/account</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/account/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/account</td>
+                        <td>401</td>
+                        <td>unauthorized</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/account/123</td>
+                        <td>401</td>
+                        <td>unauthorized</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/account</td>
+                        <td>405</td>
+                        <td>not allowed</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/account/123</td>
+                        <td>405</td>
+                        <td>not allowed</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/account</td>
+                        <td>405</td>
+                        <td>not allowed</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/account/123</td>
+                        <td>405</td>
+                        <td>not allowed</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/account</td>
+                        <td>405</td>
+                        <td>not allowed</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/account/123</td>
+                        <td>405</td>
+                        <td>not allowed</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>Returned Elements for /account/[accountId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>account entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the account</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of account</td>
+                    </tr>
+                    <tr>
+                        <td>timezone</td>
+                        <td>string</td>
+                        <td>account timezone identifier</td>
+                    </tr>
+                    <tr>
+                        <td>primeCompany</td>
+                        <td><a href="index.html#embedded-company">Company</a></td>
+                        <td>prime company for account</td>
+                    </tr>
+                    <tr>
+                        <td>features</td>
+                        <td>object</td>
+                        <td>a key/value object of account features and boolean values (that indicate whether feature is
+                            turned <code>on</code> of `off)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>Retrieve account</h4>
+            <pre><code>GET /account
+
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "accounts": [
+            {
+                "id": 12,
+                "uri": "https://api.servicetrade.com/api/account/12",
+                "name": "Three Little Pigs HVAC",
+                "timezone": "America/New_York",
+                "primeCompany": {
+                    "id": 63,
+                    "uri": "https://api.servicetrade.com/api/company/63",
+                    "name": "Three Little Pigs HVAC",
+                    "status": "active"
+                },
+                "features": {
+                    "bulk_messaging": false,
+                    "job_stats_realtime": false,
+                    "project_management": true,
+                    "recurring_invoices": true,
+                    "recurring_service_generation": true,
+                    "tasking": true,
+                    "tech_on_break_activity": false,
+                    "corporate_idp": false
+                }
+            }
+        ]
+    }
+}
+</code></pre>
+        </section>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

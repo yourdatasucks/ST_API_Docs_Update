@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('activity.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Activity">Activity</h1>
+        <p>The Activity object represents actions or events that have occurred within the system, often related to
+            users, records, or automated processes. Activities are typically used for auditing, tracking history, or
+            feeding into activity streams.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the activity.</td>
+                    <td>true</td>
+                    <td>N/A (generated)</td>
+                </tr>
+                <tr>
+                    <td><code>Timestamp</code></td>
+                    <td>datetime</td>
+                    <td>When the activity occurred.</td>
+                    <td>true</td>
+                    <td>N/A (generated)</td>
+                </tr>
+                <tr>
+                    <td><code>UserId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who performed or triggered the activity (if applicable).</td>
+                    <td>true</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td><code>ActivityType</code></td>
+                    <td>string</td>
+                    <td>A code or string indicating the type of activity (e.g., "NOTE_ADDED", "STATUS_CHANGED",
+                        "RECORD_CREATED").</td>
+                    <td>true</td>
+                    <td>N/A (generated)</td>
+                </tr>
+                <tr>
+                    <td><code>Description</code></td>
+                    <td>string</td>
+                    <td>A human-readable description of the activity.</td>
+                    <td>true</td>
+                    <td>N/A (generated)</td>
+                </tr>
+                <tr>
+                    <td><code>TargetEntityType</code></td>
+                    <td>string</td>
+                    <td>The type of entity this activity relates to (e.g., "Contact", "Deal", "Task").</td>
+                    <td>true</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td><code>TargetEntityId</code></td>
+                    <td>integer</td>
+                    <td>The ID of the specific entity instance this activity relates to.</td>
+                    <td>true</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td><code>Details</code></td>
+                    <td>object</td>
+                    <td>An object containing additional, activity-specific information (e.g., changed fields and their
+                        old/new values).</td>
+                    <td>true</td>
+                    <td>N/A</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /activities</h3>
+        <p>Retrieves a list of activities. Supports filtering by various parameters like <code>UserId</code>,
+            <code>ActivityType</code>, <code>TargetEntityType</code>, <code>TargetEntityId</code>, and date ranges.
+        </p>
+        <h4>Request Example (Filtering by TargetEntityId)</h4>
+        <pre><code class="language-http">GET /v1.0/activities?TargetEntityType=Deal&TargetEntityId=12345
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "Id": 789,
+            "Timestamp": "2023-03-10T14:35:00Z",
+            "UserId": 101,
+            "ActivityType": "NOTE_ADDED",
+            "Description": "User John Doe added a note to Deal 'Project Alpha'.",
+            "TargetEntityType": "Deal",
+            "TargetEntityId": 12345,
+            "Details": {
+                "note_content": "Followed up with client, they are interested."
+            }
+        },
+        {
+            "Id": 788,
+            "Timestamp": "2023-03-09T10:15:00Z",
+            "UserId": 102,
+            "ActivityType": "STATUS_CHANGED",
+            "Description": "User Jane Smith changed status of Deal 'Project Alpha' from 'Prospecting' to 'Qualification'.",
+            "TargetEntityType": "Deal",
+            "TargetEntityId": 12345,
+            "Details": {
+                "old_status": "Prospecting",
+                "new_status": "Qualification"
+            }
+        }
+        // ... other activities
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 100,
+    "startIndex": 1
+}</code></pre>
+        <p><strong>Note:</strong> Creating activities is typically done implicitly by the system when actions are
+            performed. Direct creation via POST might be restricted or not available for all activity types.</p>
+
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

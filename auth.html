@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('auth.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Auth">Authentication</h1>
+        <p>Authentication is required to access most API endpoints. This API uses Bearer Token authentication, typically
+            obtained via an OAuth 2.0 flow or a dedicated token endpoint.</p>
+        <p>The exact method for obtaining an access token (<code>{access_token}</code>) will be detailed in the "Getting
+            Started" or a specific "Authentication Guide" section of the main documentation (<a
+                href="index.html#getting-started-anchor">see Getting Started</a>).</p>
+
+        <h2>Using the Access Token</h2>
+        <p>Once you have an access token, include it in the <code>Authorization</code> header of your API requests,
+            prefixed with "Bearer ":</p>
+        <pre><code class="language-http">Authorization: Bearer {your_access_token}</code></pre>
+
+        <h2>Token Endpoint (Example)</h2>
+        <p>If the API provides a direct token endpoint (e.g., for server-to-server integrations or password grants), it
+            might look like this. <strong>Note:</strong> OAuth 2.0 authorization code flow is generally preferred for
+            user-facing applications.</p>
+
+        <h3>POST /oauth/token (Example for Password Grant)</h3>
+        <p><strong>This is just an example. The actual grant type and parameters will depend on the API's OAuth 2.0
+                implementation. Password grant is often discouraged for security reasons.</strong></p>
+        <h4>Request Body (application/x-www-form-urlencoded)</h4>
+        <ul>
+            <li><code>grant_type</code>: <code>password</code></li>
+            <li><code>client_id</code>: <code>your_client_id</code></li>
+            <li><code>client_secret</code>: <code>your_client_secret</code> (if confidential client)</li>
+            <li><code>username</code>: <code>user_email_or_username</code></li>
+            <li><code>password</code>: <code>user_password</code></li>
+            <li><code>scope</code>: (optional) requested scopes</li>
+        </ul>
+        <h4>Example Request</h4>
+        <pre><code class="language-http">POST /oauth/token
+Host: auth.api.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=abc123xyz&username=user@example.com&password=securepassword123</code></pre>
+        <h4>Response (Success - HTTP 200 OK)</h4>
+        <pre><code class="language-json">{
+    "access_token": "eyJhbGciOiJSUzI1NiIs...",
+    "token_type": "Bearer",
+    "expires_in": 3600, // In seconds
+    "refresh_token": "def456uvw...", // Optional, if refresh tokens are supported
+    "scope": "read write" // Granted scopes
+}</code></pre>
+        <h4>Response (Error - e.g., HTTP 400 Bad Request or 401 Unauthorized)</h4>
+        <pre><code class="language-json">{
+    "error": "invalid_grant",
+    "error_description": "Invalid username or password."
+}</code></pre>
+
+        <h2>Token Validation / User Info (Example)</h2>
+        <p>Some APIs provide an endpoint to validate a token or get information about the authenticated user.</p>
+        <h3>GET /oauth/userinfo (or /me, /connect/userinfo)</h3>
+        <p>Requires a valid Bearer token in the Authorization header.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /oauth/userinfo
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "sub": "user123", // Subject - unique user identifier
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "user_id": 77,
+    "permissions": ["read:contacts", "write:deals"]
+    // ... other user claims
+}</code></pre>
+
+        <h2>Token Expiration and Refresh</h2>
+        <p>Access tokens are typically short-lived. If the API supports refresh tokens (obtained during the initial
+            token grant), your application should use the refresh token to obtain a new access token before the current
+            one expires, without requiring the user to re-authenticate.</p>
+
+        <p>Refer to the primary API documentation for specifics on the OAuth 2.0 flows supported, client registration,
+            and token management best practices.</p>
+
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

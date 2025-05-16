@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Definition API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('assetdefinition.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="AssetDefinition">Asset Definition</h1>
+        <p>The Asset Definition object is part of the Assets feature, which must be enabled by an Administrator in
+            Account Settings &gt; Assets.</p>
+        <p>The Asset Definition object represents the type of an Asset. For example, if an Asset is an "Apple
+            MacBook Pro 16 Inch", its Asset Definition would be "Laptop". When creating or editing an Asset
+            Definition, you can define Custom Fields specific to that Asset Definition. These Asset Definition
+            Custom Fields can then be populated on any Assets that use this Asset Definition.</p>
+        <p>In order to create Asset Definitions, you must have the <strong>Administer Asset Definitions</strong>
+            permission. To view and use Asset Definitions (e.g. when creating an Asset), you must have the
+            <strong>View Asset Definitions</strong> permission.
+        </p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Id</code></td>
+                    <td>integer</td>
+                    <td>The unique identifier for the Asset Definition.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>Name</code></td>
+                    <td>string</td>
+                    <td>The name of the Asset Definition.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>IsActive</code></td>
+                    <td>boolean</td>
+                    <td>Indicates if the Asset Definition is active. Inactive Asset Definitions cannot be used when
+                        creating new Assets.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>CreateDate</code></td>
+                    <td>datetime</td>
+                    <td>The date the Asset Definition was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>CreatedBy</code></td>
+                    <td>integer</td>
+                    <td>The User ID of the user who created the Asset Definition.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>LastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>The date the Asset Definition was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>LastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>The User ID of the user who last modified the Asset Definition.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>CustomFields</code></td>
+                    <td>array</td>
+                    <td>An array of <a href="#CustomField">Custom Fields</a> that are defined for this Asset
+                        Definition. These are not the values of the custom fields for a specific asset, but the
+                        definitions of the fields themselves.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /assetdefinitions</h3>
+        <p>Retrieves a list of all Asset Definitions.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/assetdefinitions
+        Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+            "items": [
+                {
+                    "Id": 1,
+                    "Name": "Laptop",
+                    "IsActive": true,
+                    "CreateDate": "2023-01-15T10:00:00Z",
+                    "CreatedBy": 101,
+                    "LastModifiedDate": "2023-01-16T11:30:00Z",
+                    "LastModifiedBy": 102,
+                    "CustomFields": []
+                },
+                {
+                    "Id": 2,
+                    "Name": "Monitor",
+                    "IsActive": true,
+                    // ... other properties
+                }
+            ],
+            "totalResults": 2,
+            "itemsPerPage": 100,
+            "startIndex": 1
+        }</code></pre>
+
+        <h3>GET /assetdefinitions/{id}</h3>
+        <p>Retrieves a specific Asset Definition by its ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/assetdefinitions/{id}
+        Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+            "Id": 1,
+            "Name": "Laptop",
+            "IsActive": true,
+            "CreateDate": "2023-01-15T10:00:00Z",
+            "CreatedBy": 101,
+            "LastModifiedDate": "2023-01-16T11:30:00Z",
+            "LastModifiedBy": 102,
+            "CustomFields": [
+                {
+                    "Id": 55,
+                    "FieldName": "Screen Size",
+                    "FieldType": "Number",
+                    // ... other CustomField properties
+                },
+                {
+                    "Id": 56,
+                    "FieldName": "RAM",
+                    "FieldType": "Text",
+                    // ... other CustomField properties
+                }
+            ]
+        }</code></pre>
+
+        <h3>POST /assetdefinitions</h3>
+        <p>Creates a new Asset Definition.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+            "Name": "Projector",
+            "IsActive": true,
+            "CustomFields": [ // Optional: Define custom fields during creation
+                {
+                    "FieldName": "Lumens",
+                    "FieldType": "Number",
+                    "IsRequired": false
+                }
+            ]
+        }</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created Asset Definition object (HTTP 201 Created).</p>
+        <pre><code class="language-json">{
+            "Id": 3,
+            "Name": "Projector",
+            "IsActive": true,
+            "CreateDate": "2023-01-17T09:00:00Z",
+            "CreatedBy": 103,
+            "LastModifiedDate": "2023-01-17T09:00:00Z",
+            "LastModifiedBy": 103,
+            "CustomFields": [
+                 {
+                    "Id": 57,
+                    "FieldName": "Lumens",
+                    "FieldType": "Number",
+                    "IsRequired": false,
+                    // ... other CustomField properties
+                }
+            ]
+        }</code></pre>
+
+        <h3>PUT /assetdefinitions/{id}</h3>
+        <p>Updates an existing Asset Definition.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+            "Name": "High-Performance Laptop", // Change name
+            "IsActive": false, // Deactivate
+            "CustomFields": [ // Update custom fields (can add, modify, or remove)
+                // To modify an existing custom field, include its Id
+                {
+                    "Id": 55, // Assuming this was "Screen Size"
+                    "FieldName": "Display Size (inches)",
+                    "FieldType": "Number"
+                },
+                // To add a new custom field, omit the Id
+                {
+                    "FieldName": "Processor",
+                    "FieldType": "Text"
+                }
+                // To remove a custom field, you might need a separate mechanism or
+                // pass a specific instruction if the API supports it, or simply omit it
+                // if the PUT replaces the entire CustomFields array.
+                // (API behavior for list updates varies)
+            ]
+        }</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated Asset Definition object.</p>
+
+        <h3>DELETE /assetdefinitions/{id}</h3>
+        <p>Deletes an Asset Definition. This is typically a soft delete if Assets are using this definition, or it
+            might be disallowed if in use. Check API specific documentation on deletion constraints.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">DELETE /v1.0/assetdefinitions/{id}
+        Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+        <!-- /AssetDefinition -->
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

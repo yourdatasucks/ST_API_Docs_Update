@@ -1,0 +1,247 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    display: flex;
+}
+
+#sidebar {
+    width: auto;
+    background: #333;
+    color: #fff;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    border-right: #0779e4 3px solid;
+}
+
+#sidebar h2 {
+    text-align: center;
+    color: #fff;
+    margin-top: 0;
+    border-bottom: 1px solid #555;
+    padding-bottom: 10px;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar ul li a {
+    color: #fff;
+    padding: 10px 15px;
+    display: block;
+    text-decoration: none;
+    border-bottom: 1px solid #444;
+}
+
+#sidebar ul li a:hover,
+#sidebar ul li a.active {
+    background-color: #0779e4;
+    color: #fff;
+}
+
+#sidebar .resource-list {
+    padding-left: 15px;
+}
+
+#sidebar .resource-list li a {
+    font-size: 0.9em;
+    padding: 8px 15px;
+    border-bottom: none;
+}
+
+#sidebar .resource-list li a:hover {
+    background-color: #555;
+}
+
+#main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 280px);
+    background-color: #fff;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+    min-height: 100vh;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    border-bottom: #0779e4 3px solid;
+}
+
+header h1 {
+    margin: 0;
+    padding: 0;
+}
+
+nav ul {
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: #fff;
+    padding: 10px 20px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #333;
+}
+
+h3 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5em;
+}
+
+pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #eef;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #0779e4;
+    color: #fff;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+a {
+    color: #0779e4;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0779e4;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: none;
+    z-index: 1000;
+}
+
+#back-to-top a {
+    color: white;
+    text-decoration: none;
+}
+
+#back-to-top:hover {
+    background-color: #0056b3;
+}
+
+.resource-section {
+    margin-bottom: 2em;
+    padding-bottom: 1em;
+    border-bottom: 2px solid #ccc;
+}
+
+.resource-section:last-child {
+    border-bottom: none;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+#main-content header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    border-bottom: #0779e4 3px solid;
+    margin-bottom: 20px;
+}
+
+#main-content header h1 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#main-content header h1 a:hover {
+    text-decoration: underline;
+}
+
+body>.container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    overflow: visible;
+    display: flex;
+}
