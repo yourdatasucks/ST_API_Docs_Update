@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Context API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('jobcontext.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="JobContext">Job Context</h1>
+        <p>The Job Context object provides contextual information and relationships between a specific <a
+                href="job.html">Job</a>
+            and other entities in ServiceTrade. It enables accessing related data such as customer details, location
+            information,
+            assigned users, related assets, and more for comprehensive job context awareness.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>job</code></td>
+                    <td>object</td>
+                    <td>The <a href="job.html">Job</a> object for which context is being provided.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customer</code></td>
+                    <td>object</td>
+                    <td>The <a href="customer.html">Customer</a> associated with the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>location</code></td>
+                    <td>object</td>
+                    <td>The <a href="location.html">Location</a> where the job is performed.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assets</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="asset.html">Asset</a> objects at the location that may be relevant to the job.
+                    </td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assignedUsers</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="user.html">User</a> objects assigned to the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contacts</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="contact.html">Contact</a> objects associated with the customer and location.
+                    </td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceRecurrence</code></td>
+                    <td>object</td>
+                    <td>The <a href="servicerecurrence.html">Service Recurrence</a> that generated this job, if
+                        applicable.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceRequest</code></td>
+                    <td>object</td>
+                    <td>The <a href="servicerequest.html">Service Request</a> that initiated this job, if applicable.
+                    </td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contract</code></td>
+                    <td>object</td>
+                    <td>The <a href="contract.html">Contract</a> associated with this job, if applicable.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>invoices</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="invoice.html">Invoice</a> objects associated with the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>relatedJobs</code></td>
+                    <td>array</td>
+                    <td>Array of related <a href="job.html">Job</a> objects at the same location or for the same
+                        customer.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceLine</code></td>
+                    <td>object</td>
+                    <td>The <a href="serviceline.html">Service Line</a> this job belongs to.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>deficiencies</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="deficiency.html">Deficiency</a> objects associated with the job or location.
+                    </td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>quotes</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="quote.html">Quote</a> objects associated with the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>timeCards</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="timecard.html">Time Card</a> objects logged against this job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>histories</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="history.html">History</a> objects for this job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taskInstances</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="taskinstance.html">Task Instance</a> objects for this job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /jobs/{id}/context</h3>
+        <p>Retrieves the full context for a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "job": {
+        "id": 12345,
+        "number": "JOB-2023-0789",
+        "customerId": 5678,
+        "locationId": 9012,
+        "type": "Inspection",
+        "status": "Scheduled",
+        "priority": "Normal",
+        "scheduledStartDate": "2023-08-15T09:00:00Z",
+        "scheduledEndDate": "2023-08-15T11:00:00Z",
+        "description": "Annual fire alarm inspection",
+        "assignedUsers": [101, 102],
+        "createdDate": "2023-07-10T14:30:00Z"
+    },
+    "customer": {
+        "id": 5678,
+        "name": "ACME Corporation",
+        "address": "123 Main Street, Suite 400",
+        "city": "Raleigh",
+        "state": "NC",
+        "zip": "27601",
+        "phone": "(919) 555-1234",
+        "website": "https://www.acmecorp.com",
+        "status": "Active"
+    },
+    "location": {
+        "id": 9012,
+        "name": "ACME Headquarters",
+        "address": "123 Main Street",
+        "city": "Raleigh",
+        "state": "NC",
+        "zip": "27601",
+        "phone": "(919) 555-1235",
+        "contactId": 7001,
+        "latitude": 35.7796,
+        "longitude": -78.6382
+    },
+    "assets": [
+        {
+            "id": 3001,
+            "name": "Fire Alarm Control Panel",
+            "manufacturer": "Simplex",
+            "model": "4100ES",
+            "serialNumber": "SN12345678",
+            "installDate": "2020-05-15",
+            "assetDefinitionId": 101
+        },
+        {
+            "id": 3002,
+            "name": "Fire Alarm Annunciator",
+            "manufacturer": "Simplex",
+            "model": "4603-9101",
+            "serialNumber": "SN23456789",
+            "installDate": "2020-05-15",
+            "assetDefinitionId": 102
+        }
+        // Additional assets...
+    ],
+    "assignedUsers": [
+        {
+            "id": 101,
+            "firstName": "John",
+            "lastName": "Smith",
+            "email": "jsmith@servicetrade.com",
+            "phone": "(919) 555-5001",
+            "role": "Technician",
+            "status": "Active"
+        },
+        {
+            "id": 102,
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "email": "jdoe@servicetrade.com",
+            "phone": "(919) 555-5002",
+            "role": "Lead Technician",
+            "status": "Active"
+        }
+    ],
+    "contacts": [
+        {
+            "id": 7001,
+            "firstName": "Robert",
+            "lastName": "Johnson",
+            "email": "rjohnson@acmecorp.com",
+            "phone": "(919) 555-2001",
+            "title": "Facilities Manager",
+            "isPrimary": true
+        },
+        {
+            "id": 7002,
+            "firstName": "Sarah",
+            "lastName": "Williams",
+            "email": "swilliams@acmecorp.com",
+            "phone": "(919) 555-2002",
+            "title": "Security Director",
+            "isPrimary": false
+        }
+    ],
+    "contract": {
+        "id": 401,
+        "number": "CONT-2023-123",
+        "customerId": 5678,
+        "status": "Active",
+        "startDate": "2023-01-01",
+        "endDate": "2023-12-31",
+        "value": 22500.00
+    },
+    "invoices": [],
+    "relatedJobs": [
+        {
+            "id": 12340,
+            "number": "JOB-2022-0789",
+            "type": "Inspection",
+            "status": "Completed",
+            "scheduledStartDate": "2022-08-16T09:00:00Z",
+            "scheduledEndDate": "2022-08-16T11:00:00Z",
+            "description": "Annual fire alarm inspection",
+            "completedDate": "2022-08-16T11:30:45Z"
+        },
+        {
+            "id": 12342,
+            "number": "JOB-2023-0456",
+            "type": "Repair",
+            "status": "Completed",
+            "scheduledStartDate": "2023-03-10T13:00:00Z",
+            "scheduledEndDate": "2023-03-10T15:00:00Z",
+            "description": "Replace faulty smoke detector on 3rd floor",
+            "completedDate": "2023-03-10T14:45:22Z"
+        }
+    ],
+    "deficiencies": [
+        {
+            "id": 4001,
+            "title": "Damaged Pull Station",
+            "description": "Pull station on 3rd floor east hallway has damaged cover.",
+            "status": "Open",
+            "priority": "Medium",
+            "reportedDate": "2023-07-12T10:15:30Z"
+        }
+    ],
+    "quotes": [],
+    "serviceRecurrence": {
+        "id": 2001,
+        "name": "Annual Fire Alarm Inspection",
+        "frequency": "Annually",
+        "nextScheduledDate": "2024-08-15T09:00:00Z"
+    }
+}</code></pre>
+
+        <h3>GET /jobs/{id}/context/customer</h3>
+        <p>Retrieves just the customer context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/customer
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the customer object from the context.</p>
+
+        <h3>GET /jobs/{id}/context/location</h3>
+        <p>Retrieves just the location context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/location
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the location object from the context.</p>
+
+        <h3>GET /jobs/{id}/context/assets</h3>
+        <p>Retrieves just the assets context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/assets
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the assets array from the context.</p>
+
+        <h3>GET /jobs/{id}/context/users</h3>
+        <p>Retrieves just the assigned users context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/users
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the assignedUsers array from the context.</p>
+
+        <h3>GET /jobs/{id}/context/contacts</h3>
+        <p>Retrieves just the contacts context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/contacts
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the contacts array from the context.</p>
+
+        <h3>GET /jobs/{id}/context/related-jobs</h3>
+        <p>Retrieves just the related jobs context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/related-jobs
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the relatedJobs array from the context.</p>
+
+        <h3>GET /jobs/{id}/context/contract</h3>
+        <p>Retrieves just the contract context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/contract
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the contract object from the context, if applicable.</p>
+
+        <h3>GET /jobs/{id}/context/service-recurrence</h3>
+        <p>Retrieves just the service recurrence context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/service-recurrence
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the serviceRecurrence object from the context, if applicable.</p>
+
+        <h3>GET /jobs/{id}/context/deficiencies</h3>
+        <p>Retrieves just the deficiencies context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/deficiencies
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the deficiencies array from the context.</p>
+
+        <h3>GET /jobs/{id}/context/history</h3>
+        <p>Retrieves just the history context for a job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/context/history
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns just the histories array from the context.</p>
+
+        <h3>POST /jobs/{id}/context/custom</h3>
+        <p>Retrieves a custom subset of the job context.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "include": ["job", "customer", "location", "assets", "contacts"],
+    "assetLimit": 10,
+    "contactTypes": ["Primary", "Emergency"],
+    "assetTypes": ["Fire Alarm", "Sprinkler"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a custom context object containing only the requested components.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

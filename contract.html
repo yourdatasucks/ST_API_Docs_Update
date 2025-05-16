@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('contract.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Contract">Contract</h1>
+        <p>The Contract object represents a formal agreement between a service provider and a customer for recurring
+            services or maintenance. Contracts typically include details about services covered, pricing, term length,
+            and renewal terms.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the contract.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>number</code></td>
+                    <td>string</td>
+                    <td>Contract reference number or identifier.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name or title of the contract.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the contract and its terms.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>companyId</code></td>
+                    <td>integer</td>
+                    <td>ID of the customer <a href="company.html">Company</a> this contract is with.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>locationIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="location.html">Location</a> IDs covered by this contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of contract (e.g., "Service", "Maintenance", "Support").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the contract (e.g., "Draft", "Active", "Expired", "Canceled").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>startDate</code></td>
+                    <td>date</td>
+                    <td>Date when the contract becomes effective.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>endDate</code></td>
+                    <td>date</td>
+                    <td>Date when the contract expires.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>term</code></td>
+                    <td>integer</td>
+                    <td>Length of the contract term in months.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>autoRenew</code></td>
+                    <td>boolean</td>
+                    <td>Whether the contract automatically renews at the end of the term.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>renewalTerm</code></td>
+                    <td>integer</td>
+                    <td>Length of renewal term in months, if different from initial term.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>cancellationNoticeDays</code></td>
+                    <td>integer</td>
+                    <td>Number of days notice required for cancellation.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>totalValue</code></td>
+                    <td>decimal</td>
+                    <td>Total monetary value of the contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>recurringAmount</code></td>
+                    <td>decimal</td>
+                    <td>Recurring payment amount.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>billingFrequency</code></td>
+                    <td>string</td>
+                    <td>Frequency of billing (e.g., "Monthly", "Quarterly", "Annually").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>nextBillingDate</code></td>
+                    <td>date</td>
+                    <td>Date of the next scheduled billing.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>primaryContactId</code></td>
+                    <td>integer</td>
+                    <td>ID of the primary <a href="contact.html">Contact</a> for this contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>salesRepId</code></td>
+                    <td>integer</td>
+                    <td>ID of the sales representative who sold the contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>accountManagerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the account manager responsible for this contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notificationDays</code></td>
+                    <td>integer</td>
+                    <td>Days before expiration to send renewal notification.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contractDocumentUrl</code></td>
+                    <td>string</td>
+                    <td>URL to the digital contract document.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>signedDate</code></td>
+                    <td>date</td>
+                    <td>Date the contract was signed by all parties.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about the contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assetIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="asset.html">Asset</a> IDs covered by this contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom field values for the contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>tags</code></td>
+                    <td>array</td>
+                    <td>Array of tags associated with the contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the contract record was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the contract record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the contract record was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the contract record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /contracts</h3>
+        <p>Retrieves a list of contracts. Supports filtering by company, status, date ranges, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contracts?companyId=123&status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 456,
+            "number": "CONT-2023-001",
+            "name": "Annual Maintenance Agreement",
+            "description": "Comprehensive maintenance coverage for all HVAC systems at main office location",
+            "companyId": 123,
+            "locationIds": [201, 202],
+            "type": "Maintenance",
+            "status": "Active",
+            "startDate": "2023-01-01",
+            "endDate": "2023-12-31",
+            "term": 12,
+            "autoRenew": true,
+            "renewalTerm": 12,
+            "cancellationNoticeDays": 30,
+            "totalValue": 12000.00,
+            "recurringAmount": 1000.00,
+            "billingFrequency": "Monthly",
+            "nextBillingDate": "2023-08-01",
+            "primaryContactId": 301,
+            "salesRepId": 201,
+            "accountManagerId": 202,
+            "notificationDays": 60,
+            "contractDocumentUrl": "https://documents.example.com/contracts/CONT-2023-001.pdf",
+            "signedDate": "2022-12-15",
+            "notes": "Customer has requested priority response for all service calls.",
+            "assetIds": [501, 502, 503, 504],
+            "customFields": {
+                "contractType": "Premium",
+                "discountPercentage": 10,
+                "specialTerms": "24/7 emergency response"
+            },
+            "tags": ["HVAC", "Premium", "Monthly Billing"],
+            "createdDate": "2022-11-30T14:30:00Z",
+            "createdBy": 201,
+            "lastModifiedDate": "2022-12-15T10:15:00Z",
+            "lastModifiedBy": 202
+        },
+        // Additional contracts...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /contracts/{id}</h3>
+        <p>Retrieves a specific contract by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contracts/456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 456,
+    "number": "CONT-2023-001",
+    "name": "Annual Maintenance Agreement",
+    "description": "Comprehensive maintenance coverage for all HVAC systems at main office location",
+    "companyId": 123,
+    "locationIds": [201, 202],
+    "type": "Maintenance",
+    "status": "Active",
+    "startDate": "2023-01-01",
+    "endDate": "2023-12-31",
+    "term": 12,
+    "autoRenew": true,
+    "renewalTerm": 12,
+    "cancellationNoticeDays": 30,
+    "totalValue": 12000.00,
+    "recurringAmount": 1000.00,
+    "billingFrequency": "Monthly",
+    "nextBillingDate": "2023-08-01",
+    "primaryContactId": 301,
+    "salesRepId": 201,
+    "accountManagerId": 202,
+    "notificationDays": 60,
+    "contractDocumentUrl": "https://documents.example.com/contracts/CONT-2023-001.pdf",
+    "signedDate": "2022-12-15",
+    "notes": "Customer has requested priority response for all service calls.",
+    "assetIds": [501, 502, 503, 504],
+    "customFields": {
+        "contractType": "Premium",
+        "discountPercentage": 10,
+        "specialTerms": "24/7 emergency response"
+    },
+    "tags": ["HVAC", "Premium", "Monthly Billing"],
+    "createdDate": "2022-11-30T14:30:00Z",
+    "createdBy": 201,
+    "lastModifiedDate": "2022-12-15T10:15:00Z",
+    "lastModifiedBy": 202,
+    "rules": [
+        {
+            "id": 701,
+            "contractId": 456,
+            "type": "ServiceFrequency",
+            "name": "Quarterly HVAC Inspection",
+            "description": "Comprehensive inspection and maintenance of all HVAC systems",
+            // Other rule properties...
+        },
+        {
+            "id": 702,
+            "contractId": 456,
+            "type": "ResponseTime",
+            "name": "Emergency Response",
+            "description": "Maximum 4-hour response time for emergency calls",
+            // Other rule properties...
+        }
+        // Additional rules...
+    ],
+    "serviceRecurrences": [
+        {
+            "id": 601,
+            "contractId": 456,
+            "name": "Quarterly HVAC Maintenance",
+            "frequency": "Quarterly",
+            // Other service recurrence properties...
+        }
+        // Additional service recurrences...
+    ]
+}</code></pre>
+
+        <h3>POST /contracts</h3>
+        <p>Creates a new contract.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Fire Safety System Maintenance",
+    "description": "Annual maintenance and inspection of all fire safety systems",
+    "companyId": 123,
+    "locationIds": [203],
+    "type": "Maintenance",
+    "status": "Draft",
+    "startDate": "2023-09-01",
+    "endDate": "2024-08-31",
+    "term": 12,
+    "autoRenew": true,
+    "cancellationNoticeDays": 60,
+    "totalValue": 6000.00,
+    "recurringAmount": 500.00,
+    "billingFrequency": "Monthly",
+    "primaryContactId": 302,
+    "salesRepId": 201,
+    "assetIds": [601, 602, 603],
+    "tags": ["Fire Safety", "Annual Inspection"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created contract object (HTTP 201 Created).</p>
+
+        <h3>PUT /contracts/{id}</h3>
+        <p>Updates an existing contract.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Fire Safety System Maintenance - Premium",
+    "description": "Comprehensive annual maintenance and inspection of all fire safety systems with priority service",
+    "status": "Active",
+    "recurringAmount": 600.00,
+    "accountManagerId": 203,
+    "notes": "Customer upgraded to premium service level with 24/7 emergency response"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated contract object.</p>
+
+        <h3>DELETE /contracts/{id}</h3>
+        <p>Deletes a contract. This may be disallowed for active contracts or contracts with associated records.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /contracts/{id}/rules</h3>
+        <p>Retrieves all contract rules associated with a specific contract.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contracts/456/rules
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="contractrule.html">Contract Rules</a> for this contract.</p>
+
+        <h3>GET /contracts/{id}/servicerecurrences</h3>
+        <p>Retrieves all service recurrences associated with a specific contract.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contracts/456/servicerecurrences
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="servicerecurrence.html">Service Recurrences</a> for this contract.</p>
+
+        <h3>GET /contracts/{id}/assets</h3>
+        <p>Retrieves all assets covered by a specific contract.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contracts/456/assets
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="asset.html">Assets</a> covered by this contract.</p>
+
+        <h3>POST /contracts/{id}/renew</h3>
+        <p>Renews an existing contract, creating a new contract term.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "renewalStartDate": "2024-01-01",
+    "renewalEndDate": "2024-12-31",
+    "adjustments": {
+        "recurringAmount": 1050.00,
+        "notes": "5% price increase from previous term"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the renewed contract object.</p>
+
+        <h3>POST /contracts/{id}/terminate</h3>
+        <p>Terminates an active contract before its end date.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "terminationDate": "2023-10-31",
+    "terminationReason": "Customer relocated to a region we don't service",
+    "earlyTerminationFee": 2000.00,
+    "waiveTerminationFee": false,
+    "notes": "Approved by regional manager"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated contract object with terminated status.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

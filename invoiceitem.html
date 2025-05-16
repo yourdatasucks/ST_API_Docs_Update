@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Item API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('invoiceitem.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="InvoiceItem">Invoice Item</h1>
+        <p>The Invoice Item object represents a line item on an <a href="invoice.html">Invoice</a>. Each invoice item
+            details a specific product or service being billed, including its description, quantity, price, and tax
+            information.
+            Invoice items enable detailed billing and cost tracking for services and products provided to customers.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the invoice item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>invoiceId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="invoice.html">Invoice</a> this item belongs to.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the item, displayed on the invoice.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>quantity</code></td>
+                    <td>decimal</td>
+                    <td>Quantity of the item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unitPrice</code></td>
+                    <td>decimal</td>
+                    <td>Price per unit.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unitCost</code></td>
+                    <td>decimal</td>
+                    <td>Cost per unit (for profit calculations, not shown on invoice).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>subtotal</code></td>
+                    <td>decimal</td>
+                    <td>Line item subtotal (quantity * unitPrice).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>discountAmount</code></td>
+                    <td>decimal</td>
+                    <td>Discount amount applied to this line item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>discountType</code></td>
+                    <td>string</td>
+                    <td>Type of discount (e.g., "Percentage", "Fixed").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>discountPercentage</code></td>
+                    <td>decimal</td>
+                    <td>Percentage discount applied to this line item, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxable</code></td>
+                    <td>boolean</td>
+                    <td>Whether this item is subject to tax.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxAmount</code></td>
+                    <td>decimal</td>
+                    <td>Tax amount for this line item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxRate</code></td>
+                    <td>decimal</td>
+                    <td>Tax rate applied to this line item. If not specified, the invoice's tax rate is used.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxRateId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="taxrate.html">Tax Rate</a> applied to this item, if different from the
+                        invoice's tax rate.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>total</code></td>
+                    <td>decimal</td>
+                    <td>Line item total (subtotal - discounts + tax).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sequenceNumber</code></td>
+                    <td>integer</td>
+                    <td>Display order of this item on the invoice.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>itemType</code></td>
+                    <td>string</td>
+                    <td>Type of item (e.g., "Product", "Service", "Labor", "Material", "Fee").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="job.html">Job</a> this item is associated with, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="jobitem.html">Job Item</a> this invoice item is associated with, if
+                        applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="serviceitem.html">Service Item</a> this invoice item is associated with, if
+                        applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assetId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="asset.html">Asset</a> this invoice item is associated with, if applicable.
+                    </td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about this line item (internal use, not shown on invoice).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this invoice item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this invoice item was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this invoice item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this invoice item was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>externalId</code></td>
+                    <td>string</td>
+                    <td>Reference to this item in an external system.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /invoices/{invoiceId}/items</h3>
+        <p>Retrieves all line items for a specific invoice.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoices/12345/items
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 67890,
+            "invoiceId": 12345,
+            "description": "Annual Fire Alarm Inspection",
+            "quantity": 1,
+            "unitPrice": 1500.00,
+            "unitCost": 750.00,
+            "subtotal": 1500.00,
+            "taxable": true,
+            "taxAmount": 112.50,
+            "taxRate": 7.50,
+            "total": 1612.50,
+            "sequenceNumber": 1,
+            "itemType": "Service",
+            "jobId": 9012,
+            "jobItemId": 222,
+            "serviceItemId": 111,
+            "createdDate": "2023-07-15T09:30:00Z"
+        },
+        {
+            "id": 67891,
+            "invoiceId": 12345,
+            "description": "Replacement Smoke Detector",
+            "quantity": 2,
+            "unitPrice": 250.00,
+            "unitCost": 125.00,
+            "subtotal": 500.00,
+            "taxable": true,
+            "taxAmount": 37.50,
+            "taxRate": 7.50,
+            "total": 537.50,
+            "sequenceNumber": 2,
+            "itemType": "Product",
+            "jobId": 9012,
+            "jobItemId": 223,
+            "serviceItemId": 112,
+            "createdDate": "2023-07-15T09:30:00Z"
+        },
+        {
+            "id": 67892,
+            "invoiceId": 12345,
+            "description": "Battery Replacement - Exit Signs",
+            "quantity": 5,
+            "unitPrice": 100.00,
+            "unitCost": 40.00,
+            "subtotal": 500.00,
+            "taxable": true,
+            "taxAmount": 37.50,
+            "taxRate": 7.50,
+            "total": 537.50,
+            "sequenceNumber": 3,
+            "itemType": "Material",
+            "jobId": 9012,
+            "jobItemId": 224,
+            "serviceItemId": 113,
+            "createdDate": "2023-07-15T09:30:00Z"
+        }
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /invoiceitems/{id}</h3>
+        <p>Retrieves a specific invoice item by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoiceitems/67890
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 67890,
+    "invoiceId": 12345,
+    "description": "Annual Fire Alarm Inspection",
+    "quantity": 1,
+    "unitPrice": 1500.00,
+    "unitCost": 750.00,
+    "subtotal": 1500.00,
+    "taxable": true,
+    "taxAmount": 112.50,
+    "taxRate": 7.50,
+    "total": 1612.50,
+    "sequenceNumber": 1,
+    "itemType": "Service",
+    "jobId": 9012,
+    "jobItemId": 222,
+    "serviceItemId": 111,
+    "notes": "Complete NFPA 72 annual inspection of fire alarm system",
+    "createdBy": 101,
+    "createdDate": "2023-07-15T09:30:00Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2023-07-15T09:30:00Z",
+    "externalId": "QB-ITEM-7865",
+    "customFields": {
+        "departmentCode": "FP-01",
+        "laborHours": "4.5"
+    }
+}</code></pre>
+
+        <h3>POST /invoices/{invoiceId}/items</h3>
+        <p>Creates a new invoice item for the specified invoice.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Emergency Service Call - Water Flow Switch Repair",
+    "quantity": 1,
+    "unitPrice": 450.00,
+    "unitCost": 225.00,
+    "taxable": true,
+    "sequenceNumber": 4,
+    "itemType": "Service",
+    "jobId": 9012,
+    "serviceItemId": 114,
+    "notes": "After-hours emergency service call to repair faulty water flow switch",
+    "customFields": {
+        "departmentCode": "FP-02",
+        "laborHours": "3.0"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created invoice item (HTTP 201 Created).</p>
+
+        <h3>PUT /invoiceitems/{id}</h3>
+        <p>Updates an existing invoice item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Emergency Service Call - Water Flow Switch Repair & Testing",
+    "quantity": 1.5,
+    "unitPrice": 450.00,
+    "taxable": true,
+    "notes": "After-hours emergency service call to repair faulty water flow switch and perform flow testing",
+    "customFields": {
+        "departmentCode": "FP-02",
+        "laborHours": "4.5"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated invoice item.</p>
+
+        <h3>DELETE /invoiceitems/{id}</h3>
+        <p>Deletes an invoice item. This is only allowed if the parent invoice is in "Draft" status.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /invoices/{invoiceId}/items/batch</h3>
+        <p>Creates multiple invoice items for the specified invoice in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "description": "Annual Sprinkler System Inspection",
+            "quantity": 1,
+            "unitPrice": 1200.00,
+            "taxable": true,
+            "itemType": "Service",
+            "serviceItemId": 115
+        },
+        {
+            "description": "Replacement Pressure Gauge",
+            "quantity": 1,
+            "unitPrice": 85.00,
+            "taxable": true,
+            "itemType": "Product",
+            "serviceItemId": 116
+        },
+        {
+            "description": "Sprinkler Head Replacement",
+            "quantity": 3,
+            "unitPrice": 45.00,
+            "taxable": true,
+            "itemType": "Material",
+            "serviceItemId": 117
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created invoice items.</p>
+
+        <h3>PUT /invoices/{invoiceId}/items/reorder</h3>
+        <p>Reorders the line items on an invoice.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "itemOrder": [67892, 67890, 67891]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns success message and updates the sequenceNumber property of the affected items.</p>
+
+        <h3>GET /jobs/{jobId}/invoiceitems</h3>
+        <p>Retrieves all invoice items associated with a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/9012/invoiceitems
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of invoice items associated with the specified job, potentially across multiple
+            invoices.</p>
+
+        <h3>POST /jobs/{jobId}/invoiceitems</h3>
+        <p>Creates invoice items from job items.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "invoiceId": 12345,
+    "jobItemIds": [226, 227, 228],
+    "includeCompleted": true,
+    "includePendingApproval": false
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created invoice items.</p>
+
+        <h3>GET /serviceitems/{serviceItemId}/invoiceitems</h3>
+        <p>Retrieves all invoice items associated with a specific service item.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/serviceitems/111/invoiceitems
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of invoice items associated with the specified service item.</p>
+
+        <h3>GET /assets/{assetId}/invoiceitems</h3>
+        <p>Retrieves all invoice items associated with a specific asset.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/assets/5001/invoiceitems
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of invoice items associated with the specified asset.</p>
+
+        <h3>GET /invoiceitems/summary</h3>
+        <p>Retrieves summary information about invoice items, grouped by various criteria.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoiceitems/summary?groupBy=itemType&startDate=2023-07-01&endDate=2023-07-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalItems": 325,
+    "totalAmount": 458750.25,
+    "averageAmount": 1411.54,
+    "byItemType": {
+        "Service": {
+            "count": 125,
+            "amount": 245680.50,
+            "percentage": 53.6
+        },
+        "Product": {
+            "count": 87,
+            "amount": 98750.75,
+            "percentage": 21.5
+        },
+        "Material": {
+            "count": 78,
+            "amount": 79420.00,
+            "percentage": 17.3
+        },
+        "Labor": {
+            "count": 35,
+            "amount": 34899.00,
+            "percentage": 7.6
+        }
+    },
+    "byServiceItem": [
+        {
+            "serviceItemId": 111,
+            "name": "Annual Fire Alarm Inspection",
+            "count": 42,
+            "amount": 63000.00
+        },
+        {
+            "serviceItemId": 112,
+            "name": "Smoke Detector",
+            "count": 36,
+            "amount": 18000.00
+        },
+        {
+            "serviceItemId": 113,
+            "name": "Exit Sign Battery",
+            "count": 28,
+            "amount": 14000.00
+        }
+        // Additional service items...
+    ],
+    "profitMargin": {
+        "totalRevenue": 458750.25,
+        "totalCost": 229375.13,
+        "grossProfit": 229375.12,
+        "grossMarginPercentage": 50.0
+    }
+}</code></pre>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

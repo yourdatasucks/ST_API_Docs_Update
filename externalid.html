@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExternalId API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('externalid.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="ExternalId">ExternalId</h1>
+        <p>The ExternalId object manages mappings between ServiceTrade entity IDs and identifiers from external systems.
+            This facilitates integration with third-party applications by maintaining these ID relationships and
+            providing lookup capabilities.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the external ID mapping.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>externalSystemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="externalsystem.html">External System</a> this mapping belongs to.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>entityType</code></td>
+                    <td>string</td>
+                    <td>Type of entity being mapped (e.g., "Customer", "Location", "Job").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>entityId</code></td>
+                    <td>integer</td>
+                    <td>ID of the ServiceTrade entity.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>externalId</code></td>
+                    <td>string</td>
+                    <td>ID of the entity in the external system.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>externalType</code></td>
+                    <td>string</td>
+                    <td>Optional type or category within the external system.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isPrimary</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is the primary external ID for the entity (when multiple mappings exist).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>metadata</code></td>
+                    <td>object</td>
+                    <td>Additional metadata about this mapping.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastSyncDate</code></td>
+                    <td>datetime</td>
+                    <td>Date when this mapping was last synchronized.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the mapping (e.g., "Active", "Archived").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the mapping was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the mapping.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the mapping was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the mapping.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /externalids</h3>
+        <p>Retrieves a list of external ID mappings. Supports filtering by externalSystemId, entityType, entityId,
+            externalId, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalids?externalSystemId=123&entityType=Customer
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 456,
+            "externalSystemId": 123,
+            "entityType": "Customer",
+            "entityId": 789,
+            "externalId": "CUST-456",
+            "externalType": "Account",
+            "isPrimary": true,
+            "metadata": {
+                "syncSource": "QuickBooks",
+                "accountType": "Commercial",
+                "migrationDate": "2023-01-15"
+            },
+            "lastSyncDate": "2023-08-10T15:30:00Z",
+            "status": "Active",
+            "createdDate": "2023-01-15T10:45:00Z",
+            "createdBy": 101,
+            "lastModifiedDate": "2023-08-10T15:30:00Z",
+            "lastModifiedBy": 102
+        },
+        // Additional external IDs...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /externalids/{id}</h3>
+        <p>Retrieves a specific external ID mapping by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalids/456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the external ID mapping with the specified ID.</p>
+
+        <h3>GET /externalids/lookup/byEntityId</h3>
+        <p>Looks up external IDs by ServiceTrade entity ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalids/lookup/byEntityId?externalSystemId=123&entityType=Customer&entityId=789
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns external ID mappings that match the specified criteria.</p>
+
+        <h3>GET /externalids/lookup/byExternalId</h3>
+        <p>Looks up ServiceTrade entity IDs by external ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalids/lookup/byExternalId?externalSystemId=123&entityType=Customer&externalId=CUST-456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns external ID mappings that match the specified criteria.</p>
+
+        <h3>POST /externalids</h3>
+        <p>Creates a new external ID mapping.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "externalSystemId": 123,
+    "entityType": "Invoice",
+    "entityId": 1001,
+    "externalId": "INV-2023-0042",
+    "externalType": "Invoice",
+    "isPrimary": true,
+    "metadata": {
+        "syncSource": "QuickBooks",
+        "invoiceSync": "outbound",
+        "quickBooksClass": "ServiceDept"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created external ID mapping (HTTP 201 Created).</p>
+
+        <h3>PUT /externalids/{id}</h3>
+        <p>Updates an existing external ID mapping.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "externalId": "INV-2023-0042-REV",
+    "lastSyncDate": "2023-08-20T14:15:00Z",
+    "metadata": {
+        "syncSource": "QuickBooks",
+        "invoiceSync": "outbound",
+        "quickBooksClass": "ServiceDept",
+        "revisionReason": "Customer number change"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated external ID mapping.</p>
+
+        <h3>DELETE /externalids/{id}</h3>
+        <p>Deletes an external ID mapping.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /externalids/batch</h3>
+        <p>Creates multiple external ID mappings in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "externalSystemId": 123,
+    "mappings": [
+        {
+            "entityType": "Customer",
+            "entityId": 1002,
+            "externalId": "CUST-789",
+            "externalType": "Account",
+            "isPrimary": true
+        },
+        {
+            "entityType": "Location",
+            "entityId": 2001,
+            "externalId": "LOC-1234",
+            "externalType": "JobSite",
+            "isPrimary": true
+        },
+        {
+            "entityType": "Contact",
+            "entityId": 3001,
+            "externalId": "CONTACT-5678",
+            "externalType": "Person",
+            "isPrimary": true
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the newly created external ID mappings.</p>
+
+        <h3>PUT /externalids/bulk/update</h3>
+        <p>Updates multiple external ID mappings in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "ids": [456, 457, 458],
+    "updates": {
+        "lastSyncDate": "2023-08-20T14:15:00Z",
+        "status": "Active"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a summary of the update operation.</p>
+
+        <h3>DELETE /externalids/bulk/delete</h3>
+        <p>Deletes multiple external ID mappings in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "ids": [456, 457, 458]
+}</code></pre>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /externalids/import</h3>
+        <p>Imports a batch of external ID mappings from a file.</p>
+        <h4>Request</h4>
+        <p>Multipart form data with file and import parameters.</p>
+        <h4>Response</h4>
+        <p>Returns a summary of the import operation.</p>
+
+        <h3>GET /externalids/export</h3>
+        <p>Exports external ID mappings to a file.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalids/export?externalSystemId=123&format=csv
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a file download or a URL to download the exported file.</p>
+
+        <h3>GET /externalsystems/{id}/externalids</h3>
+        <p>Retrieves all external ID mappings for a specific external system.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalsystems/123/externalids?entityType=Customer
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of external ID mappings for the specified external system.</p>
+
+        <h3>POST /externalids/lookup/bulk</h3>
+        <p>Performs a bulk lookup of entity IDs or external IDs.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "externalSystemId": 123,
+    "entityType": "Customer",
+    "lookupDirection": "toExternalId",
+    "ids": [789, 790, 791, 792]
+}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "results": {
+        "789": "CUST-456",
+        "790": "CUST-457",
+        "791": "CUST-458",
+        "792": null
+    },
+    "missingMappings": [792]
+}</code></pre>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

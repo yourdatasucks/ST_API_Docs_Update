@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('comment.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Comment">Comment</h1>
+        <p>The Comment object represents user-generated comments or notes that can be attached to various entities in
+            the system, such as jobs, tasks, quotes, invoices, and other objects. Comments support communication and
+            documentation of discussions related to any supported entity.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the comment.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>text</code></td>
+                    <td>string</td>
+                    <td>The content of the comment. May contain simple HTML formatting.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>entityId</code></td>
+                    <td>integer</td>
+                    <td>ID of the entity this comment is attached to.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>entityType</code></td>
+                    <td>string</td>
+                    <td>Type of entity this comment is attached to (e.g., "Job", "Task", "Quote", "Invoice").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>userId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the comment.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>userName</code></td>
+                    <td>string</td>
+                    <td>Display name of the user who created the comment.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>parentCommentId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent comment if this is a reply to another comment.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isInternal</code></td>
+                    <td>boolean</td>
+                    <td>Whether this comment is visible only to internal users (not to customers).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>pinned</code></td>
+                    <td>boolean</td>
+                    <td>Whether this comment is pinned to the top of the comments list.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>visibility</code></td>
+                    <td>string</td>
+                    <td>Visibility scope, e.g., "Public", "Internal", "Customer", "Technicians".</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>hasAttachments</code></td>
+                    <td>boolean</td>
+                    <td>Whether this comment has file attachments.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>attachments</code></td>
+                    <td>array</td>
+                    <td>Array of attachment objects associated with this comment.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>mentions</code></td>
+                    <td>array</td>
+                    <td>Array of user IDs mentioned in this comment.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isEdited</code></td>
+                    <td>boolean</td>
+                    <td>Whether this comment has been edited after creation.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastEditedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this comment was last edited.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the comment was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the comment was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /comments</h3>
+        <p>Retrieves a list of comments. Typically filtered by entityId and entityType.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/comments?entityId=123&entityType=Job
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 456,
+            "text": "The customer has requested that we reschedule this job to next week due to a scheduling conflict.",
+            "entityId": 123,
+            "entityType": "Job",
+            "userId": 789,
+            "userName": "John Smith",
+            "parentCommentId": null,
+            "isInternal": true,
+            "pinned": false,
+            "visibility": "Internal",
+            "hasAttachments": false,
+            "attachments": [],
+            "mentions": [102, 103],
+            "isEdited": false,
+            "lastEditedDate": null,
+            "createdDate": "2023-07-15T09:30:00Z",
+            "lastModifiedDate": "2023-07-15T09:30:00Z"
+        },
+        {
+            "id": 457,
+            "text": "I've spoken with the customer and we've agreed to reschedule for July 25th. @Alice please update the schedule.",
+            "entityId": 123,
+            "entityType": "Job",
+            "userId": 102,
+            "userName": "Mike Johnson",
+            "parentCommentId": 456,
+            "isInternal": true,
+            "pinned": false,
+            "visibility": "Internal",
+            "hasAttachments": true,
+            "attachments": [
+                {
+                    "id": 201,
+                    "fileName": "customer_email.pdf",
+                    "fileSize": 125640,
+                    "contentType": "application/pdf",
+                    "url": "https://api.example.com/attachments/201/download"
+                }
+            ],
+            "mentions": [101],
+            "isEdited": true,
+            "lastEditedDate": "2023-07-15T10:15:00Z",
+            "createdDate": "2023-07-15T10:05:00Z",
+            "lastModifiedDate": "2023-07-15T10:15:00Z"
+        }
+        // Additional comments...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /comments/{id}</h3>
+        <p>Retrieves a specific comment by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/comments/456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 456,
+    "text": "The customer has requested that we reschedule this job to next week due to a scheduling conflict.",
+    "entityId": 123,
+    "entityType": "Job",
+    "userId": 789,
+    "userName": "John Smith",
+    "parentCommentId": null,
+    "isInternal": true,
+    "pinned": false,
+    "visibility": "Internal",
+    "hasAttachments": false,
+    "attachments": [],
+    "mentions": [102, 103],
+    "isEdited": false,
+    "lastEditedDate": null,
+    "createdDate": "2023-07-15T09:30:00Z",
+    "lastModifiedDate": "2023-07-15T09:30:00Z"
+}</code></pre>
+
+        <h3>POST /comments</h3>
+        <p>Creates a new comment.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "text": "I've completed the initial assessment. The unit will need to be replaced rather than repaired. @David can you approve this?",
+    "entityId": 123,
+    "entityType": "Job",
+    "parentCommentId": null,
+    "isInternal": true,
+    "visibility": "Internal",
+    "mentions": [104],
+    "attachments": [
+        {
+            "fileName": "assessment_photo.jpg",
+            "contentType": "image/jpeg",
+            "base64Content": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD..."
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created comment object (HTTP 201 Created).</p>
+
+        <h3>PUT /comments/{id}</h3>
+        <p>Updates an existing comment.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "text": "I've completed the initial assessment. The unit will need to be replaced rather than repaired. The estimated cost is $2,500. @David can you approve this?",
+    "isInternal": true,
+    "pinned": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated comment object.</p>
+
+        <h3>DELETE /comments/{id}</h3>
+        <p>Deletes a comment. This may be restricted based on user permissions and comment age.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /comments/{id}/attachments</h3>
+        <p>Adds attachments to an existing comment.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "attachments": [
+        {
+            "fileName": "price_quote.pdf",
+            "contentType": "application/pdf",
+            "base64Content": "data:application/pdf;base64,JVBERi0xLjUNCiW1tbW1..."
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated comment object with the new attachments included.</p>
+
+        <h3>GET /comments/thread/{id}</h3>
+        <p>Retrieves a comment thread - the specified comment and all its replies.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/comments/thread/456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the comment and all replies in a hierarchical structure.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

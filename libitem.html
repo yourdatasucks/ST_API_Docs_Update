@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibItem API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('libitem.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="LibItem">Library Item</h1>
+        <p>The Library Item (LibItem) object represents a reusable item or template in ServiceTrade's content library.
+            Library items can include standardized service descriptions, parts, labor rates, equipment specifications,
+            or other content that can be reused across quotes, jobs, and invoices. The library provides consistency
+            and efficiency by allowing users to quickly add pre-configured items to various transactions.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the library item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the library item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the library item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of library item (e.g., "Service", "Material", "Labor", "Equipment", "Text").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>category</code></td>
+                    <td>string</td>
+                    <td>Category the library item belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>subcategory</code></td>
+                    <td>string</td>
+                    <td>Subcategory the library item belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>unitPrice</code></td>
+                    <td>decimal</td>
+                    <td>Default price per unit for this library item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>unitCost</code></td>
+                    <td>decimal</td>
+                    <td>Default cost per unit for this library item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>defaultQuantity</code></td>
+                    <td>decimal</td>
+                    <td>Default quantity to use when adding this library item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>unit</code></td>
+                    <td>string</td>
+                    <td>Unit of measure (e.g., "Each", "Hour", "Foot", "Pound").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxable</code></td>
+                    <td>boolean</td>
+                    <td>Whether this library item is taxable by default.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>tags</code></td>
+                    <td>array</td>
+                    <td>Array of tags associated with this library item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>manufacturerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the manufacturer for this library item, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>manufacturer</code></td>
+                    <td>string</td>
+                    <td>Name of the manufacturer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>modelNumber</code></td>
+                    <td>string</td>
+                    <td>Model number for this library item, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>partNumber</code></td>
+                    <td>string</td>
+                    <td>Part number for this library item, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sku</code></td>
+                    <td>string</td>
+                    <td>Stock keeping unit identifier.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether this library item is active and available for use.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceLineId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="serviceline.html">Service Line</a> this item is associated with, if
+                        applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>warehouseId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="warehouse.html">Warehouse</a> this item is stored in, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>inventoryCount</code></td>
+                    <td>decimal</td>
+                    <td>Current inventory count for this library item, if tracked.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>reorderPoint</code></td>
+                    <td>decimal</td>
+                    <td>Inventory level at which to reorder this item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>reorderQuantity</code></td>
+                    <td>decimal</td>
+                    <td>Recommended quantity to reorder when inventory reaches reorder point.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this library item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this library item was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this library item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this library item was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /libitems</h3>
+        <p>Retrieves a list of library items. Supports filtering by type, category, tags, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/libitems?type=Service&category=Fire%20Alarm
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 1001,
+            "name": "Fire Alarm System Annual Inspection",
+            "description": "Comprehensive annual inspection of fire alarm system per NFPA 72.",
+            "type": "Service",
+            "category": "Fire Alarm",
+            "subcategory": "Inspection",
+            "unitPrice": 1500.00,
+            "unitCost": 750.00,
+            "defaultQuantity": 1,
+            "unit": "Each",
+            "taxable": true,
+            "tags": ["Inspection", "Fire Alarm", "Annual"],
+            "isActive": true,
+            "serviceLineId": 501,
+            "createdDate": "2022-01-15T09:30:00Z"
+        },
+        {
+            "id": 1002,
+            "name": "Fire Alarm Pull Station Test",
+            "description": "Testing of manual pull stations in fire alarm system.",
+            "type": "Service",
+            "category": "Fire Alarm",
+            "subcategory": "Testing",
+            "unitPrice": 15.00,
+            "unitCost": 7.50,
+            "defaultQuantity": 1,
+            "unit": "Each",
+            "taxable": true,
+            "tags": ["Testing", "Fire Alarm", "Pull Station"],
+            "isActive": true,
+            "serviceLineId": 501,
+            "createdDate": "2022-01-15T09:35:00Z"
+        }
+        // Additional library items...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /libitems/{id}</h3>
+        <p>Retrieves a specific library item by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/libitems/1001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 1001,
+    "name": "Fire Alarm System Annual Inspection",
+    "description": "Comprehensive annual inspection of fire alarm system per NFPA 72. Includes testing of control panel, power supplies, initiating devices, notification appliances, and interface equipment.",
+    "type": "Service",
+    "category": "Fire Alarm",
+    "subcategory": "Inspection",
+    "unitPrice": 1500.00,
+    "unitCost": 750.00,
+    "defaultQuantity": 1,
+    "unit": "Each",
+    "taxable": true,
+    "tags": ["Inspection", "Fire Alarm", "Annual"],
+    "isActive": true,
+    "serviceLineId": 501,
+    "createdBy": 101,
+    "createdDate": "2022-01-15T09:30:00Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2022-01-15T09:30:00Z",
+    "customFields": {
+        "techniciansRequired": "2",
+        "estimatedHours": "8",
+        "serviceCode": "FA-INSP-ANN"
+    }
+}</code></pre>
+
+        <h3>POST /libitems</h3>
+        <p>Creates a new library item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Smoke Detector Replacement",
+    "description": "Replacement of conventional smoke detector including testing.",
+    "type": "Material",
+    "category": "Fire Alarm",
+    "subcategory": "Devices",
+    "unitPrice": 85.00,
+    "unitCost": 35.00,
+    "defaultQuantity": 1,
+    "unit": "Each",
+    "taxable": true,
+    "tags": ["Smoke Detector", "Fire Alarm", "Replacement"],
+    "manufacturer": "Simplex",
+    "modelNumber": "4098-9714",
+    "partNumber": "SIM-4098-9714",
+    "sku": "SD-0001",
+    "isActive": true,
+    "serviceLineId": 501,
+    "warehouseId": 201,
+    "inventoryCount": 25,
+    "reorderPoint": 10,
+    "reorderQuantity": 20,
+    "customFields": {
+        "location": "Shelf B-12",
+        "warrantPeriod": "1 year",
+        "compatiblePanels": "4100ES, 4010ES"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created library item (HTTP 201 Created).</p>
+
+        <h3>PUT /libitems/{id}</h3>
+        <p>Updates an existing library item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Smoke Detector Replacement - Addressable",
+    "description": "Replacement of addressable smoke detector including programming and testing.",
+    "unitPrice": 120.00,
+    "unitCost": 55.00,
+    "modelNumber": "4098-9733",
+    "partNumber": "SIM-4098-9733",
+    "sku": "SD-0002",
+    "inventoryCount": 18,
+    "customFields": {
+        "location": "Shelf B-14",
+        "warrantPeriod": "1 year",
+        "compatiblePanels": "4100ES, 4010ES, 4007ES"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated library item.</p>
+
+        <h3>DELETE /libitems/{id}</h3>
+        <p>Deletes a library item. This is typically handled as a soft delete by setting isActive to false.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /libitems/batch</h3>
+        <p>Creates multiple library items in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "Heat Detector Replacement",
+            "type": "Material",
+            "category": "Fire Alarm",
+            "subcategory": "Devices",
+            "unitPrice": 75.00,
+            "unitCost": 30.00,
+            "defaultQuantity": 1,
+            "taxable": true,
+            "manufacturer": "Simplex",
+            "modelNumber": "4098-9733",
+            "isActive": true
+        },
+        {
+            "name": "Duct Detector Replacement",
+            "type": "Material",
+            "category": "Fire Alarm",
+            "subcategory": "Devices",
+            "unitPrice": 225.00,
+            "unitCost": 95.00,
+            "defaultQuantity": 1,
+            "taxable": true,
+            "manufacturer": "Simplex",
+            "modelNumber": "4098-9755",
+            "isActive": true
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created library items.</p>
+
+        <h3>GET /libitems/search</h3>
+        <p>Searches for library items using full-text search.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/libitems/search?query=smoke%20detector%20addressable
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of library items matching the search criteria.</p>
+
+        <h3>GET /libitems/categories</h3>
+        <p>Retrieves a list of all categories used by library items.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/libitems/categories
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "Fire Alarm",
+            "count": 45,
+            "subcategories": [
+                {"name": "Inspection", "count": 8},
+                {"name": "Testing", "count": 12},
+                {"name": "Devices", "count": 25}
+            ]
+        },
+        {
+            "name": "Sprinkler",
+            "count": 38,
+            "subcategories": [
+                {"name": "Inspection", "count": 6},
+                {"name": "Testing", "count": 9},
+                {"name": "Components", "count": 23}
+            ]
+        },
+        {
+            "name": "Fire Extinguisher",
+            "count": 15,
+            "subcategories": [
+                {"name": "Inspection", "count": 3},
+                {"name": "Service", "count": 5},
+                {"name": "Products", "count": 7}
+            ]
+        }
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /libitems/types</h3>
+        <p>Retrieves a list of all types used by library items.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/libitems/types
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {"name": "Service", "count": 35},
+        {"name": "Material", "count": 48},
+        {"name": "Labor", "count": 12},
+        {"name": "Equipment", "count": 8},
+        {"name": "Text", "count": 15}
+    ],
+    "totalResults": 5,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /libitems/tags</h3>
+        <p>Retrieves a list of all tags used by library items.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/libitems/tags
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {"name": "Inspection", "count": 17},
+        {"name": "Fire Alarm", "count": 45},
+        {"name": "Annual", "count": 12},
+        {"name": "Testing", "count": 25},
+        {"name": "Pull Station", "count": 5},
+        {"name": "Smoke Detector", "count": 8},
+        {"name": "Replacement", "count": 30}
+        // Additional tags...
+    ],
+    "totalResults": 7,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>POST /libitems/{id}/deactivate</h3>
+        <p>Deactivates a library item (sets isActive to false).</p>
+        <h4>Response</h4>
+        <p>Returns the updated library item with isActive set to false.</p>
+
+        <h3>POST /libitems/{id}/activate</h3>
+        <p>Activates a library item (sets isActive to true).</p>
+        <h4>Response</h4>
+        <p>Returns the updated library item with isActive set to true.</p>
+
+        <h3>PUT /libitems/{id}/inventory</h3>
+        <p>Updates the inventory information for a library item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "inventoryCount": 22,
+    "warehouseId": 201,
+    "reorderPoint": 10,
+    "reorderQuantity": 20,
+    "adjustmentReason": "Inventory count adjustment"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated library item.</p>
+
+        <h3>GET /libitems/low-inventory</h3>
+        <p>Retrieves a list of library items with inventory at or below reorder point.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/libitems/low-inventory
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of library items with low inventory.</p>
+
+        <h3>POST /libitems/import</h3>
+        <p>Imports library items from a CSV or Excel file.</p>
+        <h4>Request</h4>
+        <p>A multipart/form-data request containing the file to import.</p>
+        <h4>Response</h4>
+        <p>Returns information about the import process including success count, error count, and any import issues.</p>
+
+        <h3>GET /libitems/export</h3>
+        <p>Exports library items to a CSV or Excel file.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/libitems/export?format=xlsx&type=Material
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a file download containing the requested library items.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heartbeat API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('heartbeat.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Heartbeat">Heartbeat</h1>
+        <p>The Heartbeat object represents a monitoring signal sent periodically from a client application or device to
+            indicate its active status and health. Heartbeats are used to track connectivity, monitor application
+            status,
+            and detect when systems go offline.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the heartbeat record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>clientId</code></td>
+                    <td>string</td>
+                    <td>Identifier for the client application or device sending the heartbeat.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of the heartbeat (e.g., "Application", "Device", "Mobile", "Integration").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>timestamp</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the heartbeat was received.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the client (e.g., "Active", "Idle", "Warning", "Error").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>deviceInfo</code></td>
+                    <td>object</td>
+                    <td>Information about the device or application sending the heartbeat.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>metrics</code></td>
+                    <td>object</td>
+                    <td>Performance metrics and statistics from the client.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>logs</code></td>
+                    <td>array</td>
+                    <td>Recent log entries or events from the client.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>location</code></td>
+                    <td>object</td>
+                    <td>Geographic location of the client when the heartbeat was sent.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>userId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user associated with this client, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>ipAddress</code></td>
+                    <td>string</td>
+                    <td>IP address of the client.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>version</code></td>
+                    <td>string</td>
+                    <td>Version of the client application or device.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>expectedInterval</code></td>
+                    <td>integer</td>
+                    <td>Expected time interval between heartbeats in seconds.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastSeen</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the client was last seen.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isOnline</code></td>
+                    <td>boolean</td>
+                    <td>Whether the client is currently considered online.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional information or notes about the heartbeat.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>DeviceInfo Object Properties</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>deviceType</code></td>
+                    <td>string</td>
+                    <td>Type of device (e.g., "Smartphone", "Tablet", "Desktop", "IoT Device").</td>
+                </tr>
+                <tr>
+                    <td><code>os</code></td>
+                    <td>string</td>
+                    <td>Operating system of the device.</td>
+                </tr>
+                <tr>
+                    <td><code>osVersion</code></td>
+                    <td>string</td>
+                    <td>Version of the operating system.</td>
+                </tr>
+                <tr>
+                    <td><code>browser</code></td>
+                    <td>string</td>
+                    <td>Browser used, if applicable.</td>
+                </tr>
+                <tr>
+                    <td><code>browserVersion</code></td>
+                    <td>string</td>
+                    <td>Version of the browser, if applicable.</td>
+                </tr>
+                <tr>
+                    <td><code>manufacturer</code></td>
+                    <td>string</td>
+                    <td>Manufacturer of the device.</td>
+                </tr>
+                <tr>
+                    <td><code>model</code></td>
+                    <td>string</td>
+                    <td>Model of the device.</td>
+                </tr>
+                <tr>
+                    <td><code>uniqueId</code></td>
+                    <td>string</td>
+                    <td>Unique identifier for the device.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Metrics Object Properties</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>batteryLevel</code></td>
+                    <td>number</td>
+                    <td>Battery level as a percentage (0-100).</td>
+                </tr>
+                <tr>
+                    <td><code>memoryUsage</code></td>
+                    <td>number</td>
+                    <td>Memory usage as a percentage (0-100).</td>
+                </tr>
+                <tr>
+                    <td><code>cpuUsage</code></td>
+                    <td>number</td>
+                    <td>CPU usage as a percentage (0-100).</td>
+                </tr>
+                <tr>
+                    <td><code>networkSpeed</code></td>
+                    <td>number</td>
+                    <td>Network speed in Mbps.</td>
+                </tr>
+                <tr>
+                    <td><code>diskSpace</code></td>
+                    <td>number</td>
+                    <td>Available disk space in MB.</td>
+                </tr>
+                <tr>
+                    <td><code>temperature</code></td>
+                    <td>number</td>
+                    <td>Device temperature in Celsius.</td>
+                </tr>
+                <tr>
+                    <td><code>signalStrength</code></td>
+                    <td>number</td>
+                    <td>Signal strength for wireless devices (-100 to 0 dBm).</td>
+                </tr>
+                <tr>
+                    <td><code>custom</code></td>
+                    <td>object</td>
+                    <td>Custom metrics specific to the application or device.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>POST /heartbeats</h3>
+        <p>Sends a heartbeat signal to the server.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "clientId": "mobile-app-6789",
+    "type": "Mobile",
+    "status": "Active",
+    "deviceInfo": {
+        "deviceType": "Smartphone",
+        "os": "Android",
+        "osVersion": "13",
+        "manufacturer": "Samsung",
+        "model": "Galaxy S23",
+        "uniqueId": "IMEI:990000862471854"
+    },
+    "metrics": {
+        "batteryLevel": 78.5,
+        "memoryUsage": 42.3,
+        "cpuUsage": 12.7,
+        "networkSpeed": 15.2,
+        "signalStrength": -67
+    },
+    "location": {
+        "latitude": 35.7796,
+        "longitude": -78.6382,
+        "accuracy": 10.5
+    },
+    "userId": 12345,
+    "version": "4.2.1",
+    "expectedInterval": 300,
+    "notes": "Field technician mobile app"
+}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 987654,
+    "clientId": "mobile-app-6789",
+    "type": "Mobile",
+    "timestamp": "2023-08-16T14:22:05Z",
+    "status": "Active",
+    "deviceInfo": {
+        "deviceType": "Smartphone",
+        "os": "Android",
+        "osVersion": "13",
+        "manufacturer": "Samsung",
+        "model": "Galaxy S23",
+        "uniqueId": "IMEI:990000862471854"
+    },
+    "metrics": {
+        "batteryLevel": 78.5,
+        "memoryUsage": 42.3,
+        "cpuUsage": 12.7,
+        "networkSpeed": 15.2,
+        "signalStrength": -67
+    },
+    "location": {
+        "latitude": 35.7796,
+        "longitude": -78.6382,
+        "accuracy": 10.5
+    },
+    "userId": 12345,
+    "ipAddress": "203.0.113.45",
+    "version": "4.2.1",
+    "expectedInterval": 300,
+    "lastSeen": "2023-08-16T14:22:05Z",
+    "isOnline": true,
+    "notes": "Field technician mobile app"
+}</code></pre>
+
+        <h3>GET /heartbeats</h3>
+        <p>Retrieves a list of heartbeat records. Supports filtering by clientId, type, status, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/heartbeats?type=Mobile&status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 987654,
+            "clientId": "mobile-app-6789",
+            "type": "Mobile",
+            "timestamp": "2023-08-16T14:22:05Z",
+            "status": "Active",
+            "userId": 12345,
+            "ipAddress": "203.0.113.45",
+            "version": "4.2.1",
+            "lastSeen": "2023-08-16T14:22:05Z",
+            "isOnline": true
+        },
+        {
+            "id": 987653,
+            "clientId": "mobile-app-5678",
+            "type": "Mobile",
+            "timestamp": "2023-08-16T14:21:30Z",
+            "status": "Active",
+            "userId": 12346,
+            "ipAddress": "203.0.113.46",
+            "version": "4.2.1",
+            "lastSeen": "2023-08-16T14:21:30Z",
+            "isOnline": true
+        }
+        // Additional heartbeats...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /heartbeats/{id}</h3>
+        <p>Retrieves a specific heartbeat record by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/heartbeats/987654
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the heartbeat record with the specified ID.</p>
+
+        <h3>GET /heartbeats/client/{clientId}</h3>
+        <p>Retrieves heartbeat records for a specific client.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/heartbeats/client/mobile-app-6789
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of heartbeat records for the specified client.</p>
+
+        <h3>GET /heartbeats/client/{clientId}/latest</h3>
+        <p>Retrieves the most recent heartbeat for a specific client.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/heartbeats/client/mobile-app-6789/latest
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the most recent heartbeat record for the specified client.</p>
+
+        <h3>GET /heartbeats/user/{userId}</h3>
+        <p>Retrieves heartbeat records for a specific user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/heartbeats/user/12345
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of heartbeat records for the specified user.</p>
+
+        <h3>GET /heartbeats/status/{status}</h3>
+        <p>Retrieves heartbeat records with a specific status.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/heartbeats/status/Warning
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of heartbeat records with the specified status.</p>
+
+        <h3>GET /heartbeats/summary</h3>
+        <p>Retrieves a summary of client statuses based on heartbeat data.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/heartbeats/summary?type=Mobile
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalClients": 150,
+    "activeClients": 132,
+    "inactiveClients": 18,
+    "byStatus": {
+        "Active": 120,
+        "Idle": 12,
+        "Warning": 8,
+        "Error": 10
+    },
+    "byType": {
+        "Mobile": 85,
+        "Desktop": 45,
+        "Integration": 20
+    },
+    "byVersion": {
+        "4.2.1": 95,
+        "4.2.0": 40,
+        "4.1.5": 15
+    },
+    "lastUpdated": "2023-08-16T14:30:00Z"
+}</code></pre>
+
+        <h3>DELETE /heartbeats/{id}</h3>
+        <p>Deletes a specific heartbeat record.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /heartbeats/batch</h3>
+        <p>Sends multiple heartbeat signals in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "heartbeats": [
+        {
+            "clientId": "sensor-temp-123",
+            "type": "IoT",
+            "status": "Active",
+            "metrics": {
+                "temperature": 22.5,
+                "humidity": 65.2,
+                "batteryLevel": 89.0
+            },
+            "location": {
+                "latitude": 35.7796,
+                "longitude": -78.6382
+            },
+            "version": "1.0.3"
+        },
+        {
+            "clientId": "sensor-motion-456",
+            "type": "IoT",
+            "status": "Active",
+            "metrics": {
+                "motionDetected": true,
+                "batteryLevel": 76.5
+            },
+            "location": {
+                "latitude": 35.7798,
+                "longitude": -78.6385
+            },
+            "version": "1.0.3"
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created heartbeat records.</p>
+
+        <h3>GET /heartbeats/monitor</h3>
+        <p>Retrieves a real-time monitoring view of client heartbeats.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/heartbeats/monitor?type=Mobile&interval=5m
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "monitoring": {
+        "startTime": "2023-08-16T14:00:00Z",
+        "endTime": "2023-08-16T14:30:00Z",
+        "interval": "5m",
+        "type": "Mobile"
+    },
+    "clients": [
+        {
+            "clientId": "mobile-app-6789",
+            "status": "Active",
+            "userId": 12345,
+            "userFullName": "John Smith",
+            "metrics": {
+                "batteryLevel": [80, 79, 79, 78, 78, 77]
+            },
+            "timestamps": [
+                "2023-08-16T14:00:05Z",
+                "2023-08-16T14:05:10Z",
+                "2023-08-16T14:10:02Z",
+                "2023-08-16T14:15:08Z",
+                "2023-08-16T14:20:12Z",
+                "2023-08-16T14:25:05Z"
+            ],
+            "isOnline": true,
+            "version": "4.2.1"
+        },
+        {
+            "clientId": "mobile-app-5678",
+            "status": "Warning",
+            "userId": 12346,
+            "userFullName": "Jane Doe",
+            "metrics": {
+                "batteryLevel": [45, 40, 35, 30, 25, null]
+            },
+            "timestamps": [
+                "2023-08-16T14:00:15Z",
+                "2023-08-16T14:05:18Z",
+                "2023-08-16T14:10:22Z",
+                "2023-08-16T14:15:17Z",
+                "2023-08-16T14:20:20Z",
+                null
+            ],
+            "isOnline": false,
+            "version": "4.2.1"
+        }
+        // Additional clients...
+    ]
+}</code></pre>
+
+        <h3>POST /heartbeats/register</h3>
+        <p>Registers a new client for heartbeat monitoring.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "clientId": "field-app-9876",
+    "type": "Mobile",
+    "deviceInfo": {
+        "deviceType": "Tablet",
+        "os": "iOS",
+        "osVersion": "16.5",
+        "manufacturer": "Apple",
+        "model": "iPad Pro"
+    },
+    "userId": 12347,
+    "expectedInterval": 300,
+    "alertThreshold": 900,
+    "notifyOnOffline": true,
+    "notifyContacts": ["admin@example.com", "support@example.com"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the registration details for the client.</p>
+
+        <h3>DELETE /heartbeats/client/{clientId}</h3>
+        <p>Deletes all heartbeat records for a specific client.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

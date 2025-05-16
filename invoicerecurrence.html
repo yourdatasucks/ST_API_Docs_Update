@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Recurrence API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('invoicerecurrence.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="InvoiceRecurrence">Invoice Recurrence</h1>
+        <p>The Invoice Recurrence object represents a schedule for automatically generating recurring <a
+                href="invoice.html">Invoices</a>.
+            It defines the frequency, timing, content, and recipients for regularly issued invoices, such as monthly
+            service fees or quarterly maintenance charges.
+            Invoice recurrences help automate billing for ongoing services with predictable schedules.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the invoice recurrence.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name or description of the invoice recurrence.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>customerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="customer.html">Customer</a> to bill.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the recurrence (e.g., "Active", "Paused", "Completed", "Cancelled").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>frequency</code></td>
+                    <td>string</td>
+                    <td>How often invoices are generated (e.g., "Monthly", "Quarterly", "Annually", "Weekly", "Daily",
+                        "Custom").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>dayOfMonth</code></td>
+                    <td>integer</td>
+                    <td>Day of the month to generate invoices (1-31). Used for Monthly, Quarterly, and Annual
+                        frequencies.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>dayOfWeek</code></td>
+                    <td>integer</td>
+                    <td>Day of the week to generate invoices (0=Sunday, 1=Monday, etc.). Used for Weekly frequency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>month</code></td>
+                    <td>integer</td>
+                    <td>Month of the year to generate invoices (1=January, 2=February, etc.). Used for Annual frequency.
+                    </td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>months</code></td>
+                    <td>array</td>
+                    <td>Array of months to generate invoices. Used for Quarterly frequency (e.g., [1, 4, 7, 10] for
+                        Jan/Apr/Jul/Oct).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customInterval</code></td>
+                    <td>integer</td>
+                    <td>Custom interval in days between invoices. Used for Custom frequency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>startDate</code></td>
+                    <td>date</td>
+                    <td>Date when the recurring invoices should start.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>endDate</code></td>
+                    <td>date</td>
+                    <td>Date when the recurring invoices should end, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>occurrences</code></td>
+                    <td>integer</td>
+                    <td>Number of invoices to generate, as an alternative to endDate.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>completedOccurrences</code></td>
+                    <td>integer</td>
+                    <td>Number of invoices already generated from this recurrence.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastRunDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the last invoice was generated.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>nextRunDate</code></td>
+                    <td>datetime</td>
+                    <td>Scheduled date and time for the next invoice generation.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>invoiceTemplate</code></td>
+                    <td>object</td>
+                    <td>Template data for generating invoices.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>invoiceNumberPrefix</code></td>
+                    <td>string</td>
+                    <td>Prefix to use for invoice numbers (e.g., "REC-").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>invoiceNumberSuffix</code></td>
+                    <td>string</td>
+                    <td>Suffix to use for invoice numbers.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>autoSend</code></td>
+                    <td>boolean</td>
+                    <td>Whether to automatically send invoices to customers upon generation.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sendToContacts</code></td>
+                    <td>array</td>
+                    <td>Array of contact IDs to receive the invoice.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>emailSubject</code></td>
+                    <td>string</td>
+                    <td>Subject line for invoice emails.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>emailMessage</code></td>
+                    <td>string</td>
+                    <td>Email body text for invoice emails.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>reminderDays</code></td>
+                    <td>integer</td>
+                    <td>Number of days after invoice generation to send payment reminders.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>autoCharge</code></td>
+                    <td>boolean</td>
+                    <td>Whether to automatically charge saved payment methods.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>paymentMethodId</code></td>
+                    <td>integer</td>
+                    <td>ID of the saved payment method to charge.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contractId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="contract.html">Contract</a> this recurrence is associated with, if
+                        applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about this recurrence (internal use only).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this recurrence.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this recurrence was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this recurrence.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this recurrence was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>externalId</code></td>
+                    <td>string</td>
+                    <td>Reference to this recurrence in an external system.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Invoice Template Object Properties</h3>
+        <p>The invoiceTemplate object contains the following properties:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>items</code></td>
+                    <td>array</td>
+                    <td>Array of invoice item templates.</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Notes to include on the invoice.</td>
+                </tr>
+                <tr>
+                    <td><code>termsAndConditions</code></td>
+                    <td>string</td>
+                    <td>Terms and conditions to include on the invoice.</td>
+                </tr>
+                <tr>
+                    <td><code>taxRate</code></td>
+                    <td>decimal</td>
+                    <td>Tax rate to apply on taxable items.</td>
+                </tr>
+                <tr>
+                    <td><code>taxGroupId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="taxgroup.html">Tax Group</a> to use.</td>
+                </tr>
+                <tr>
+                    <td><code>discountType</code></td>
+                    <td>string</td>
+                    <td>Type of discount (e.g., "Percentage", "Fixed").</td>
+                </tr>
+                <tr>
+                    <td><code>discountPercentage</code></td>
+                    <td>decimal</td>
+                    <td>Percentage discount to apply.</td>
+                </tr>
+                <tr>
+                    <td><code>discountAmount</code></td>
+                    <td>decimal</td>
+                    <td>Fixed discount amount to apply.</td>
+                </tr>
+                <tr>
+                    <td><code>paymentTermsId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="paymentterms.html">Payment Terms</a> to use.</td>
+                </tr>
+                <tr>
+                    <td><code>dueDays</code></td>
+                    <td>integer</td>
+                    <td>Number of days after invoice date when payment is due.</td>
+                </tr>
+                <tr>
+                    <td><code>billingAddress</code></td>
+                    <td>object</td>
+                    <td>Billing address to use (same structure as in <a href="invoice.html">Invoice</a>).</td>
+                </tr>
+                <tr>
+                    <td><code>currency</code></td>
+                    <td>string</td>
+                    <td>Currency code (e.g., "USD", "EUR").</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Invoice Item Template Object Properties</h3>
+        <p>Each item in the invoiceTemplate.items array contains the following properties:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the item.</td>
+                </tr>
+                <tr>
+                    <td><code>quantity</code></td>
+                    <td>decimal</td>
+                    <td>Quantity of the item.</td>
+                </tr>
+                <tr>
+                    <td><code>unitPrice</code></td>
+                    <td>decimal</td>
+                    <td>Price per unit.</td>
+                </tr>
+                <tr>
+                    <td><code>unitCost</code></td>
+                    <td>decimal</td>
+                    <td>Cost per unit.</td>
+                </tr>
+                <tr>
+                    <td><code>taxable</code></td>
+                    <td>boolean</td>
+                    <td>Whether this item is subject to tax.</td>
+                </tr>
+                <tr>
+                    <td><code>taxRateId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="taxrate.html">Tax Rate</a> for this specific item.</td>
+                </tr>
+                <tr>
+                    <td><code>itemType</code></td>
+                    <td>string</td>
+                    <td>Type of item (e.g., "Service", "Product").</td>
+                </tr>
+                <tr>
+                    <td><code>serviceItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="serviceitem.html">Service Item</a>.</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes for this item.</td>
+                </tr>
+                <tr>
+                    <td><code>sequenceNumber</code></td>
+                    <td>integer</td>
+                    <td>Display order of this item on the invoice.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /invoicerecurrences</h3>
+        <p>Retrieves a list of invoice recurrences. Supports filtering by customer, status, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoicerecurrences?customerId=5678&status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 1001,
+            "name": "Monthly Monitoring Service",
+            "customerId": 5678,
+            "status": "Active",
+            "frequency": "Monthly",
+            "dayOfMonth": 1,
+            "startDate": "2023-01-01",
+            "nextRunDate": "2023-08-01T00:00:00Z",
+            "completedOccurrences": 7,
+            "lastRunDate": "2023-07-01T00:30:15Z",
+            "autoSend": true,
+            "createdDate": "2022-12-15T09:30:00Z"
+        },
+        {
+            "id": 1002,
+            "name": "Quarterly Inspection Services",
+            "customerId": 5678,
+            "status": "Active",
+            "frequency": "Quarterly",
+            "dayOfMonth": 15,
+            "months": [1, 4, 7, 10],
+            "startDate": "2023-01-15",
+            "nextRunDate": "2023-10-15T00:00:00Z",
+            "completedOccurrences": 3,
+            "lastRunDate": "2023-07-15T00:15:45Z",
+            "autoSend": true,
+            "createdDate": "2022-12-20T14:45:00Z"
+        }
+        // Additional recurrences...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /invoicerecurrences/{id}</h3>
+        <p>Retrieves a specific invoice recurrence by ID, including the full invoice template.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoicerecurrences/1001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 1001,
+    "name": "Monthly Monitoring Service",
+    "customerId": 5678,
+    "status": "Active",
+    "frequency": "Monthly",
+    "dayOfMonth": 1,
+    "startDate": "2023-01-01",
+    "nextRunDate": "2023-08-01T00:00:00Z",
+    "completedOccurrences": 7,
+    "lastRunDate": "2023-07-01T00:30:15Z",
+    "invoiceTemplate": {
+        "items": [
+            {
+                "description": "Fire Alarm Monitoring Service",
+                "quantity": 1,
+                "unitPrice": 150.00,
+                "unitCost": 75.00,
+                "taxable": true,
+                "itemType": "Service",
+                "serviceItemId": 118,
+                "sequenceNumber": 1
+            },
+            {
+                "description": "Cellular Backup Service",
+                "quantity": 1,
+                "unitPrice": 50.00,
+                "unitCost": 25.00,
+                "taxable": true,
+                "itemType": "Service",
+                "serviceItemId": 119,
+                "sequenceNumber": 2
+            }
+        ],
+        "notes": "Thank you for your business!",
+        "termsAndConditions": "Payment due within 15 days. Late payments subject to a 1.5% monthly finance charge.",
+        "taxRate": 7.50,
+        "taxGroupId": 123,
+        "paymentTermsId": 456,
+        "dueDays": 15,
+        "currency": "USD",
+        "billingAddress": {
+            "name": "ACME Corporation",
+            "street1": "123 Main Street",
+            "street2": "Suite 400",
+            "city": "Raleigh",
+            "state": "NC",
+            "zip": "27601",
+            "country": "US"
+        }
+    },
+    "invoiceNumberPrefix": "MON-",
+    "autoSend": true,
+    "sendToContacts": [5001, 5002],
+    "emailSubject": "Monthly Monitoring Service Invoice",
+    "emailMessage": "Please find attached your monthly monitoring service invoice. Thank you for your business!",
+    "reminderDays": 7,
+    "autoCharge": false,
+    "contractId": 2001,
+    "notes": "Contract renewal scheduled for December 2023.",
+    "createdBy": 101,
+    "createdDate": "2022-12-15T09:30:00Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2022-12-15T09:30:00Z",
+    "customFields": {
+        "departmentCode": "MON-01",
+        "accountManager": "John Smith"
+    }
+}</code></pre>
+
+        <h3>POST /invoicerecurrences</h3>
+        <p>Creates a new invoice recurrence.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Quarterly Maintenance Service",
+    "customerId": 5679,
+    "status": "Active",
+    "frequency": "Quarterly",
+    "dayOfMonth": 15,
+    "months": [1, 4, 7, 10],
+    "startDate": "2023-08-15",
+    "invoiceTemplate": {
+        "items": [
+            {
+                "description": "Quarterly Maintenance Service",
+                "quantity": 1,
+                "unitPrice": 1200.00,
+                "taxable": true,
+                "itemType": "Service",
+                "serviceItemId": 120
+            },
+            {
+                "description": "Preventative Maintenance Parts Allowance",
+                "quantity": 1,
+                "unitPrice": 300.00,
+                "taxable": true,
+                "itemType": "Material",
+                "serviceItemId": 121
+            }
+        ],
+        "notes": "Thank you for your business!",
+        "termsAndConditions": "Payment due within 30 days. Late payments subject to a 1.5% monthly finance charge.",
+        "taxRate": 7.50,
+        "paymentTermsId": 456,
+        "dueDays": 30,
+        "currency": "USD"
+    },
+    "invoiceNumberPrefix": "QMS-",
+    "autoSend": true,
+    "sendToContacts": [5003, 5004],
+    "emailSubject": "Quarterly Maintenance Service Invoice",
+    "emailMessage": "Please find attached your quarterly maintenance service invoice. Thank you for your business!",
+    "reminderDays": 10,
+    "contractId": 2002,
+    "customFields": {
+        "departmentCode": "SVC-02",
+        "accountManager": "Jane Doe"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created invoice recurrence (HTTP 201 Created).</p>
+
+        <h3>PUT /invoicerecurrences/{id}</h3>
+        <p>Updates an existing invoice recurrence.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Quarterly Maintenance Service - Premium",
+    "status": "Active",
+    "invoiceTemplate": {
+        "items": [
+            {
+                "description": "Quarterly Maintenance Service - Premium",
+                "quantity": 1,
+                "unitPrice": 1500.00,
+                "taxable": true,
+                "itemType": "Service",
+                "serviceItemId": 120
+            },
+            {
+                "description": "Preventative Maintenance Parts Allowance",
+                "quantity": 1,
+                "unitPrice": 500.00,
+                "taxable": true,
+                "itemType": "Material",
+                "serviceItemId": 121
+            },
+            {
+                "description": "24/7 Emergency Response Coverage",
+                "quantity": 1,
+                "unitPrice": 750.00,
+                "taxable": true,
+                "itemType": "Service",
+                "serviceItemId": 122
+            }
+        ],
+        "notes": "Thank you for choosing our premium service package!",
+        "termsAndConditions": "Payment due within 30 days. Late payments subject to a 2.0% monthly finance charge."
+    },
+    "emailSubject": "Quarterly Premium Maintenance Service Invoice",
+    "emailMessage": "Please find attached your quarterly premium maintenance service invoice. Thank you for your business!"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated invoice recurrence.</p>
+
+        <h3>DELETE /invoicerecurrences/{id}</h3>
+        <p>Deletes an invoice recurrence. This will prevent future invoices from being generated but won't affect
+            already issued invoices.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>PUT /invoicerecurrences/{id}/status</h3>
+        <p>Updates the status of an invoice recurrence.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "status": "Paused",
+    "notes": "Customer requested temporary suspension of service."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated invoice recurrence with the new status.</p>
+
+        <h3>GET /invoicerecurrences/{id}/history</h3>
+        <p>Retrieves the invoice generation history for a specific recurrence.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoicerecurrences/1001/history
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "invoiceId": 12330,
+            "number": "MON-2023-0750",
+            "date": "2023-07-01",
+            "total": 215.63,
+            "status": "Paid",
+            "generatedDate": "2023-07-01T00:30:15Z",
+            "sentDate": "2023-07-01T00:35:20Z"
+        },
+        {
+            "invoiceId": 12310,
+            "number": "MON-2023-0700",
+            "date": "2023-06-01",
+            "total": 215.63,
+            "status": "Paid",
+            "generatedDate": "2023-06-01T00:25:10Z",
+            "sentDate": "2023-06-01T00:30:05Z"
+        },
+        {
+            "invoiceId": 12290,
+            "number": "MON-2023-0650",
+            "date": "2023-05-01",
+            "total": 215.63,
+            "status": "Paid",
+            "generatedDate": "2023-05-01T00:15:45Z",
+            "sentDate": "2023-05-01T00:20:30Z"
+        }
+        // Additional invoice history...
+    ],
+    "totalResults": 7,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>POST /invoicerecurrences/{id}/generate</h3>
+        <p>Manually triggers generation of an invoice from the recurrence template.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "invoiceDate": "2023-08-01",
+    "sendToCustomer": true,
+    "overrideNextRunDate": true
+}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "invoiceId": 12350,
+    "number": "MON-2023-0800",
+    "date": "2023-08-01",
+    "total": 215.63,
+    "status": "Sent",
+    "recurrenceId": 1001,
+    "generatedDate": "2023-07-25T14:30:45Z",
+    "sentDate": "2023-07-25T14:35:20Z",
+    "invoiceUrl": "https://api.servicetrade.com/invoices/12350"
+}</code></pre>
+
+        <h3>GET /invoicerecurrences/preview</h3>
+        <p>Previews upcoming invoice recurrences due to run within a specified time period.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoicerecurrences/preview?startDate=2023-08-01&endDate=2023-08-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 1001,
+            "name": "Monthly Monitoring Service",
+            "customerId": 5678,
+            "customerName": "ACME Corporation",
+            "scheduledDate": "2023-08-01T00:00:00Z",
+            "estimatedAmount": 215.63,
+            "frequency": "Monthly",
+            "occurrence": 8
+        },
+        {
+            "id": 1003,
+            "name": "Annual Maintenance Contract",
+            "customerId": 5680,
+            "customerName": "XYZ Industries",
+            "scheduledDate": "2023-08-15T00:00:00Z",
+            "estimatedAmount": 4500.00,
+            "frequency": "Annual",
+            "occurrence": 1
+        }
+        // Additional upcoming recurrences...
+    ],
+    "totalResults": 2,
+    "totalEstimatedAmount": 4715.63,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>POST /invoicerecurrences/batch</h3>
+        <p>Creates multiple invoice recurrences in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "recurrences": [
+        {
+            "name": "Monthly Inspection - Site A",
+            "customerId": 5681,
+            "status": "Active",
+            "frequency": "Monthly",
+            "dayOfMonth": 10,
+            "startDate": "2023-08-10",
+            "invoiceTemplate": {
+                "items": [
+                    {
+                        "description": "Monthly Fire Extinguisher Inspection",
+                        "quantity": 1,
+                        "unitPrice": 350.00,
+                        "taxable": true,
+                        "itemType": "Service",
+                        "serviceItemId": 123
+                    }
+                ],
+                "taxRate": 7.50
+            },
+            "autoSend": true
+        },
+        {
+            "name": "Monthly Inspection - Site B",
+            "customerId": 5681,
+            "status": "Active",
+            "frequency": "Monthly",
+            "dayOfMonth": 15,
+            "startDate": "2023-08-15",
+            "invoiceTemplate": {
+                "items": [
+                    {
+                        "description": "Monthly Fire Extinguisher Inspection",
+                        "quantity": 1,
+                        "unitPrice": 450.00,
+                        "taxable": true,
+                        "itemType": "Service",
+                        "serviceItemId": 123
+                    }
+                ],
+                "taxRate": 7.50
+            },
+            "autoSend": true
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created invoice recurrences.</p>
+
+        <h3>GET /customers/{id}/invoicerecurrences</h3>
+        <p>Retrieves all invoice recurrences for a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/5678/invoicerecurrences?status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of invoice recurrences for the specified customer.</p>
+
+        <h3>GET /contracts/{id}/invoicerecurrences</h3>
+        <p>Retrieves all invoice recurrences associated with a specific contract.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contracts/2001/invoicerecurrences
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of invoice recurrences for the specified contract.</p>
+
+        <h3>POST /contracts/{id}/invoicerecurrences</h3>
+        <p>Creates an invoice recurrence from a contract.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Contract Billing - ABC Corp",
+    "frequency": "Monthly",
+    "dayOfMonth": 1,
+    "startDate": "2023-09-01",
+    "autoSend": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created invoice recurrence based on the contract terms.</p>
+
+        <h3>GET /invoicerecurrences/summary</h3>
+        <p>Retrieves summary information about invoice recurrences.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoicerecurrences/summary?groupBy=frequency
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalRecurrences": 45,
+    "activeRecurrences": 38,
+    "pausedRecurrences": 5,
+    "completedRecurrences": 2,
+    "byFrequency": {
+        "Monthly": {
+            "count": 25,
+            "estimatedMonthlyRevenue": 12500.00,
+            "estimatedAnnualRevenue": 150000.00
+        },
+        "Quarterly": {
+            "count": 12,
+            "estimatedMonthlyRevenue": 4800.00,
+            "estimatedAnnualRevenue": 57600.00
+        },
+        "Annual": {
+            "count": 8,
+            "estimatedMonthlyRevenue": 3333.33,
+            "estimatedAnnualRevenue": 40000.00
+        }
+    },
+    "byCustomer": [
+        {
+            "customerId": 5678,
+            "name": "ACME Corporation",
+            "recurrenceCount": 5,
+            "estimatedMonthlyRevenue": 2150.00
+        },
+        {
+            "customerId": 5679,
+            "name": "XYZ Industries",
+            "recurrenceCount": 3,
+            "estimatedMonthlyRevenue": 1750.00
+        }
+        // Additional customers...
+    ],
+    "upcomingInvoices": {
+        "next30Days": {
+            "count": 18,
+            "estimatedAmount": 15250.00
+        },
+        "next60Days": {
+            "count": 32,
+            "estimatedAmount": 28750.00
+        },
+        "next90Days": {
+            "count": 45,
+            "estimatedAmount": 42500.00
+        }
+    }
+}</code></pre>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

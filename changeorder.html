@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Order API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('changeorder.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="ChangeOrder">Change Order</h1>
+        <p>The Change Order object represents modifications to the original scope of work for a job, project, or
+            contract. Change Orders typically contain line items that detail specific additions, removals, or
+            modifications to the original scope.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the change order.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>number</code></td>
+                    <td>string</td>
+                    <td>Change order number/identifier (often a sequential number).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>title</code></td>
+                    <td>string</td>
+                    <td>Title of the change order.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the change order and its purpose.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobId</code></td>
+                    <td>integer</td>
+                    <td>ID of the associated job or project.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>categoryId</code></td>
+                    <td>integer</td>
+                    <td>ID of the change order category this belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the change order (e.g., "Draft", "Pending Approval", "Approved", "Rejected").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>totalAmount</code></td>
+                    <td>decimal</td>
+                    <td>Total monetary value of the change order (sum of line items).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxAmount</code></td>
+                    <td>decimal</td>
+                    <td>Tax amount applied to the change order.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>grandTotal</code></td>
+                    <td>decimal</td>
+                    <td>Total amount including taxes.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>affectsSchedule</code></td>
+                    <td>boolean</td>
+                    <td>Whether this change order affects the project schedule.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>scheduleImpactDays</code></td>
+                    <td>integer</td>
+                    <td>Number of days added or removed from the schedule.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>requestedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user or contact who requested the change order.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>requestedDate</code></td>
+                    <td>date</td>
+                    <td>Date when the change order was requested.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>approvedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who approved the change order.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>approvedDate</code></td>
+                    <td>date</td>
+                    <td>Date when the change order was approved.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the change order was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the change order.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the change order was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the change order.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /changeorders</h3>
+        <p>Retrieves a list of change orders. Often filtered by jobId or status.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/changeorders?jobId=456&status=Approved
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 789,
+            "number": "CO-001",
+            "title": "Additional Wall Modifications",
+            "description": "Client requested removal of non-load-bearing wall between kitchen and dining room",
+            "jobId": 456,
+            "categoryId": 101,
+            "status": "Approved",
+            "totalAmount": 2500.00,
+            "taxAmount": 200.00,
+            "grandTotal": 2700.00,
+            "affectsSchedule": true,
+            "scheduleImpactDays": 2,
+            "requestedBy": 201,
+            "requestedDate": "2023-07-10",
+            "approvedBy": 102,
+            "approvedDate": "2023-07-15",
+            "createdDate": "2023-07-10T09:15:00Z",
+            "createdBy": 102,
+            "lastModifiedDate": "2023-07-15T14:30:00Z",
+            "lastModifiedBy": 102
+        },
+        // Additional change orders...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /changeorders/{id}</h3>
+        <p>Retrieves a specific change order by ID, including its line items.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/changeorders/789
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 789,
+    "number": "CO-001",
+    "title": "Additional Wall Modifications",
+    "description": "Client requested removal of non-load-bearing wall between kitchen and dining room",
+    "jobId": 456,
+    "categoryId": 101,
+    "status": "Approved",
+    "totalAmount": 2500.00,
+    "taxAmount": 200.00,
+    "grandTotal": 2700.00,
+    "affectsSchedule": true,
+    "scheduleImpactDays": 2,
+    "requestedBy": 201,
+    "requestedDate": "2023-07-10",
+    "approvedBy": 102,
+    "approvedDate": "2023-07-15",
+    "createdDate": "2023-07-10T09:15:00Z",
+    "createdBy": 102,
+    "lastModifiedDate": "2023-07-15T14:30:00Z",
+    "lastModifiedBy": 102,
+    "lineItems": [
+        {
+            "id": 901,
+            "changeOrderId": 789,
+            "description": "Labor for wall removal",
+            "quantity": 8,
+            "unit": "hours",
+            "unitPrice": 125.00,
+            "total": 1000.00,
+            // Other line item properties...
+        },
+        {
+            "id": 902,
+            "changeOrderId": 789,
+            "description": "Additional materials",
+            "quantity": 1,
+            "unit": "package",
+            "unitPrice": 750.00,
+            "total": 750.00,
+            // Other line item properties...
+        },
+        {
+            "id": 903,
+            "changeOrderId": 789,
+            "description": "Disposal fees",
+            "quantity": 1,
+            "unit": "load",
+            "unitPrice": 750.00,
+            "total": 750.00,
+            // Other line item properties...
+        }
+        // Additional line items...
+    ],
+    "attachments": [
+        {
+            "id": 501,
+            "fileName": "wall_removal_diagram.pdf",
+            "fileSize": 245678,
+            "contentType": "application/pdf",
+            "uploadDate": "2023-07-10T10:20:00Z",
+            "url": "https://api.example.com/attachments/501/download"
+        }
+        // Additional attachments...
+    ]
+}</code></pre>
+
+        <h3>POST /changeorders</h3>
+        <p>Creates a new change order.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "title": "Upgrade Cabinet Hardware",
+    "description": "Client requested upgrade from standard cabinet hardware to premium fixtures",
+    "jobId": 456,
+    "categoryId": 102,
+    "status": "Draft",
+    "affectsSchedule": false,
+    "requestedBy": 201,
+    "requestedDate": "2023-07-25"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created change order object (HTTP 201 Created).</p>
+
+        <h3>PUT /changeorders/{id}</h3>
+        <p>Updates an existing change order.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "title": "Upgrade Cabinet Hardware and Fixtures",
+    "description": "Client requested upgrade from standard cabinet hardware to premium fixtures including handles and hinges",
+    "status": "Pending Approval",
+    "affectsSchedule": true,
+    "scheduleImpactDays": 1
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated change order object.</p>
+
+        <h3>DELETE /changeorders/{id}</h3>
+        <p>Deletes a change order. This may be disallowed for approved change orders or those in certain statuses.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /changeorders/{id}/approve</h3>
+        <p>Approves a change order, updating its status and recording approval information.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "approverNotes": "Approved as discussed with client on 7/28/2023"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated change order with approved status.</p>
+
+        <h3>POST /changeorders/{id}/reject</h3>
+        <p>Rejects a change order, updating its status and recording rejection information.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "rejectionReason": "Cost exceeds budget allowance",
+    "additionalNotes": "Please revise with lower cost options"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated change order with rejected status.</p>
+
+        <h3>GET /changeorders/{id}/lineItems</h3>
+        <p>Retrieves all line items associated with a specific change order.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/changeorders/789/lineItems
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="changeorderlineitem.html">Change Order Line Items</a> in this change order.
+        </p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

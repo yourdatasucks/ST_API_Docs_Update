@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Line Item API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('budgetlineitem.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="BudgetLineItem">Budget Line Item</h1>
+        <p>The Budget Line Item object represents an individual expense or cost entry within a <a
+                href="budgetcategory.html">Budget Category</a>. Budget Line Items are the most granular level of
+            financial planning in a budget structure.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the budget line item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>budgetId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent <a href="budget.html">Budget</a>.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>categoryId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent <a href="budgetcategory.html">Budget Category</a>.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>referenceNumber</code></td>
+                    <td>string</td>
+                    <td>Reference number that this line item is known by.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name or description of the line item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the line item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>cost</code></td>
+                    <td>decimal</td>
+                    <td>Unit cost of the line item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>quantity</code></td>
+                    <td>decimal</td>
+                    <td>Quantity of units for this line item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unit</code></td>
+                    <td>string</td>
+                    <td>Unit of measure (e.g., "hours", "pieces", "sq ft").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>total</code></td>
+                    <td>decimal</td>
+                    <td>Total cost for this line item (cost × quantity).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>usedAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount used/spent from this line item budget.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>remainingAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount remaining in this line item budget.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>orderIndex</code></td>
+                    <td>integer</td>
+                    <td>Display order for the line item within the category.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>libItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the library item this line item is based on, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the service item this line item is associated with, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the budget line item was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the budget line item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the budget line item was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the budget line item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /budgetlineitems</h3>
+        <p>Retrieves a list of budget line items. Often filtered by budgetId or categoryId.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/budgetlineitems?categoryId=201
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 301,
+            "budgetId": 123,
+            "categoryId": 201,
+            "referenceNumber": "BLI-001",
+            "name": "Demolition",
+            "description": "Demolition of existing structures",
+            "cost": 20000.00,
+            "quantity": 1,
+            "unit": "job",
+            "total": 20000.00,
+            "usedAmount": 20000.00,
+            "remainingAmount": 0.00,
+            "orderIndex": 1,
+            "createdDate": "2023-05-15T14:40:00Z",
+            "createdBy": 101,
+            "lastModifiedDate": "2023-05-15T14:40:00Z",
+            "lastModifiedBy": 101
+        },
+        {
+            "id": 302,
+            "budgetId": 123,
+            "categoryId": 201,
+            "referenceNumber": "BLI-002",
+            "name": "Framing",
+            "description": "Structural framing for new walls",
+            "cost": 35000.00,
+            "quantity": 1,
+            "unit": "job",
+            "total": 35000.00,
+            "usedAmount": 25000.00,
+            "remainingAmount": 10000.00,
+            "orderIndex": 2,
+            // Other properties...
+        }
+        // Additional line items...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /budgetlineitems/{id}</h3>
+        <p>Retrieves a specific budget line item by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/budgetlineitems/301
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 301,
+    "budgetId": 123,
+    "categoryId": 201,
+    "referenceNumber": "BLI-001",
+    "name": "Demolition",
+    "description": "Demolition of existing structures",
+    "cost": 20000.00,
+    "quantity": 1,
+    "unit": "job",
+    "total": 20000.00,
+    "usedAmount": 20000.00,
+    "remainingAmount": 0.00,
+    "orderIndex": 1,
+    "createdDate": "2023-05-15T14:40:00Z",
+    "createdBy": 101,
+    "lastModifiedDate": "2023-05-15T14:40:00Z",
+    "lastModifiedBy": 101
+}</code></pre>
+
+        <h3>POST /budgetlineitems</h3>
+        <p>Creates a new budget line item within a budget category.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "budgetId": 123,
+    "categoryId": 201,
+    "name": "Interior Finishes",
+    "referenceNumber": "BLI-005",
+    "description": "Interior paint, trim, and finishes",
+    "cost": 15000.00,
+    "quantity": 1,
+    "unit": "job",
+    "orderIndex": 5
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created budget line item object (HTTP 201 Created).</p>
+
+        <h3>PUT /budgetlineitems/{id}</h3>
+        <p>Updates an existing budget line item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Interior Finishes - Premium",
+    "description": "Interior paint, trim, and premium finishes",
+    "cost": 18500.00,
+    "quantity": 1
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated budget line item object.</p>
+
+        <h3>DELETE /budgetlineitems/{id}</h3>
+        <p>Deletes a budget line item. This may be disallowed if the parent budget is in certain statuses or if there
+            are transactions against this line item.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /budgetlineitems/{id}/transactions</h3>
+        <p>Retrieves all financial transactions associated with this budget line item.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/budgetlineitems/301/transactions
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of financial transactions related to this line item.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

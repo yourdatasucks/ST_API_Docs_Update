@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Category API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('budgetcategory.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="BudgetCategory">Budget Category</h1>
+        <p>The Budget Category object represents a grouping of related line items within a <a
+                href="budget.html">Budget</a>. Examples of budget categories might include "Labor", "Materials",
+            "Equipment", etc. Budget Categories help organize budget line items for better financial tracking and
+            reporting.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the budget category.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>budgetId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent <a href="budget.html">Budget</a>.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>referenceNumber</code></td>
+                    <td>string</td>
+                    <td>Reference number that this budget category is known by.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the budget category.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the budget category.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>cost</code></td>
+                    <td>decimal</td>
+                    <td>Total cost allocated for this category (sum of line items).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>usedAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount used/spent from this category budget (calculated).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>remainingAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount remaining in this category budget (calculated).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>orderIndex</code></td>
+                    <td>integer</td>
+                    <td>Display order for the category within the budget.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>libItemType</code></td>
+                    <td>string</td>
+                    <td>Type of library item this category represents, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the budget category was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the budget category.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the budget category was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the budget category.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /budgetcategories</h3>
+        <p>Retrieves a list of budget categories. Often filtered by budgetId.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/budgetcategories?budgetId=123
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 201,
+            "budgetId": 123,
+            "referenceNumber": "BC-001",
+            "name": "Construction",
+            "description": "Building and construction costs",
+            "cost": 150000.00,
+            "usedAmount": 45000.00,
+            "remainingAmount": 105000.00,
+            "orderIndex": 1,
+            "libItemType": "Construction",
+            "createdDate": "2023-05-15T14:35:00Z",
+            "createdBy": 101,
+            "lastModifiedDate": "2023-05-15T14:35:00Z",
+            "lastModifiedBy": 101
+        },
+        {
+            "id": 202,
+            "budgetId": 123,
+            "referenceNumber": "BC-002",
+            "name": "Equipment",
+            "description": "Equipment purchases and rentals",
+            "cost": 50000.00,
+            "usedAmount": 15000.00,
+            "remainingAmount": 35000.00,
+            "orderIndex": 2,
+            "libItemType": "Equipment",
+            // Other properties...
+        }
+        // Additional categories...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /budgetcategories/{id}</h3>
+        <p>Retrieves a specific budget category by ID, including its line items.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/budgetcategories/201
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 201,
+    "budgetId": 123,
+    "referenceNumber": "BC-001",
+    "name": "Construction",
+    "description": "Building and construction costs",
+    "cost": 150000.00,
+    "usedAmount": 45000.00,
+    "remainingAmount": 105000.00,
+    "orderIndex": 1,
+    "libItemType": "Construction",
+    "createdDate": "2023-05-15T14:35:00Z",
+    "createdBy": 101,
+    "lastModifiedDate": "2023-05-15T14:35:00Z",
+    "lastModifiedBy": 101,
+    "lineItems": [
+        {
+            "id": 301,
+            "name": "Demolition",
+            "referenceNumber": "BLI-001",
+            "cost": 20000.00,
+            "quantity": 1,
+            "total": 20000.00,
+            // Other line item properties...
+        },
+        {
+            "id": 302,
+            "name": "Framing",
+            "referenceNumber": "BLI-002",
+            "cost": 35000.00,
+            "quantity": 1,
+            "total": 35000.00,
+            // Other line item properties...
+        }
+        // Additional line items...
+    ]
+}</code></pre>
+
+        <h3>POST /budgetcategories</h3>
+        <p>Creates a new budget category within a budget.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "budgetId": 123,
+    "name": "Permits and Fees",
+    "referenceNumber": "BC-003",
+    "description": "Regulatory permits and inspection fees",
+    "orderIndex": 3,
+    "libItemType": "Administrative"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created budget category object (HTTP 201 Created).</p>
+
+        <h3>PUT /budgetcategories/{id}</h3>
+        <p>Updates an existing budget category.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Permits, Fees, and Inspections",
+    "description": "Regulatory permits, inspection fees, and compliance costs",
+    "orderIndex": 4
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated budget category object.</p>
+
+        <h3>DELETE /budgetcategories/{id}</h3>
+        <p>Deletes a budget category. This may be disallowed if the category has line items or if the parent budget is
+            in certain statuses.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /budgetcategories/{id}/lineItems</h3>
+        <p>Retrieves all budget line items associated with a specific budget category.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/budgetcategories/201/lineItems
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="budgetlineitem.html">Budget Line Items</a> in this category.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

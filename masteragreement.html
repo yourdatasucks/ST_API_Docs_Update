@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Agreement API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('masteragreement.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="MasterAgreement">Master Agreement</h1>
+        <p>The Master Agreement object represents a governing agreement between a service provider and a
+            <a href="customer.html">Customer</a> that defines the overall business relationship, terms, and conditions.
+            Master agreements typically serve as umbrella contracts that establish the framework for subsequent
+            <a href="contract.html">Contracts</a>, <a href="quote.html">Quotes</a>, <a href="job.html">Jobs</a>, and
+            <a href="invoice.html">Invoices</a>. They can include pricing structures, service level agreements, term
+            lengths,
+            renewal conditions, and other legal and business requirements.
+        </p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the master agreement.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>number</code></td>
+                    <td>string</td>
+                    <td>Reference number for the master agreement.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the master agreement.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>customerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="customer.html">Customer</a> this master agreement is with.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the master agreement (e.g., "Draft", "Active", "Expired", "Terminated").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>effectiveDate</code></td>
+                    <td>date</td>
+                    <td>Date when the master agreement becomes effective.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>expirationDate</code></td>
+                    <td>date</td>
+                    <td>Date when the master agreement expires.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>autoRenew</code></td>
+                    <td>boolean</td>
+                    <td>Whether the master agreement automatically renews upon expiration.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>renewalTerm</code></td>
+                    <td>integer</td>
+                    <td>Length of renewal term in months if auto-renewal is enabled.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>terminationNoticeDays</code></td>
+                    <td>integer</td>
+                    <td>Number of days' notice required for termination.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the master agreement.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Internal notes about the master agreement.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>termsAndConditions</code></td>
+                    <td>string</td>
+                    <td>Terms and conditions of the master agreement.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>signedDate</code></td>
+                    <td>date</td>
+                    <td>Date when the master agreement was signed.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>signedBy</code></td>
+                    <td>string</td>
+                    <td>Name of the person who signed the master agreement on behalf of the customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>signedByTitle</code></td>
+                    <td>string</td>
+                    <td>Title of the person who signed the master agreement.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>executedByCompany</code></td>
+                    <td>string</td>
+                    <td>Name of the person who signed on behalf of the company (service provider).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>executedByCompanyTitle</code></td>
+                    <td>string</td>
+                    <td>Title of the person who signed on behalf of the company.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contractIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="contract.html">Contract</a> IDs associated with this master agreement.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>attachmentIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="attachment.html">Attachment</a> IDs associated with this master agreement.
+                    </td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>reminderDays</code></td>
+                    <td>integer</td>
+                    <td>Number of days before expiration to send a reminder notification.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>opportunityValue</code></td>
+                    <td>decimal</td>
+                    <td>Estimated total value of the master agreement.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>primaryContactId</code></td>
+                    <td>integer</td>
+                    <td>ID of the primary <a href="contact.html">Contact</a> for this master agreement.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>responsibleUserId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="user.html">User</a> responsible for managing this master agreement.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this master agreement.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this master agreement was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this master agreement.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this master agreement was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contractRuleIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="contractrule.html">Contract Rule</a> IDs associated with this master
+                        agreement.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /master-agreements</h3>
+        <p>Retrieves a list of master agreements. Supports filtering by customer, status, date range, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/master-agreements?customerId=1001&status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 6001,
+            "number": "MA-2023-001",
+            "name": "Corporate Services Agreement",
+            "customerId": 1001,
+            "status": "Active",
+            "effectiveDate": "2023-01-01",
+            "expirationDate": "2025-12-31",
+            "autoRenew": true,
+            "createdDate": "2022-11-15T09:30:00Z"
+        },
+        {
+            "id": 6002,
+            "number": "MA-2023-002",
+            "name": "Regional Services Agreement",
+            "customerId": 1001,
+            "status": "Active",
+            "effectiveDate": "2023-03-15",
+            "expirationDate": "2026-03-14",
+            "autoRenew": false,
+            "createdDate": "2023-02-20T14:45:00Z"
+        }
+        // Additional master agreements...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /master-agreements/{id}</h3>
+        <p>Retrieves a specific master agreement by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/master-agreements/6001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 6001,
+    "number": "MA-2023-001",
+    "name": "Corporate Services Agreement",
+    "customerId": 1001,
+    "status": "Active",
+    "effectiveDate": "2023-01-01",
+    "expirationDate": "2025-12-31",
+    "autoRenew": true,
+    "renewalTerm": 12,
+    "terminationNoticeDays": 90,
+    "description": "Master agreement covering all corporate locations",
+    "notes": "Negotiated by legal team with special terms for priority service",
+    "termsAndConditions": "1. Service provider agrees to...\n2. Customer agrees to...",
+    "signedDate": "2022-12-15",
+    "signedBy": "Jane Smith",
+    "signedByTitle": "Chief Facilities Officer",
+    "executedByCompany": "John Doe",
+    "executedByCompanyTitle": "VP of Operations",
+    "contractIds": [7001, 7002, 7003],
+    "attachmentIds": [8001, 8002],
+    "reminderDays": 60,
+    "opportunityValue": 750000.00,
+    "primaryContactId": 3001,
+    "responsibleUserId": 101,
+    "createdBy": 101,
+    "createdDate": "2022-11-15T09:30:00Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2022-12-15T14:20:00Z",
+    "contractRuleIds": [9001, 9002],
+    "customFields": {
+        "legalReviewDate": "2022-11-10",
+        "approvedBy": "Legal Department",
+        "documentNumber": "LGL-22-456",
+        "negotiator": "Robert Johnson"
+    }
+}</code></pre>
+
+        <h3>POST /master-agreements</h3>
+        <p>Creates a new master agreement.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "number": "MA-2023-003",
+    "name": "National Service Provider Agreement",
+    "customerId": 1002,
+    "status": "Draft",
+    "effectiveDate": "2023-07-01",
+    "expirationDate": "2026-06-30",
+    "autoRenew": true,
+    "renewalTerm": 24,
+    "terminationNoticeDays": 60,
+    "description": "Comprehensive service agreement covering all customer locations nationwide",
+    "notes": "Pricing includes volume discounts based on annual spend",
+    "termsAndConditions": "Standard terms with custom SLA requirements",
+    "reminderDays": 90,
+    "opportunityValue": 1250000.00,
+    "primaryContactId": 3015,
+    "responsibleUserId": 102,
+    "attachmentIds": [8010, 8011],
+    "contractRuleIds": [9005, 9006],
+    "customFields": {
+        "approvalRequired": "VP Level",
+        "pricingTier": "Platinum",
+        "specialTerms": "Expedited emergency response"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created master agreement (HTTP 201 Created).</p>
+
+        <h3>PUT /master-agreements/{id}</h3>
+        <p>Updates an existing master agreement.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "National Service Provider Agreement - 2023",
+    "status": "Active",
+    "expirationDate": "2027-06-30",
+    "autoRenew": false,
+    "notes": "Updated pricing structure implemented as of July 2023",
+    "signedDate": "2023-06-15",
+    "signedBy": "Thomas Wilson",
+    "signedByTitle": "Chief Operating Officer",
+    "executedByCompany": "Sarah Johnson",
+    "executedByCompanyTitle": "Director of Sales",
+    "attachmentIds": [8010, 8011, 8012],
+    "customFields": {
+        "approvalRequired": "VP Level",
+        "pricingTier": "Diamond",
+        "specialTerms": "Expedited emergency response and dedicated account manager"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated master agreement.</p>
+
+        <h3>DELETE /master-agreements/{id}</h3>
+        <p>Deletes a master agreement. This is typically only allowed for agreements in "Draft" status.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /customers/{customerId}/master-agreements</h3>
+        <p>Retrieves all master agreements for a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/1001/master-agreements
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of master agreements belonging to the specified customer.</p>
+
+        <h3>POST /master-agreements/{id}/activate</h3>
+        <p>Activates a master agreement (changes status from "Draft" to "Active").</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "signedDate": "2023-06-15",
+    "signedBy": "Thomas Wilson",
+    "signedByTitle": "Chief Operating Officer",
+    "executedByCompany": "Sarah Johnson",
+    "executedByCompanyTitle": "Director of Sales"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the activated master agreement.</p>
+
+        <h3>POST /master-agreements/{id}/terminate</h3>
+        <p>Terminates a master agreement before its expiration date.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "terminationDate": "2023-09-30",
+    "terminationReason": "Customer consolidating vendors",
+    "notes": "Early termination fee waived as a goodwill gesture"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the terminated master agreement with updated status.</p>
+
+        <h3>POST /master-agreements/{id}/renew</h3>
+        <p>Manually renews a master agreement.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "newExpirationDate": "2027-12-31",
+    "renewalNotes": "Renewed with 5% price increase",
+    "renewalTerm": 24
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the renewed master agreement with updated expiration date.</p>
+
+        <h3>GET /master-agreements/{id}/contracts</h3>
+        <p>Retrieves all contracts associated with a specific master agreement.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/master-agreements/6001/contracts
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of contracts governed by the specified master agreement.</p>
+
+        <h3>POST /master-agreements/{id}/contracts</h3>
+        <p>Creates a new contract under a master agreement.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "number": "CT-2023-025",
+    "name": "Quarterly Preventive Maintenance",
+    "locationId": 2001,
+    "status": "Draft",
+    "startDate": "2023-07-01",
+    "endDate": "2024-06-30",
+    "serviceLineId": 501,
+    "description": "Quarterly preventive maintenance for HVAC equipment",
+    "contractValue": 12000.00
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created contract associated with the master agreement.</p>
+
+        <h3>GET /master-agreements/{id}/attachments</h3>
+        <p>Retrieves all attachments associated with a specific master agreement.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/master-agreements/6001/attachments
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of attachments associated with the specified master agreement.</p>
+
+        <h3>POST /master-agreements/{id}/attachments</h3>
+        <p>Adds a new attachment to a master agreement.</p>
+        <h4>Request</h4>
+        <p>A multipart/form-data request containing the file to upload and metadata.</p>
+        <h4>Response</h4>
+        <p>Returns the uploaded attachment information.</p>
+
+        <h3>GET /master-agreements/expiring</h3>
+        <p>Retrieves master agreements that are expiring within a specified time period.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/master-agreements/expiring?days=90
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of master agreements expiring within the specified number of days.</p>
+
+        <h3>GET /master-agreements/{id}/history</h3>
+        <p>Retrieves the history of changes made to a master agreement.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/master-agreements/6001/history
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of historical changes made to the specified master agreement.</p>
+
+        <h3>GET /master-agreements/search</h3>
+        <p>Searches for master agreements using full-text search.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/master-agreements/search?query=national%20service%20provider
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of master agreements matching the search criteria.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

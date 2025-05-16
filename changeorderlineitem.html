@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Order Line Item API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('changeorderlineitem.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="ChangeOrderLineItem">Change Order Line Item</h1>
+        <p>The Change Order Line Item object represents individual items or services that are being added, removed, or
+            modified as part of a <a href="changeorder.html">Change Order</a>. Line items provide detailed breakdown of
+            the changes and their associated costs.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the change order line item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>changeOrderId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent <a href="changeorder.html">Change Order</a>.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the line item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of change (e.g., "Add", "Remove", "Modify").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>quantity</code></td>
+                    <td>decimal</td>
+                    <td>Quantity of the item or service.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unit</code></td>
+                    <td>string</td>
+                    <td>Unit of measure (e.g., "hours", "pieces", "sq ft").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>unitPrice</code></td>
+                    <td>decimal</td>
+                    <td>Price per unit.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>markupPercentage</code></td>
+                    <td>decimal</td>
+                    <td>Percentage markup applied to this line item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>markupAmount</code></td>
+                    <td>decimal</td>
+                    <td>Monetary amount of markup (calculated).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>total</code></td>
+                    <td>decimal</td>
+                    <td>Total cost for this line item (quantity × unitPrice + markup).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxable</code></td>
+                    <td>boolean</td>
+                    <td>Whether this line item is subject to tax.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxRate</code></td>
+                    <td>decimal</td>
+                    <td>Tax rate applied to this line item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount of tax applied to this line item (calculated).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>originalItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the original item being modified (if this is a modification).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>originalItemType</code></td>
+                    <td>string</td>
+                    <td>Type of the original item (e.g., "QuoteItem", "JobItem", "ServiceItem").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the associated service item, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>orderIndex</code></td>
+                    <td>integer</td>
+                    <td>Display order for the line item within the change order.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the line item was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the line item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the line item was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the line item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /changeorderlineitems</h3>
+        <p>Retrieves a list of change order line items. Usually filtered by changeOrderId.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/changeorderlineitems?changeOrderId=789
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 901,
+            "changeOrderId": 789,
+            "description": "Labor for wall removal",
+            "type": "Add",
+            "quantity": 8,
+            "unit": "hours",
+            "unitPrice": 125.00,
+            "markupPercentage": 0,
+            "markupAmount": 0,
+            "total": 1000.00,
+            "taxable": true,
+            "taxRate": 8.0,
+            "taxAmount": 80.00,
+            "orderIndex": 1,
+            "createdDate": "2023-07-10T09:20:00Z",
+            "createdBy": 102,
+            "lastModifiedDate": "2023-07-10T09:20:00Z",
+            "lastModifiedBy": 102
+        },
+        {
+            "id": 902,
+            "changeOrderId": 789,
+            "description": "Additional materials",
+            "type": "Add",
+            "quantity": 1,
+            "unit": "package",
+            "unitPrice": 750.00,
+            "markupPercentage": 0,
+            "markupAmount": 0,
+            "total": 750.00,
+            "taxable": true,
+            "taxRate": 8.0,
+            "taxAmount": 60.00,
+            "orderIndex": 2,
+            // Other properties...
+        },
+        {
+            "id": 903,
+            "changeOrderId": 789,
+            "description": "Disposal fees",
+            "type": "Add",
+            "quantity": 1,
+            "unit": "load",
+            "unitPrice": 750.00,
+            "markupPercentage": 0,
+            "markupAmount": 0,
+            "total": 750.00,
+            "taxable": true,
+            "taxRate": 8.0,
+            "taxAmount": 60.00,
+            "orderIndex": 3,
+            // Other properties...
+        }
+        // Additional line items...
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /changeorderlineitems/{id}</h3>
+        <p>Retrieves a specific change order line item by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/changeorderlineitems/901
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 901,
+    "changeOrderId": 789,
+    "description": "Labor for wall removal",
+    "type": "Add",
+    "quantity": 8,
+    "unit": "hours",
+    "unitPrice": 125.00,
+    "markupPercentage": 0,
+    "markupAmount": 0,
+    "total": 1000.00,
+    "taxable": true,
+    "taxRate": 8.0,
+    "taxAmount": 80.00,
+    "orderIndex": 1,
+    "createdDate": "2023-07-10T09:20:00Z",
+    "createdBy": 102,
+    "lastModifiedDate": "2023-07-10T09:20:00Z",
+    "lastModifiedBy": 102
+}</code></pre>
+
+        <h3>POST /changeorderlineitems</h3>
+        <p>Creates a new change order line item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "changeOrderId": 789,
+    "description": "Upgrade electrical fixtures",
+    "type": "Add",
+    "quantity": 5,
+    "unit": "each",
+    "unitPrice": 120.00,
+    "markupPercentage": 10,
+    "taxable": true,
+    "taxRate": 8.0,
+    "orderIndex": 4
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created change order line item object (HTTP 201 Created).</p>
+
+        <h3>PUT /changeorderlineitems/{id}</h3>
+        <p>Updates an existing change order line item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Upgrade premium electrical fixtures",
+    "quantity": 6,
+    "unitPrice": 135.00
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated change order line item object.</p>
+
+        <h3>DELETE /changeorderlineitems/{id}</h3>
+        <p>Deletes a change order line item. This may be disallowed if the parent change order is in certain statuses.
+        </p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

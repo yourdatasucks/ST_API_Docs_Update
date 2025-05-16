@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('budget.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Budget">Budget</h1>
+        <p>The Budget object represents financial planning information for projects, accounts, or fiscal periods.
+            Budgets typically contain multiple Budget Categories, which in turn contain Budget Line Items.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the budget.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>referenceNumber</code></td>
+                    <td>string</td>
+                    <td>Reference number that this budget is known by.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the budget.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the budget.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of budget, e.g., "Project", "Annual", "Department".</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the budget, e.g., "Draft", "Active", "Closed".</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>sequence</code></td>
+                    <td>integer</td>
+                    <td>0 for baseline, otherwise the revision number of the budget.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>startDate</code></td>
+                    <td>date</td>
+                    <td>Start date of the budget period.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>endDate</code></td>
+                    <td>date</td>
+                    <td>End date of the budget period.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>totalAmount</code></td>
+                    <td>decimal</td>
+                    <td>Total budget amount (calculated).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>usedAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount used/spent from the budget (calculated).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>remainingAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount remaining in the budget (calculated).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>entityId</code></td>
+                    <td>integer</td>
+                    <td>ID of the entity (e.g., Project, Company) this budget is for.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>entityType</code></td>
+                    <td>string</td>
+                    <td>Type of entity this budget is for, e.g., "Project", "Company", "Department".</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the budget was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the budget.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the budget was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the budget.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /budgets</h3>
+        <p>Retrieves a list of budgets. Supports filtering by type, status, entity, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/budgets?type=Project&status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 123,
+            "referenceNumber": "B-2023-001",
+            "name": "Office Renovation Budget",
+            "description": "Budget for the main office renovation project",
+            "type": "Project",
+            "status": "Active",
+            "sequence": 0,
+            "startDate": "2023-06-01",
+            "endDate": "2023-12-31",
+            "totalAmount": 250000.00,
+            "usedAmount": 75000.00,
+            "remainingAmount": 175000.00,
+            "entityId": 456,
+            "entityType": "Project",
+            "createdDate": "2023-05-15T14:30:00Z",
+            "createdBy": 101,
+            "lastModifiedDate": "2023-05-15T14:30:00Z",
+            "lastModifiedBy": 101
+        },
+        // Additional budgets...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /budgets/{id}</h3>
+        <p>Retrieves a specific budget by ID, including its associated categories and line items.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/budgets/123
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 123,
+    "referenceNumber": "B-2023-001",
+    "name": "Office Renovation Budget",
+    "description": "Budget for the main office renovation project",
+    "type": "Project",
+    "status": "Active",
+    "sequence": 0,
+    "startDate": "2023-06-01",
+    "endDate": "2023-12-31",
+    "totalAmount": 250000.00,
+    "usedAmount": 75000.00,
+    "remainingAmount": 175000.00,
+    "entityId": 456,
+    "entityType": "Project",
+    "createdDate": "2023-05-15T14:30:00Z",
+    "createdBy": 101,
+    "lastModifiedDate": "2023-05-15T14:30:00Z",
+    "lastModifiedBy": 101,
+    "categories": [
+        {
+            "id": 201,
+            "name": "Construction",
+            "referenceNumber": "BC-001",
+            "cost": 150000.00,
+            // Other category properties...
+            "lineItems": [
+                {
+                    "id": 301,
+                    "name": "Demolition",
+                    "referenceNumber": "BLI-001",
+                    "cost": 20000.00,
+                    "quantity": 1,
+                    "total": 20000.00,
+                    // Other line item properties...
+                },
+                // Additional line items...
+            ]
+        },
+        // Additional categories...
+    ]
+}</code></pre>
+
+        <h3>POST /budgets</h3>
+        <p>Creates a new budget.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Marketing Campaign Budget",
+    "referenceNumber": "B-2023-002",
+    "description": "Budget for Q3 marketing campaign",
+    "type": "Marketing",
+    "status": "Draft",
+    "startDate": "2023-07-01",
+    "endDate": "2023-09-30",
+    "entityId": 789,
+    "entityType": "Department"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created budget object (HTTP 201 Created).</p>
+
+        <h3>PUT /budgets/{id}</h3>
+        <p>Updates an existing budget. Note that updating a budget may create a new revision (increase sequence)
+            depending on the implementation and status.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Marketing Campaign Budget - Q3 2023",
+    "description": "Updated budget for Q3 marketing campaign and events",
+    "status": "Active"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated budget object.</p>
+
+        <h3>DELETE /budgets/{id}</h3>
+        <p>Deletes a budget. This may be disallowed for certain budget statuses or if the budget has related data.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /budgets/{id}/categories</h3>
+        <p>Retrieves all budget categories associated with a specific budget.</p>
+
+        <h3>GET /budgets/{id}/lineItems</h3>
+        <p>Retrieves all budget line items associated with a specific budget (across all categories).</p>
+
+        <h3>GET /budgets/{id}/transactions</h3>
+        <p>Retrieves all financial transactions associated with this budget.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

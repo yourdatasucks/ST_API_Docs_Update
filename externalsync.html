@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExternalSync API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('externalsync.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="ExternalSync">ExternalSync</h1>
+        <p>The ExternalSync object represents synchronization operations between ServiceTrade and external systems.
+            It tracks the status, progress, and results of data synchronization activities, enabling integration
+            monitoring and troubleshooting.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the synchronization operation.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>externalSystemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="externalsystem.html">External System</a> involved in the sync.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>syncType</code></td>
+                    <td>string</td>
+                    <td>Type of synchronization (e.g., "Full", "Incremental", "Manual", "Scheduled").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>entityType</code></td>
+                    <td>string</td>
+                    <td>Type of entity being synchronized (e.g., "Customer", "Invoice", "Job").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>direction</code></td>
+                    <td>string</td>
+                    <td>Direction of the sync (e.g., "Import", "Export", "Bidirectional").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Current status of the sync operation (e.g., "Pending", "In Progress", "Completed", "Failed",
+                        "Cancelled").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>startDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the sync operation started.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>endDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the sync operation completed or failed.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>initiatedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who initiated the sync operation, or null if system-initiated.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>totalRecords</code></td>
+                    <td>integer</td>
+                    <td>Total number of records processed in the sync operation.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>successCount</code></td>
+                    <td>integer</td>
+                    <td>Number of records successfully synchronized.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>errorCount</code></td>
+                    <td>integer</td>
+                    <td>Number of records that failed to synchronize.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>warningCount</code></td>
+                    <td>integer</td>
+                    <td>Number of records with warnings during synchronization.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>progressPercentage</code></td>
+                    <td>integer</td>
+                    <td>Current progress of the sync operation as a percentage.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes or comments about the sync operation.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>errorDetails</code></td>
+                    <td>object</td>
+                    <td>Detailed information about errors encountered during synchronization.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>syncParameters</code></td>
+                    <td>object</td>
+                    <td>Parameters used for this sync operation.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastCheckpointData</code></td>
+                    <td>object</td>
+                    <td>Data representing the last successful checkpoint in the sync process.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the sync record was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the sync record was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /externalsyncs</h3>
+        <p>Retrieves a list of external sync operations. Supports filtering by externalSystemId, entityType, status,
+            date ranges, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalsyncs?externalSystemId=123&entityType=Customer&status=Completed
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 456,
+            "externalSystemId": 123,
+            "syncType": "Incremental",
+            "entityType": "Customer",
+            "direction": "Import",
+            "status": "Completed",
+            "startDate": "2023-08-15T09:30:00Z",
+            "endDate": "2023-08-15T09:45:00Z",
+            "initiatedBy": 101,
+            "totalRecords": 250,
+            "successCount": 248,
+            "errorCount": 2,
+            "warningCount": 5,
+            "progressPercentage": 100,
+            "notes": "Regular scheduled customer import from QuickBooks",
+            "errorDetails": {
+                "failedRecords": [
+                    {
+                        "externalId": "CUST-789",
+                        "reason": "Missing required field: primaryContactId",
+                        "data": { "name": "ABC Corporation", "type": "Commercial" }
+                    },
+                    {
+                        "externalId": "CUST-790",
+                        "reason": "Duplicate customer identifier",
+                        "data": { "name": "XYZ Industries", "type": "Industrial" }
+                    }
+                ],
+                "warningRecords": [
+                    {
+                        "externalId": "CUST-456",
+                        "reason": "Address format may be incorrect",
+                        "data": { "address": "123 Main St,, Suite 100" }
+                    }
+                    // Additional warning records...
+                ]
+            },
+            "syncParameters": {
+                "modifiedSince": "2023-08-14T00:00:00Z",
+                "includeInactive": false,
+                "batchSize": 50
+            },
+            "lastCheckpointData": {
+                "lastSyncId": "QB-SYNC-20230815-093000",
+                "lastModifiedDate": "2023-08-15T09:45:00Z"
+            },
+            "createdDate": "2023-08-15T09:30:00Z",
+            "lastModifiedDate": "2023-08-15T09:45:00Z"
+        },
+        // Additional external syncs...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /externalsyncs/{id}</h3>
+        <p>Retrieves a specific external sync operation by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalsyncs/456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the external sync operation with the specified ID.</p>
+
+        <h3>POST /externalsyncs</h3>
+        <p>Initiates a new external sync operation.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "externalSystemId": 123,
+    "syncType": "Manual",
+    "entityType": "Invoice",
+    "direction": "Export",
+    "notes": "Manual export of all unpaid invoices",
+    "syncParameters": {
+        "status": ["Sent", "Overdue"],
+        "dateRange": {
+            "start": "2023-01-01",
+            "end": "2023-08-15"
+        },
+        "includeLineItems": true
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created external sync operation (HTTP 201 Created).</p>
+
+        <h3>PUT /externalsyncs/{id}</h3>
+        <p>Updates an existing external sync operation. Limited to certain fields depending on sync status.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "status": "Cancelled",
+    "notes": "Cancelled due to server maintenance"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated external sync operation.</p>
+
+        <h3>GET /externalsyncs/{id}/details</h3>
+        <p>Retrieves detailed information about a specific sync operation, including record-level details.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalsyncs/456/details
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns detailed information about the sync operation, including processed records.</p>
+
+        <h3>GET /externalsyncs/{id}/logs</h3>
+        <p>Retrieves logs associated with a specific sync operation.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalsyncs/456/logs
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "timestamp": "2023-08-15T09:30:00Z",
+            "level": "INFO",
+            "message": "Sync operation started for Customer import"
+        },
+        {
+            "timestamp": "2023-08-15T09:30:05Z",
+            "level": "INFO",
+            "message": "Retrieved 250 customer records from QuickBooks"
+        },
+        {
+            "timestamp": "2023-08-15T09:35:10Z",
+            "level": "WARNING",
+            "message": "Customer CUST-456 has potentially incorrect address format"
+        },
+        {
+            "timestamp": "2023-08-15T09:40:15Z",
+            "level": "ERROR",
+            "message": "Failed to import customer CUST-789: Missing required field"
+        },
+        {
+            "timestamp": "2023-08-15T09:45:00Z",
+            "level": "INFO",
+            "message": "Sync operation completed: 248 successful, 2 errors, 5 warnings"
+        }
+    ],
+    "totalResults": 5,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>POST /externalsyncs/{id}/cancel</h3>
+        <p>Cancels an in-progress sync operation.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "reason": "System maintenance required",
+    "notifyUsers": [101, 102]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated external sync operation with cancelled status.</p>
+
+        <h3>POST /externalsyncs/{id}/retry</h3>
+        <p>Retries a failed sync operation.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "retryFailedOnly": true,
+    "updateParameters": {
+        "timeout": 600,
+        "batchSize": 25
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created external sync operation for the retry attempt.</p>
+
+        <h3>GET /externalsyncs/summary</h3>
+        <p>Retrieves a summary of sync operations, optionally grouped by different criteria.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalsyncs/summary?groupBy=entityType&dateRange=last30days
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalSyncs": 568,
+    "successfulSyncs": 542,
+    "failedSyncs": 26,
+    "averageDuration": "00:12:34",
+    "byEntityType": {
+        "Customer": {
+            "total": 120,
+            "successful": 118,
+            "failed": 2,
+            "averageDuration": "00:15:22"
+        },
+        "Invoice": {
+            "total": 245,
+            "successful": 232,
+            "failed": 13,
+            "averageDuration": "00:08:45"
+        },
+        "Job": {
+            "total": 203,
+            "successful": 192,
+            "failed": 11,
+            "averageDuration": "00:14:10"
+        }
+    }
+}</code></pre>
+
+        <h3>GET /externalsystems/{id}/externalsyncs</h3>
+        <p>Retrieves all sync operations for a specific external system.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalsystems/123/externalsyncs?status=Completed
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of external sync operations for the specified external system.</p>
+
+        <h3>GET /externalsyncs/status/{jobId}</h3>
+        <p>Checks the status of a long-running sync operation by its job ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/externalsyncs/status/sync-job-789
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "jobId": "sync-job-789",
+    "status": "In Progress",
+    "progress": 65,
+    "startTime": "2023-08-15T14:30:00Z",
+    "currentOperation": "Importing Customers",
+    "recordsProcessed": 162,
+    "totalRecords": 250,
+    "estimatedTimeRemaining": "00:05:45"
+}</code></pre>
+
+        <h3>POST /externalsyncs/schedule</h3>
+        <p>Schedules a recurring sync operation.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "externalSystemId": 123,
+    "entityType": "Customer",
+    "direction": "Import",
+    "schedule": {
+        "frequency": "Daily",
+        "time": "03:00:00",
+        "timeZone": "America/New_York",
+        "daysOfWeek": [1, 2, 3, 4, 5],
+        "startDate": "2023-08-16"
+    },
+    "syncParameters": {
+        "modifiedSince": "lastSync",
+        "includeInactive": false
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created schedule configuration.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

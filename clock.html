@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock In/Out API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('clock.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Clock">Clock In/Out</h1>
+        <p>The Clock object represents time tracking records for users clocking in and out of work, jobs, or tasks. This
+            API is used to track labor time for payroll, job costing, and performance metrics.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the clock entry.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>userId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who clocked in/out.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of entry ("In" or "Out").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>timestamp</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the clock action was performed.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>jobId</code></td>
+                    <td>integer</td>
+                    <td>ID of the job associated with the time entry, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taskId</code></td>
+                    <td>integer</td>
+                    <td>ID of the task associated with the time entry, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the service item associated with the time entry, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>locationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the location where the clock action was performed.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>gpsLatitude</code></td>
+                    <td>decimal</td>
+                    <td>GPS latitude at the time of clock action.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>gpsLongitude</code></td>
+                    <td>decimal</td>
+                    <td>GPS longitude at the time of clock action.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>gpsAccuracy</code></td>
+                    <td>decimal</td>
+                    <td>GPS accuracy in meters at the time of clock action.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>deviceId</code></td>
+                    <td>string</td>
+                    <td>ID of the device used for the clock action.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>ipAddress</code></td>
+                    <td>string</td>
+                    <td>IP address from which the clock action was performed.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Optional notes or comments related to the clock action.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isEdited</code></td>
+                    <td>boolean</td>
+                    <td>Whether this entry has been manually edited.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>editNotes</code></td>
+                    <td>string</td>
+                    <td>Notes explaining any edits made to the entry.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>editedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who edited this entry.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>editedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this entry was last edited.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the entry was created in the system.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /clocks</h3>
+        <p>Retrieves a list of clock entries. Typically filtered by user, date range, or job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/clocks?userId=456&startDate=2023-08-01&endDate=2023-08-15
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 123456,
+            "userId": 456,
+            "type": "In",
+            "timestamp": "2023-08-01T08:02:31Z",
+            "jobId": 789,
+            "taskId": null,
+            "serviceItemId": null,
+            "locationId": 101,
+            "gpsLatitude": 35.9606,
+            "gpsLongitude": -78.5604,
+            "gpsAccuracy": 10.5,
+            "deviceId": "SM-G998U-456789",
+            "ipAddress": "192.168.1.5",
+            "notes": "Starting job installation",
+            "isEdited": false,
+            "editNotes": null,
+            "editedBy": null,
+            "editedDate": null,
+            "createdDate": "2023-08-01T08:02:31Z"
+        },
+        {
+            "id": 123457,
+            "userId": 456,
+            "type": "Out",
+            "timestamp": "2023-08-01T12:03:45Z",
+            "jobId": 789,
+            "taskId": null,
+            "serviceItemId": null,
+            "locationId": 101,
+            "gpsLatitude": 35.9607,
+            "gpsLongitude": -78.5602,
+            "gpsAccuracy": 8.2,
+            "deviceId": "SM-G998U-456789",
+            "ipAddress": "192.168.1.5",
+            "notes": "Lunch break",
+            "isEdited": false,
+            "editNotes": null,
+            "editedBy": null,
+            "editedDate": null,
+            "createdDate": "2023-08-01T12:03:45Z"
+        },
+        // Additional clock entries...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /clocks/{id}</h3>
+        <p>Retrieves a specific clock entry by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/clocks/123456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 123456,
+    "userId": 456,
+    "type": "In",
+    "timestamp": "2023-08-01T08:02:31Z",
+    "jobId": 789,
+    "taskId": null,
+    "serviceItemId": null,
+    "locationId": 101,
+    "gpsLatitude": 35.9606,
+    "gpsLongitude": -78.5604,
+    "gpsAccuracy": 10.5,
+    "deviceId": "SM-G998U-456789",
+    "ipAddress": "192.168.1.5",
+    "notes": "Starting job installation",
+    "isEdited": false,
+    "editNotes": null,
+    "editedBy": null,
+    "editedDate": null,
+    "createdDate": "2023-08-01T08:02:31Z"
+}</code></pre>
+
+        <h3>POST /clocks</h3>
+        <p>Creates a new clock entry (clock in or out).</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "userId": 456,
+    "type": "In",
+    "timestamp": "2023-08-02T08:00:00Z",
+    "jobId": 789,
+    "locationId": 101,
+    "gpsLatitude": 35.9606,
+    "gpsLongitude": -78.5604,
+    "gpsAccuracy": 9.8,
+    "deviceId": "SM-G998U-456789",
+    "notes": "Starting day 2 of installation"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created clock entry object (HTTP 201 Created).</p>
+
+        <h3>PUT /clocks/{id}</h3>
+        <p>Updates an existing clock entry. Typically used by administrators to correct errors.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "timestamp": "2023-08-02T08:05:00Z",
+    "editNotes": "Correcting timestamp - employee forgot to clock in at start of shift"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated clock entry object, with isEdited set to true and editedBy/editedDate populated.</p>
+
+        <h3>DELETE /clocks/{id}</h3>
+        <p>Deletes a clock entry. This may be restricted based on permissions and timecard status.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /clocks/current</h3>
+        <p>Retrieves the current clock status for a user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/clocks/current?userId=456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "userId": 456,
+    "status": "ClockedIn",
+    "lastClockInTime": "2023-08-02T08:00:00Z",
+    "lastClockInId": 123460,
+    "currentJobId": 789,
+    "currentLocationId": 101,
+    "elapsedTime": "PT2H15M", // ISO 8601 duration format
+    "elapsedTimeSeconds": 8100
+}</code></pre>
+
+        <h3>GET /clocks/summary</h3>
+        <p>Retrieves a summary of clock time for a user within a date range.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/clocks/summary?userId=456&startDate=2023-08-01&endDate=2023-08-15
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "userId": 456,
+    "startDate": "2023-08-01",
+    "endDate": "2023-08-15",
+    "totalHours": 76.5,
+    "regularHours": 72.0,
+    "overtimeHours": 4.5,
+    "dailySummaries": [
+        {
+            "date": "2023-08-01",
+            "totalHours": 7.85,
+            "entries": [
+                {
+                    "clockInId": 123456,
+                    "clockOutId": 123457,
+                    "startTime": "2023-08-01T08:02:31Z",
+                    "endTime": "2023-08-01T12:03:45Z",
+                    "duration": "PT4H1M14S",
+                    "jobId": 789,
+                    "locationId": 101
+                },
+                // Additional clock pairs for the day...
+            ]
+        },
+        // Additional daily summaries...
+    ],
+    "jobSummaries": [
+        {
+            "jobId": 789,
+            "jobName": "Main Office Renovation",
+            "totalHours": 42.25
+        },
+        {
+            "jobId": 790,
+            "jobName": "Branch Office Setup",
+            "totalHours": 34.25
+        }
+        // Additional job summaries...
+    ]
+}</code></pre>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

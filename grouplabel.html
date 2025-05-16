@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Label API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('grouplabel.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="GroupLabel">Group Label</h1>
+        <p>The Group Label object represents a categorization or grouping mechanism used to organize and filter entities
+            within ServiceTrade. Group labels allow for flexible categorization across different entity types and can
+            support both predefined and custom groupings.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the group label.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the group label's purpose.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of group label (e.g., "System", "Custom", "Department", "Region").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>entityType</code></td>
+                    <td>string</td>
+                    <td>Type of entity this group label can be applied to.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether this group label is active and available for use.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>color</code></td>
+                    <td>string</td>
+                    <td>Color code (hex) for visual representation of this group label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>icon</code></td>
+                    <td>string</td>
+                    <td>Icon identifier for visual representation of this group label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sortOrder</code></td>
+                    <td>integer</td>
+                    <td>Position in display order when listing group labels.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>parentId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent group label, if this is a child in a hierarchical structure.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isRequired</code></td>
+                    <td>boolean</td>
+                    <td>Whether this label must be assigned to entities of the specified type.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isExclusive</code></td>
+                    <td>boolean</td>
+                    <td>Whether an entity can have only one label from this group.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isSystem</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a system-defined group label that cannot be modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>metadata</code></td>
+                    <td>object</td>
+                    <td>Additional metadata for the group label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>usageCount</code></td>
+                    <td>integer</td>
+                    <td>Number of entities this label is currently applied to.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the group label was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the group label was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>defaultValue</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is the default label in its group.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /grouplabels</h3>
+        <p>Retrieves a list of group labels. Supports filtering by type, entityType, isActive, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/grouplabels?entityType=Job&isActive=true
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 123,
+            "name": "Commercial",
+            "description": "Commercial service jobs",
+            "type": "JobType",
+            "entityType": "Job",
+            "isActive": true,
+            "color": "#4285F4",
+            "icon": "building",
+            "sortOrder": 1,
+            "parentId": null,
+            "isRequired": true,
+            "isExclusive": true,
+            "isSystem": false,
+            "metadata": {
+                "billRate": 125.00,
+                "targetResponseTime": "24h"
+            },
+            "usageCount": 1458,
+            "createdDate": "2022-01-15T10:30:00Z",
+            "createdBy": 101,
+            "lastModifiedDate": "2023-03-22T14:45:00Z",
+            "lastModifiedBy": 102,
+            "defaultValue": true
+        },
+        {
+            "id": 124,
+            "name": "Residential",
+            "description": "Residential service jobs",
+            "type": "JobType",
+            "entityType": "Job",
+            "isActive": true,
+            "color": "#34A853",
+            "icon": "home",
+            "sortOrder": 2,
+            "parentId": null,
+            "isRequired": true,
+            "isExclusive": true,
+            "isSystem": false,
+            "metadata": {
+                "billRate": 95.00,
+                "targetResponseTime": "48h"
+            },
+            "usageCount": 843,
+            "createdDate": "2022-01-15T10:35:00Z",
+            "createdBy": 101,
+            "lastModifiedDate": "2023-03-22T14:45:00Z",
+            "lastModifiedBy": 102,
+            "defaultValue": false
+        }
+        // Additional group labels...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /grouplabels/{id}</h3>
+        <p>Retrieves a specific group label by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/grouplabels/123
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the group label with the specified ID.</p>
+
+        <h3>POST /grouplabels</h3>
+        <p>Creates a new group label.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Industrial",
+    "description": "Industrial service jobs for manufacturing clients",
+    "type": "JobType",
+    "entityType": "Job",
+    "isActive": true,
+    "color": "#FBBC05",
+    "icon": "industry",
+    "sortOrder": 3,
+    "isRequired": true,
+    "isExclusive": true,
+    "metadata": {
+        "billRate": 150.00,
+        "targetResponseTime": "12h",
+        "requiresSpecialTraining": true
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created group label (HTTP 201 Created).</p>
+
+        <h3>PUT /grouplabels/{id}</h3>
+        <p>Updates an existing group label.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Industrial & Manufacturing",
+    "color": "#EA4335",
+    "metadata": {
+        "billRate": 165.00,
+        "targetResponseTime": "8h",
+        "requiresSpecialTraining": true,
+        "hasHazardousMaterials": true
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated group label.</p>
+
+        <h3>DELETE /grouplabels/{id}</h3>
+        <p>Deletes a group label. This will remove the label from all entities it was applied to.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /grouplabels/types</h3>
+        <p>Retrieves a list of available group label types.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/grouplabels/types
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": "JobType",
+            "name": "Job Type",
+            "description": "Categorizes jobs by type of service",
+            "entityTypes": ["Job"],
+            "isRequired": true,
+            "isExclusive": true,
+            "isSystem": true,
+            "allowsCustomLabels": true
+        },
+        {
+            "id": "Priority",
+            "name": "Priority",
+            "description": "Indicates the priority level",
+            "entityTypes": ["Job", "Task", "Deficiency"],
+            "isRequired": true,
+            "isExclusive": true,
+            "isSystem": true,
+            "allowsCustomLabels": false
+        },
+        {
+            "id": "Department",
+            "name": "Department",
+            "description": "Organizational department",
+            "entityTypes": ["User", "Job"],
+            "isRequired": false,
+            "isExclusive": false,
+            "isSystem": false,
+            "allowsCustomLabels": true
+        }
+        // Additional group label types...
+    ]
+}</code></pre>
+
+        <h3>GET /grouplabels/byEntity/{entityType}</h3>
+        <p>Retrieves all group labels available for a specific entity type.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/grouplabels/byEntity/Job
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of group labels applicable to the specified entity type.</p>
+
+        <h3>GET /grouplabels/byType/{type}</h3>
+        <p>Retrieves all group labels of a specific type.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/grouplabels/byType/JobType
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of group labels with the specified type.</p>
+
+        <h3>GET /entities/{entityType}/{id}/grouplabels</h3>
+        <p>Retrieves all group labels assigned to a specific entity.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/entities/Job/456/grouplabels
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 123,
+            "name": "Commercial",
+            "type": "JobType",
+            "entityType": "Job",
+            "color": "#4285F4",
+            "icon": "building"
+        },
+        {
+            "id": 234,
+            "name": "High",
+            "type": "Priority",
+            "entityType": "Job",
+            "color": "#EA4335",
+            "icon": "arrow-up"
+        },
+        {
+            "id": 345,
+            "name": "HVAC",
+            "type": "Department",
+            "entityType": "Job",
+            "color": "#34A853",
+            "icon": "temperature-high"
+        }
+    ]
+}</code></pre>
+
+        <h3>POST /entities/{entityType}/{id}/grouplabels</h3>
+        <p>Assigns group labels to a specific entity.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "labelIds": [123, 234, 345]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of the assigned group labels.</p>
+
+        <h3>DELETE /entities/{entityType}/{id}/grouplabels/{labelId}</h3>
+        <p>Removes a specific group label from an entity.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful removal.</p>
+
+        <h3>POST /grouplabels/batch</h3>
+        <p>Creates multiple group labels in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "labels": [
+        {
+            "name": "North Region",
+            "type": "Region",
+            "entityType": "Location",
+            "isActive": true,
+            "color": "#4285F4"
+        },
+        {
+            "name": "South Region",
+            "type": "Region",
+            "entityType": "Location",
+            "isActive": true,
+            "color": "#34A853"
+        },
+        {
+            "name": "East Region",
+            "type": "Region",
+            "entityType": "Location",
+            "isActive": true,
+            "color": "#FBBC05"
+        },
+        {
+            "name": "West Region",
+            "type": "Region",
+            "entityType": "Location",
+            "isActive": true,
+            "color": "#EA4335"
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the newly created group labels.</p>
+
+        <h3>GET /grouplabels/{id}/usage</h3>
+        <p>Retrieves usage statistics for a specific group label.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/grouplabels/123/usage
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "labelId": 123,
+    "name": "Commercial",
+    "type": "JobType",
+    "usageCount": 1458,
+    "usageByPeriod": {
+        "lastWeek": 42,
+        "lastMonth": 168,
+        "lastQuarter": 486,
+        "lastYear": 1458
+    },
+    "topUsers": [
+        {
+            "userId": 204,
+            "name": "John Smith",
+            "count": 256
+        },
+        {
+            "userId": 205,
+            "name": "Jane Doe",
+            "count": 189
+        }
+    ],
+    "relatedEntities": {
+        "customers": 78,
+        "locations": 134
+    }
+}</code></pre>
+
+        <h3>PUT /grouplabels/{id}/setDefault</h3>
+        <p>Sets a group label as the default for its type.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "isDefault": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated group label with defaultValue set to true.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

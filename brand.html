@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('brand.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Brand">Brand</h1>
+        <p>The Brand object represents the different brands or sub-brands that can be associated with companies,
+            products, or marketing materials in the ServiceTrade system.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the brand.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the brand.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the brand.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>logoUrl</code></td>
+                    <td>string</td>
+                    <td>URL to the brand's logo image.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>primaryColor</code></td>
+                    <td>string</td>
+                    <td>Primary brand color (hex code).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether the brand is currently active.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdAt</code></td>
+                    <td>datetime</td>
+                    <td>When the brand was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>updatedAt</code></td>
+                    <td>datetime</td>
+                    <td>When the brand was last updated.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /brands</h3>
+        <p>Retrieves a list of brands.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/brands
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 101,
+            "name": "Main Brand",
+            "description": "Our primary brand for all services",
+            "logoUrl": "https://cdn.example.com/brands/101/logo.png",
+            "primaryColor": "#004D99",
+            "isActive": true,
+            "createdAt": "2022-01-15T08:30:00Z",
+            "updatedAt": "2022-01-15T08:30:00Z"
+        },
+        {
+            "id": 102,
+            "name": "Premium Services",
+            "description": "Brand for our premium service offerings",
+            "logoUrl": "https://cdn.example.com/brands/102/logo.png",
+            "primaryColor": "#7B0046",
+            "isActive": true,
+            "createdAt": "2022-03-22T14:15:00Z",
+            "updatedAt": "2022-05-10T09:45:00Z"
+        }
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /brands/{id}</h3>
+        <p>Retrieves a specific brand by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/brands/101
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 101,
+    "name": "Main Brand",
+    "description": "Our primary brand for all services",
+    "logoUrl": "https://cdn.example.com/brands/101/logo.png",
+    "primaryColor": "#004D99",
+    "isActive": true,
+    "createdAt": "2022-01-15T08:30:00Z",
+    "updatedAt": "2022-01-15T08:30:00Z"
+}</code></pre>
+
+        <h3>POST /brands</h3>
+        <p>Creates a new brand.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Regional Division",
+    "description": "Brand for our regional markets",
+    "primaryColor": "#2D882D"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created brand object (HTTP 201 Created).</p>
+
+        <h3>PUT /brands/{id}</h3>
+        <p>Updates an existing brand.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Brand for our regional markets - Updated positioning",
+    "primaryColor": "#2D8855"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated brand object.</p>
+
+        <h3>DELETE /brands/{id}</h3>
+        <p>Deletes a brand. This may be disallowed if the brand is in use.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Item API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('jobitem.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="JobItem">Job Item</h1>
+        <p>The Job Item object represents a line item on a <a href="job.html">Job</a> in ServiceTrade. Job items
+            typically
+            describe the services performed, materials used, or products sold as part of a job, along with quantities,
+            prices, and other billing information. These items can later be included on <a
+                href="invoice.html">Invoices</a>
+            generated from the job.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the job item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="job.html">Job</a> this item belongs to.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>quantity</code></td>
+                    <td>decimal</td>
+                    <td>Quantity of the item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unitPrice</code></td>
+                    <td>decimal</td>
+                    <td>Price per unit.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unitCost</code></td>
+                    <td>decimal</td>
+                    <td>Cost per unit.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>extendedPrice</code></td>
+                    <td>decimal</td>
+                    <td>Total price (quantity * unitPrice).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>extendedCost</code></td>
+                    <td>decimal</td>
+                    <td>Total cost (quantity * unitCost).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>margin</code></td>
+                    <td>decimal</td>
+                    <td>Profit margin percentage.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxable</code></td>
+                    <td>boolean</td>
+                    <td>Whether this item is subject to tax.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxRateId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="taxrate.html">Tax Rate</a> to apply to this item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>itemType</code></td>
+                    <td>string</td>
+                    <td>Type of item (e.g., "Service", "Material", "Labor", "Fee", "Product").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sequenceNumber</code></td>
+                    <td>integer</td>
+                    <td>Display order of this item on jobs and invoices.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="serviceitem.html">Service Item</a> this job item is associated with, if
+                        applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about this line item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assetId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="asset.html">Asset</a> this job item is associated with, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>invoiceItemIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="invoiceitem.html">Invoice Item</a> IDs this job item has been invoiced to.
+                    </td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>quoteItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="quoteitem.html">Quote Item</a> this job item originated from, if applicable.
+                    </td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isInvoiced</code></td>
+                    <td>boolean</td>
+                    <td>Whether this item has been fully invoiced.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>invoicedQuantity</code></td>
+                    <td>decimal</td>
+                    <td>Quantity of this item that has been invoiced.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>remainingQuantity</code></td>
+                    <td>decimal</td>
+                    <td>Quantity of this item that remains to be invoiced.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this job item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this job item was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this job item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this job item was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /jobs/{jobId}/items</h3>
+        <p>Retrieves all items for a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/items
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 7001,
+            "jobId": 12345,
+            "description": "Fire Alarm System Inspection",
+            "quantity": 1,
+            "unitPrice": 1500.00,
+            "unitCost": 750.00,
+            "extendedPrice": 1500.00,
+            "extendedCost": 750.00,
+            "margin": 50.0,
+            "taxable": true,
+            "itemType": "Service",
+            "sequenceNumber": 1,
+            "serviceItemId": 501,
+            "isInvoiced": false,
+            "invoicedQuantity": 0,
+            "remainingQuantity": 1,
+            "createdDate": "2023-07-10T14:35:22Z"
+        },
+        {
+            "id": 7002,
+            "jobId": 12345,
+            "description": "Fire Alarm Annual Sticker",
+            "quantity": 1,
+            "unitPrice": 25.00,
+            "unitCost": 5.00,
+            "extendedPrice": 25.00,
+            "extendedCost": 5.00,
+            "margin": 80.0,
+            "taxable": true,
+            "itemType": "Material",
+            "sequenceNumber": 2,
+            "isInvoiced": false,
+            "invoicedQuantity": 0,
+            "remainingQuantity": 1,
+            "createdDate": "2023-07-10T14:36:05Z"
+        }
+        // Additional job items...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /jobitems/{id}</h3>
+        <p>Retrieves a specific job item by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobitems/7001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 7001,
+    "jobId": 12345,
+    "description": "Fire Alarm System Inspection",
+    "quantity": 1,
+    "unitPrice": 1500.00,
+    "unitCost": 750.00,
+    "extendedPrice": 1500.00,
+    "extendedCost": 750.00,
+    "margin": 50.0,
+    "taxable": true,
+    "taxRateId": 301,
+    "itemType": "Service",
+    "sequenceNumber": 1,
+    "serviceItemId": 501,
+    "notes": "Comprehensive NFPA 72 fire alarm inspection including all initiating and notification devices.",
+    "assetId": 3001,
+    "invoiceItemIds": [],
+    "isInvoiced": false,
+    "invoicedQuantity": 0,
+    "remainingQuantity": 1,
+    "createdBy": 101,
+    "createdDate": "2023-07-10T14:35:22Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2023-07-10T14:35:22Z",
+    "customFields": {
+        "department": "Fire Alarm",
+        "serviceCode": "FA-INSP-ANN",
+        "billable": "true"
+    }
+}</code></pre>
+
+        <h3>POST /jobs/{jobId}/items</h3>
+        <p>Creates a new job item for the specified job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Replacement of Faulty Smoke Detector",
+    "quantity": 1,
+    "unitPrice": 125.00,
+    "unitCost": 45.00,
+    "taxable": true,
+    "itemType": "Material",
+    "sequenceNumber": 3,
+    "serviceItemId": 502,
+    "notes": "Replaced faulty smoke detector in east hallway 3rd floor",
+    "assetId": 3010,
+    "customFields": {
+        "department": "Fire Alarm",
+        "serviceCode": "FA-REP-SD",
+        "partNumber": "SD-345-T"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created job item (HTTP 201 Created).</p>
+
+        <h3>PUT /jobitems/{id}</h3>
+        <p>Updates an existing job item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Replacement of Faulty Smoke Detector - Addressable",
+    "quantity": 1,
+    "unitPrice": 150.00,
+    "unitCost": 65.00,
+    "taxable": true,
+    "notes": "Replaced faulty smoke detector in east hallway 3rd floor with addressable model",
+    "customFields": {
+        "department": "Fire Alarm",
+        "serviceCode": "FA-REP-SD",
+        "partNumber": "SD-355-ADR"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated job item.</p>
+
+        <h3>DELETE /jobitems/{id}</h3>
+        <p>Deletes a job item. This is typically only allowed for items that have not been invoiced.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /jobs/{jobId}/items/batch</h3>
+        <p>Creates multiple job items for the specified job in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "description": "Labor - Technician",
+            "quantity": 2.5,
+            "unitPrice": 95.00,
+            "unitCost": 45.00,
+            "taxable": true,
+            "itemType": "Labor",
+            "sequenceNumber": 4
+        },
+        {
+            "description": "Labor - Helper",
+            "quantity": 2.5,
+            "unitPrice": 65.00,
+            "unitCost": 30.00,
+            "taxable": true,
+            "itemType": "Labor",
+            "sequenceNumber": 5
+        },
+        {
+            "description": "Travel Charge",
+            "quantity": 1,
+            "unitPrice": 75.00,
+            "unitCost": 35.00,
+            "taxable": false,
+            "itemType": "Fee",
+            "sequenceNumber": 6
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created job items.</p>
+
+        <h3>PUT /jobs/{jobId}/items/reorder</h3>
+        <p>Reorders the line items in a job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "itemOrder": [7002, 7001, 7003, 7004, 7005, 7006]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns success message and updates the sequenceNumber property of the affected items.</p>
+
+        <h3>POST /jobs/{jobId}/items/from-service-items</h3>
+        <p>Creates job items from service items.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "serviceItemIds": [501, 502, 503],
+    "quantities": {
+        "501": 1,
+        "502": 2,
+        "503": 1
+    },
+    "overrides": {
+        "501": {
+            "description": "Custom description for service item 501",
+            "unitPrice": 1600.00
+        }
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created job items.</p>
+
+        <h3>POST /jobs/{jobId}/items/from-quote</h3>
+        <p>Creates job items from a quote.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "quoteId": 9001,
+    "includeAll": true,
+    "quoteItemIds": []
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created job items.</p>
+
+        <h3>GET /jobitems/{id}/invoice-history</h3>
+        <p>Retrieves the invoice history for a specific job item.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobitems/7001/invoice-history
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "invoices": [
+        {
+            "invoiceId": 8001,
+            "invoiceItemId": 9001,
+            "invoiceNumber": "INV-2023-0456",
+            "invoiceDate": "2023-08-16T10:00:00Z",
+            "quantity": 0.5,
+            "unitPrice": 1500.00,
+            "extendedPrice": 750.00,
+            "invoiceStatus": "Sent"
+        },
+        {
+            "invoiceId": 8002,
+            "invoiceItemId": 9025,
+            "invoiceNumber": "INV-2023-0489",
+            "invoiceDate": "2023-08-30T14:15:00Z",
+            "quantity": 0.5,
+            "unitPrice": 1500.00,
+            "extendedPrice": 750.00,
+            "invoiceStatus": "Draft"
+        }
+    ],
+    "totalInvoicedQuantity": 1.0,
+    "totalInvoicedAmount": 1500.00,
+    "remainingQuantity": 0,
+    "isFullyInvoiced": true
+}</code></pre>
+
+        <h3>GET /jobs/{jobId}/items/summary</h3>
+        <p>Retrieves summary information about items for a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/items/summary
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalItems": 6,
+    "totalPrice": 2237.50,
+    "totalCost": 985.00,
+    "totalMargin": 56.0,
+    "byType": {
+        "Service": {
+            "count": 1,
+            "totalPrice": 1500.00,
+            "totalCost": 750.00,
+            "percentOfTotal": 67.0
+        },
+        "Material": {
+            "count": 1,
+            "totalPrice": 150.00,
+            "totalCost": 65.00,
+            "percentOfTotal": 6.7
+        },
+        "Labor": {
+            "count": 2,
+            "totalPrice": 512.50,
+            "totalCost": 243.75,
+            "percentOfTotal": 22.9
+        },
+        "Fee": {
+            "count": 1,
+            "totalPrice": 75.00,
+            "totalCost": 35.00,
+            "percentOfTotal": 3.4
+        }
+    },
+    "invoiceStatus": {
+        "invoiced": {
+            "count": 2,
+            "totalPrice": 1650.00
+        },
+        "uninvoiced": {
+            "count": 4,
+            "totalPrice": 587.50
+        }
+    }
+}</code></pre>
+
+        <h3>GET /assets/{assetId}/jobitems</h3>
+        <p>Retrieves all job items associated with a specific asset.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/assets/3001/jobitems
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of job items associated with the specified asset.</p>
+
+        <h3>GET /serviceitems/{serviceItemId}/jobitems</h3>
+        <p>Retrieves all job items associated with a specific service item.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/serviceitems/501/jobitems
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of job items associated with the specified service item.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

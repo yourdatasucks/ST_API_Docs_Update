@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('job.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Job">Job</h1>
+        <p>The Job object represents a scheduled service visit or project in ServiceTrade. Jobs are the primary work
+            records that track service activities, assigned technicians, schedules, and status tracking from creation
+            through completion and billing.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>number</code></td>
+                    <td>string</td>
+                    <td>Job number, typically displayed to users and customers.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="customer.html">Customer</a> this job is for.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>locationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="location.html">Location</a> where this job is performed.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of job (e.g., "Inspection", "Repair", "Installation", "Maintenance").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Current status of the job (e.g., "Created", "Scheduled", "In Progress", "Completed",
+                        "Canceled").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>priority</code></td>
+                    <td>string</td>
+                    <td>Priority level of the job (e.g., "Low", "Normal", "High", "Emergency").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the job was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>scheduledStartDate</code></td>
+                    <td>datetime</td>
+                    <td>Scheduled start date and time for the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>scheduledEndDate</code></td>
+                    <td>datetime</td>
+                    <td>Scheduled end date and time for the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>actualStartDate</code></td>
+                    <td>datetime</td>
+                    <td>Actual start date and time when work began.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>actualEndDate</code></td>
+                    <td>datetime</td>
+                    <td>Actual end date and time when work was completed.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>summary</code></td>
+                    <td>string</td>
+                    <td>Brief summary of the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customerNotes</code></td>
+                    <td>string</td>
+                    <td>Notes from or visible to the customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>privateNotes</code></td>
+                    <td>string</td>
+                    <td>Internal notes not visible to customers.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>completionNotes</code></td>
+                    <td>string</td>
+                    <td>Notes recorded upon job completion.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assignedUsers</code></td>
+                    <td>array</td>
+                    <td>Array of user IDs assigned to the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>tags</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="tag.html">Tag</a> objects associated with the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>items</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="jobitem.html">Job Item</a> objects.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>attachments</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="attachment.html">Attachment</a> objects related to this job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>tasks</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="task.html">Task</a> objects to be completed during the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceLineId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="serviceline.html">Service Line</a> this job belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contractId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="contract.html">Contract</a> this job is associated with, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceRecurrenceId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="servicerecurrence.html">Service Recurrence</a> that generated this job, if
+                        applicable.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceRequestId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="servicerequest.html">Service Request</a> that generated this job, if
+                        applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>purchaseOrderNumber</code></td>
+                    <td>string</td>
+                    <td>Customer's purchase order number for this job, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>estimatedDuration</code></td>
+                    <td>integer</td>
+                    <td>Estimated duration of the job in minutes.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>actualDuration</code></td>
+                    <td>integer</td>
+                    <td>Actual duration of the job in minutes.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>estimatedCost</code></td>
+                    <td>decimal</td>
+                    <td>Estimated cost to perform the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>actualCost</code></td>
+                    <td>decimal</td>
+                    <td>Actual cost of performing the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>estimatedRevenue</code></td>
+                    <td>decimal</td>
+                    <td>Estimated revenue from the job.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>actualRevenue</code></td>
+                    <td>decimal</td>
+                    <td>Actual revenue from the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>invoiceIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="invoice.html">Invoice</a> IDs associated with this job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the job was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>completedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who completed the job.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>completedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the job was marked as completed.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>canceledBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who canceled the job, if applicable.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>canceledDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the job was canceled, if applicable.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>cancelReason</code></td>
+                    <td>string</td>
+                    <td>Reason the job was canceled, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>externalId</code></td>
+                    <td>string</td>
+                    <td>Reference to this job in an external system.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>externalSyncStatus</code></td>
+                    <td>string</td>
+                    <td>Status of synchronization with external systems.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /jobs</h3>
+        <p>Retrieves a list of jobs. Supports filtering by customer, location, status, date range, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs?customerId=5678&status=Scheduled&startDate=2023-08-01&endDate=2023-08-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 12345,
+            "number": "JOB-2023-0789",
+            "customerId": 5678,
+            "locationId": 9012,
+            "type": "Inspection",
+            "status": "Scheduled",
+            "priority": "Normal",
+            "scheduledStartDate": "2023-08-15T09:00:00Z",
+            "scheduledEndDate": "2023-08-15T11:00:00Z",
+            "description": "Annual fire alarm inspection",
+            "assignedUsers": [101, 102],
+            "createdDate": "2023-07-10T14:30:00Z"
+        },
+        {
+            "id": 12346,
+            "number": "JOB-2023-0790",
+            "customerId": 5678,
+            "locationId": 9013,
+            "type": "Maintenance",
+            "status": "Scheduled",
+            "priority": "Normal",
+            "scheduledStartDate": "2023-08-22T13:00:00Z",
+            "scheduledEndDate": "2023-08-22T16:00:00Z",
+            "description": "Quarterly sprinkler system maintenance",
+            "assignedUsers": [103, 104],
+            "createdDate": "2023-07-12T11:15:00Z"
+        }
+        // Additional jobs...
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /jobs/{id}</h3>
+        <p>Retrieves a specific job by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 12345,
+    "number": "JOB-2023-0789",
+    "customerId": 5678,
+    "locationId": 9012,
+    "type": "Inspection",
+    "status": "Scheduled",
+    "priority": "Normal",
+    "createdBy": 101,
+    "createdDate": "2023-07-10T14:30:00Z",
+    "scheduledStartDate": "2023-08-15T09:00:00Z",
+    "scheduledEndDate": "2023-08-15T11:00:00Z",
+    "description": "Annual fire alarm inspection",
+    "summary": "Perform comprehensive NFPA 72 fire alarm inspection",
+    "notes": "Customer has requested that all work be completed before noon.",
+    "customerNotes": "Please check in at the security desk upon arrival.",
+    "privateNotes": "Previous inspection found issues with 3rd floor pull stations.",
+    "assignedUsers": [101, 102],
+    "tags": [
+        {
+            "id": 201,
+            "name": "Fire Alarm",
+            "color": "#FF0000"
+        },
+        {
+            "id": 202,
+            "name": "Annual",
+            "color": "#0000FF"
+        }
+    ],
+    "items": [
+        {
+            "id": 7001,
+            "description": "Fire Alarm System Inspection",
+            "quantity": 1,
+            "unitPrice": 1500.00,
+            "itemType": "Service"
+        }
+    ],
+    "attachments": [
+        {
+            "id": 8001,
+            "name": "Previous Inspection Report.pdf",
+            "contentType": "application/pdf",
+            "size": 2458012,
+            "url": "https://api.servicetrade.com/attachments/8001"
+        }
+    ],
+    "serviceLineId": 301,
+    "contractId": 401,
+    "purchaseOrderNumber": "PO-45678",
+    "estimatedDuration": 120,
+    "estimatedCost": 750.00,
+    "estimatedRevenue": 1500.00,
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2023-07-15T09:45:00Z",
+    "externalId": "JOB-EXT-123",
+    "customFields": {
+        "buildingType": "Commercial Office",
+        "squareFootage": "125000",
+        "systemManufacturer": "Simplex"
+    }
+}</code></pre>
+
+        <h3>POST /jobs</h3>
+        <p>Creates a new job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "customerId": 5679,
+    "locationId": 9014,
+    "type": "Repair",
+    "status": "Created",
+    "priority": "High",
+    "scheduledStartDate": "2023-08-18T10:00:00Z",
+    "scheduledEndDate": "2023-08-18T12:00:00Z",
+    "description": "Replace faulty fire pump controller",
+    "summary": "Fire pump controller replacement",
+    "notes": "Customer reported controller showing fault code E-123",
+    "customerNotes": "Please call 30 minutes before arrival.",
+    "privateNotes": "Bring replacement model FPC-5000.",
+    "assignedUsers": [105, 106],
+    "serviceLineId": 302,
+    "purchaseOrderNumber": "PO-56789",
+    "estimatedDuration": 120,
+    "estimatedCost": 850.00,
+    "estimatedRevenue": 2250.00,
+    "items": [
+        {
+            "description": "Fire Pump Controller Replacement",
+            "quantity": 1,
+            "unitPrice": 1500.00,
+            "itemType": "Service"
+        },
+        {
+            "description": "Fire Pump Controller Model FPC-5000",
+            "quantity": 1,
+            "unitPrice": 750.00,
+            "itemType": "Material"
+        }
+    ],
+    "tags": [201, 203],
+    "customFields": {
+        "buildingType": "Manufacturing",
+        "pumpGPM": "1000",
+        "controllerManufacturer": "Metron"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created job (HTTP 201 Created).</p>
+
+        <h3>PUT /jobs/{id}</h3>
+        <p>Updates an existing job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "status": "Scheduled",
+    "priority": "Normal",
+    "scheduledStartDate": "2023-08-20T14:00:00Z",
+    "scheduledEndDate": "2023-08-20T16:00:00Z",
+    "description": "Replace faulty fire pump controller and test operation",
+    "assignedUsers": [105, 107],
+    "notes": "Rescheduled at customer request. Controller is showing intermittent fault code E-123.",
+    "customFields": {
+        "buildingType": "Manufacturing",
+        "pumpGPM": "1000",
+        "controllerManufacturer": "Metron",
+        "rescheduledReason": "Customer requested later date"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated job.</p>
+
+        <h3>DELETE /jobs/{id}</h3>
+        <p>Deletes a job. This is typically only allowed for jobs in "Created" status without any associated invoices or
+            other dependencies.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /jobs/{id}/cancel</h3>
+        <p>Cancels a job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "reason": "Customer facility closed indefinitely",
+    "notify": true,
+    "notifyContacts": [5001, 5002],
+    "notifyMessage": "Due to your facility closure, we've canceled the scheduled service visit."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated job with status changed to "Canceled".</p>
+
+        <h3>POST /jobs/{id}/start</h3>
+        <p>Marks a job as started (changes status to "In Progress" and sets actualStartDate).</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "startDate": "2023-08-15T09:15:00Z",
+    "userId": 102,
+    "notes": "Arrived on site, checked in with security"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated job with status changed to "In Progress".</p>
+
+        <h3>POST /jobs/{id}/complete</h3>
+        <p>Marks a job as completed (changes status to "Completed" and sets actualEndDate and completedDate).</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "completionDate": "2023-08-15T11:30:00Z",
+    "userId": 102,
+    "completionNotes": "Completed full inspection. All devices tested and functioning properly. Customer signed off on work.",
+    "actualCost": 725.50,
+    "actualRevenue": 1500.00,
+    "generateInvoice": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated job with status changed to "Completed".</p>
+
+        <h3>POST /jobs/{id}/reschedule</h3>
+        <p>Reschedules a job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "scheduledStartDate": "2023-08-25T13:00:00Z",
+    "scheduledEndDate": "2023-08-25T15:00:00Z",
+    "reason": "Weather delay",
+    "notify": true,
+    "notifyContacts": [5001, 5002],
+    "notifyMessage": "Due to severe weather conditions, we need to reschedule your service visit."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated job with new scheduled dates.</p>
+
+        <h3>POST /jobs/{id}/reassign</h3>
+        <p>Reassigns a job to different users.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "assignedUsers": [108, 109],
+    "reason": "Original technician on leave",
+    "notifyNewUsers": true,
+    "notifyPreviousUsers": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated job with new assigned users.</p>
+
+        <h3>GET /jobs/{id}/items</h3>
+        <p>Retrieves all items for a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/items
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="jobitem.html">Job Item</a> objects for the specified job.</p>
+
+        <h3>POST /jobs/{id}/items</h3>
+        <p>Adds a new item to a job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Additional Fire Alarm Pull Station Testing",
+    "quantity": 10,
+    "unitPrice": 15.00,
+    "taxable": true,
+    "itemType": "Service",
+    "serviceItemId": 501,
+    "notes": "Testing of 10 additional pull stations in new building wing"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created <a href="jobitem.html">Job Item</a>.</p>
+
+        <h3>GET /jobs/{id}/attachments</h3>
+        <p>Retrieves all attachments for a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/attachments
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="attachment.html">Attachment</a> objects for the specified job.</p>
+
+        <h3>POST /jobs/{id}/attachments</h3>
+        <p>Adds an attachment to a job.</p>
+        <h4>Request</h4>
+        <p>A multipart/form-data request containing the file to attach.</p>
+        <h4>Response</h4>
+        <p>Returns the created <a href="attachment.html">Attachment</a> object.</p>
+
+        <h3>GET /jobs/{id}/tasks</h3>
+        <p>Retrieves all tasks for a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/tasks
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="task.html">Task</a> objects for the specified job.</p>
+
+        <h3>POST /jobs/{id}/tasks</h3>
+        <p>Adds a new task to a job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Test all notification appliances",
+    "taskListId": 601,
+    "dueDate": "2023-08-15T11:00:00Z",
+    "assignedUserId": 102,
+    "priority": "High"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created <a href="task.html">Task</a>.</p>
+
+        <h3>GET /jobs/{id}/comments</h3>
+        <p>Retrieves all comments for a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/comments
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="comment.html">Comment</a> objects for the specified job.</p>
+
+        <h3>POST /jobs/{id}/comments</h3>
+        <p>Adds a new comment to a job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "text": "Customer contact will be out of office. Use secondary contact information.",
+    "isPrivate": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created <a href="comment.html">Comment</a>.</p>
+
+        <h3>GET /jobs/{id}/history</h3>
+        <p>Retrieves the change history for a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/history
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="history.html">History</a> objects for the specified job.</p>
+
+        <h3>GET /jobs/{id}/invoices</h3>
+        <p>Retrieves all invoices associated with a specific job.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/12345/invoices
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="invoice.html">Invoice</a> objects for the specified job.</p>
+
+        <h3>POST /jobs/{id}/invoices</h3>
+        <p>Creates a new invoice from a job.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "items": ["all", 7001, 7002],
+    "includeUninvoicedOnly": true,
+    "date": "2023-08-15",
+    "notes": "Thank you for your business!",
+    "status": "Draft"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created <a href="invoice.html">Invoice</a>.</p>
+
+        <h3>GET /customers/{id}/jobs</h3>
+        <p>Retrieves all jobs for a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/5678/jobs?status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of jobs for the specified customer.</p>
+
+        <h3>GET /locations/{id}/jobs</h3>
+        <p>Retrieves all jobs for a specific location.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/locations/9012/jobs?startDate=2023-01-01
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of jobs for the specified location.</p>
+
+        <h3>GET /users/{id}/jobs</h3>
+        <p>Retrieves all jobs assigned to a specific user.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/users/102/jobs?status=Scheduled
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of jobs for the specified user.</p>
+
+        <h3>POST /jobs/batch</h3>
+        <p>Creates multiple jobs in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "jobs": [
+        {
+            "customerId": 5679,
+            "locationId": 9014,
+            "type": "Inspection",
+            "status": "Scheduled",
+            "scheduledStartDate": "2023-08-25T09:00:00Z",
+            "scheduledEndDate": "2023-08-25T11:00:00Z",
+            "description": "Annual fire extinguisher inspection",
+            "assignedUsers": [105, 106]
+        },
+        {
+            "customerId": 5680,
+            "locationId": 9015,
+            "type": "Inspection",
+            "status": "Scheduled",
+            "scheduledStartDate": "2023-08-25T13:00:00Z",
+            "scheduledEndDate": "2023-08-25T15:00:00Z",
+            "description": "Annual fire extinguisher inspection",
+            "assignedUsers": [105, 106]
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created jobs.</p>
+
+        <h3>GET /jobs/summary</h3>
+        <p>Retrieves summary information about jobs, grouped by various criteria.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/summary?groupBy=status&startDate=2023-01-01&endDate=2023-07-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalJobs": 1245,
+    "byStatus": {
+        "Created": {
+            "count": 125,
+            "percentage": 10.0
+        },
+        "Scheduled": {
+            "count": 356,
+            "percentage": 28.6
+        },
+        "In Progress": {
+            "count": 82,
+            "percentage": 6.6
+        },
+        "Completed": {
+            "count": 642,
+            "percentage": 51.6
+        },
+        "Canceled": {
+            "count": 40,
+            "percentage": 3.2
+        }
+    },
+    "byType": {
+        "Inspection": {
+            "count": 743,
+            "percentage": 59.7
+        },
+        "Repair": {
+            "count": 287,
+            "percentage": 23.1
+        },
+        "Installation": {
+            "count": 125,
+            "percentage": 10.0
+        },
+        "Maintenance": {
+            "count": 90,
+            "percentage": 7.2
+        }
+    },
+    "byMonth": {
+        "2023-01": {
+            "count": 175,
+            "revenue": 262500.00
+        },
+        "2023-02": {
+            "count": 168,
+            "revenue": 252000.00
+        },
+        // Additional months...
+        "2023-07": {
+            "count": 184,
+            "revenue": 276000.00
+        }
+    },
+    "financials": {
+        "totalEstimatedRevenue": 1867500.00,
+        "totalActualRevenue": 1437500.00,
+        "totalEstimatedCost": 746875.00,
+        "totalActualCost": 575000.00,
+        "averageJobValue": 1500.00,
+        "grossMarginPercentage": 60.0
+    }
+}</code></pre>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Recurrence Item API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('invoicerecurrenceitem.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="InvoiceRecurrenceItem">Invoice Recurrence Item</h1>
+        <p>The Invoice Recurrence Item object represents a line item in an <a href="invoicerecurrence.html">Invoice
+                Recurrence</a>
+            template. Each invoice recurrence item defines a product or service that will appear as a line item on
+            automatically generated recurring invoices, including its description, quantity, price, and tax information.
+        </p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the invoice recurrence item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>invoiceRecurrenceId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="invoicerecurrence.html">Invoice Recurrence</a> this item belongs to.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the item, to be displayed on generated invoices.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>quantity</code></td>
+                    <td>decimal</td>
+                    <td>Quantity of the item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unitPrice</code></td>
+                    <td>decimal</td>
+                    <td>Price per unit.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unitCost</code></td>
+                    <td>decimal</td>
+                    <td>Cost per unit (for profit calculations, not shown on generated invoices).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxable</code></td>
+                    <td>boolean</td>
+                    <td>Whether this item is subject to tax.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxRateId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="taxrate.html">Tax Rate</a> to apply to this item, if different from the
+                        recurrence's default tax rate.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sequenceNumber</code></td>
+                    <td>integer</td>
+                    <td>Display order of this item on generated invoices.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>itemType</code></td>
+                    <td>string</td>
+                    <td>Type of item (e.g., "Product", "Service", "Labor", "Material", "Fee").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceItemId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="serviceitem.html">Service Item</a> this invoice recurrence item is associated
+                        with, if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about this line item (internal use, not shown on generated invoices).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this invoice recurrence item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this invoice recurrence item was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this invoice recurrence item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this invoice recurrence item was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /invoicerecurrences/{invoiceRecurrenceId}/items</h3>
+        <p>Retrieves all line items for a specific invoice recurrence.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoicerecurrences/1001/items
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 5001,
+            "invoiceRecurrenceId": 1001,
+            "description": "Fire Alarm Monitoring Service",
+            "quantity": 1,
+            "unitPrice": 150.00,
+            "unitCost": 75.00,
+            "taxable": true,
+            "sequenceNumber": 1,
+            "itemType": "Service",
+            "serviceItemId": 118,
+            "createdDate": "2022-12-15T09:30:00Z"
+        },
+        {
+            "id": 5002,
+            "invoiceRecurrenceId": 1001,
+            "description": "Cellular Backup Service",
+            "quantity": 1,
+            "unitPrice": 50.00,
+            "unitCost": 25.00,
+            "taxable": true,
+            "sequenceNumber": 2,
+            "itemType": "Service",
+            "serviceItemId": 119,
+            "createdDate": "2022-12-15T09:30:00Z"
+        }
+    ],
+    "totalResults": 2,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /invoicerecurrenceitems/{id}</h3>
+        <p>Retrieves a specific invoice recurrence item by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoicerecurrenceitems/5001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 5001,
+    "invoiceRecurrenceId": 1001,
+    "description": "Fire Alarm Monitoring Service",
+    "quantity": 1,
+    "unitPrice": 150.00,
+    "unitCost": 75.00,
+    "taxable": true,
+    "sequenceNumber": 1,
+    "itemType": "Service",
+    "serviceItemId": 118,
+    "notes": "Monthly monitoring fee for main building fire alarm system",
+    "createdBy": 101,
+    "createdDate": "2022-12-15T09:30:00Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2022-12-15T09:30:00Z",
+    "customFields": {
+        "departmentCode": "MON-01",
+        "contractLineItemId": "CLN-2022-789"
+    }
+}</code></pre>
+
+        <h3>POST /invoicerecurrences/{invoiceRecurrenceId}/items</h3>
+        <p>Creates a new invoice recurrence item for the specified invoice recurrence.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Emergency Service Coverage",
+    "quantity": 1,
+    "unitPrice": 75.00,
+    "unitCost": 35.00,
+    "taxable": true,
+    "sequenceNumber": 3,
+    "itemType": "Service",
+    "serviceItemId": 120,
+    "notes": "24/7 emergency service coverage with 2-hour response time",
+    "customFields": {
+        "departmentCode": "SVC-01",
+        "contractLineItemId": "CLN-2022-790"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created invoice recurrence item (HTTP 201 Created).</p>
+
+        <h3>PUT /invoicerecurrenceitems/{id}</h3>
+        <p>Updates an existing invoice recurrence item.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "description": "Premium Emergency Service Coverage",
+    "quantity": 1,
+    "unitPrice": 100.00,
+    "taxable": true,
+    "notes": "24/7 emergency service coverage with 1-hour response time",
+    "customFields": {
+        "departmentCode": "SVC-01",
+        "contractLineItemId": "CLN-2022-790",
+        "serviceLevel": "Premium"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated invoice recurrence item.</p>
+
+        <h3>DELETE /invoicerecurrenceitems/{id}</h3>
+        <p>Deletes an invoice recurrence item.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /invoicerecurrences/{invoiceRecurrenceId}/items/batch</h3>
+        <p>Creates multiple invoice recurrence items for the specified invoice recurrence in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "description": "Quarterly Inspection - Fire Alarm",
+            "quantity": 1,
+            "unitPrice": 450.00,
+            "taxable": true,
+            "itemType": "Service",
+            "serviceItemId": 121
+        },
+        {
+            "description": "Quarterly Inspection - Sprinkler System",
+            "quantity": 1,
+            "unitPrice": 350.00,
+            "taxable": true,
+            "itemType": "Service",
+            "serviceItemId": 122
+        },
+        {
+            "description": "Quarterly Inspection - Fire Extinguishers",
+            "quantity": 1,
+            "unitPrice": 250.00,
+            "taxable": true,
+            "itemType": "Service",
+            "serviceItemId": 123
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created invoice recurrence items.</p>
+
+        <h3>PUT /invoicerecurrences/{invoiceRecurrenceId}/items/reorder</h3>
+        <p>Reorders the line items in an invoice recurrence.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "itemOrder": [5002, 5001, 5003]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns success message and updates the sequenceNumber property of the affected items.</p>
+
+        <h3>GET /serviceitems/{serviceItemId}/invoicerecurrenceitems</h3>
+        <p>Retrieves all invoice recurrence items associated with a specific service item.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/serviceitems/118/invoicerecurrenceitems
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of invoice recurrence items associated with the specified service item.</p>
+
+        <h3>POST /serviceitems/{serviceItemId}/invoicerecurrenceitems</h3>
+        <p>Creates invoice recurrence items from a service item across multiple recurrences.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "invoiceRecurrenceIds": [1001, 1002, 1003],
+    "quantity": 1,
+    "unitPrice": 150.00,
+    "taxable": true,
+    "itemType": "Service"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created invoice recurrence items.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

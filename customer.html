@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('customer.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Customer">Customer</h1>
+        <p>The Customer object represents an organization or individual that purchases services or products. Customers
+            are typically associated with <a href="company.html">Companies</a> and can have multiple locations,
+            contacts, and service history.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the customer.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>companyId</code></td>
+                    <td>integer</td>
+                    <td>ID of the associated <a href="company.html">Company</a>.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>customerNumber</code></td>
+                    <td>string</td>
+                    <td>Customer reference number or identifier in your system.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of customer (e.g., "Commercial", "Residential", "Industrial", "Government").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the customer (e.g., "Active", "Inactive", "Prospect", "Former").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>accountManagerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who manages this customer account.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>salesRepId</code></td>
+                    <td>integer</td>
+                    <td>ID of the sales representative associated with this customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>primaryLocationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the primary <a href="location.html">Location</a> for this customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>primaryContactId</code></td>
+                    <td>integer</td>
+                    <td>ID of the primary <a href="contact.html">Contact</a> for this customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>billingContactId</code></td>
+                    <td>integer</td>
+                    <td>ID of the billing <a href="contact.html">Contact</a> for this customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>billingLocationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the billing <a href="location.html">Location</a> for this customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about the customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>source</code></td>
+                    <td>string</td>
+                    <td>Customer acquisition source (e.g., "Referral", "Website", "Trade Show").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>industry</code></td>
+                    <td>string</td>
+                    <td>Industry the customer operates in.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>segment</code></td>
+                    <td>string</td>
+                    <td>Market segment the customer belongs to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>size</code></td>
+                    <td>string</td>
+                    <td>Size category of the customer (e.g., "Small", "Medium", "Enterprise").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>annualRevenue</code></td>
+                    <td>decimal</td>
+                    <td>Annual revenue of the customer organization.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>employeeCount</code></td>
+                    <td>integer</td>
+                    <td>Number of employees in the customer organization.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>website</code></td>
+                    <td>string</td>
+                    <td>Customer's website URL.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxExempt</code></td>
+                    <td>boolean</td>
+                    <td>Whether the customer is exempt from taxes.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxExemptionNumber</code></td>
+                    <td>string</td>
+                    <td>Tax exemption certificate number if tax exempt.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>creditLimit</code></td>
+                    <td>decimal</td>
+                    <td>Customer's approved credit limit.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>paymentTerms</code></td>
+                    <td>string</td>
+                    <td>Payment terms for the customer (e.g., "Net 30", "Net 60").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>preferredPaymentMethod</code></td>
+                    <td>string</td>
+                    <td>Customer's preferred payment method.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom field values for the customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>tags</code></td>
+                    <td>array</td>
+                    <td>Array of tags associated with the customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customerSince</code></td>
+                    <td>date</td>
+                    <td>Date when the customer relationship began.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastServiceDate</code></td>
+                    <td>date</td>
+                    <td>Date of the most recent service provided to the customer.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lifetime</code></td>
+                    <td>object</td>
+                    <td>Lifetime statistics for the customer relationship.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the customer record was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the customer record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the customer record was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the customer record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Lifetime Object Properties</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>revenue</code></td>
+                    <td>decimal</td>
+                    <td>Total revenue generated by the customer.</td>
+                </tr>
+                <tr>
+                    <td><code>jobCount</code></td>
+                    <td>integer</td>
+                    <td>Total number of jobs completed for the customer.</td>
+                </tr>
+                <tr>
+                    <td><code>quoteCount</code></td>
+                    <td>integer</td>
+                    <td>Total number of quotes provided to the customer.</td>
+                </tr>
+                <tr>
+                    <td><code>quoteAcceptanceRate</code></td>
+                    <td>decimal</td>
+                    <td>Percentage of quotes accepted by the customer.</td>
+                </tr>
+                <tr>
+                    <td><code>averageResponseTime</code></td>
+                    <td>decimal</td>
+                    <td>Average response time to customer service requests in hours.</td>
+                </tr>
+                <tr>
+                    <td><code>contractValue</code></td>
+                    <td>decimal</td>
+                    <td>Total value of all contracts with the customer.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /customers</h3>
+        <p>Retrieves a list of customers. Supports filtering by various properties.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers?status=Active&type=Commercial
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 123,
+            "companyId": 456,
+            "customerNumber": "CUST-001",
+            "type": "Commercial",
+            "status": "Active",
+            "accountManagerId": 201,
+            "salesRepId": 202,
+            "primaryLocationId": 301,
+            "primaryContactId": 401,
+            "billingContactId": 402,
+            "billingLocationId": 301,
+            "notes": "Key account with multiple locations.",
+            "source": "Referral",
+            "industry": "Healthcare",
+            "segment": "Mid-Market",
+            "size": "Medium",
+            "annualRevenue": 5000000.00,
+            "employeeCount": 250,
+            "website": "https://acmehealthcare.example.com",
+            "taxExempt": true,
+            "taxExemptionNumber": "TX-12345-HC",
+            "creditLimit": 50000.00,
+            "paymentTerms": "Net 30",
+            "preferredPaymentMethod": "ACH",
+            "customFields": {
+                "serviceLevel": "Premium",
+                "preferredTechnicianId": 501,
+                "specialInstructions": "Call facilities manager before dispatch"
+            },
+            "tags": ["Healthcare", "Premium", "Multi-Location"],
+            "customerSince": "2018-03-15",
+            "lastServiceDate": "2023-07-12",
+            "lifetime": {
+                "revenue": 450000.00,
+                "jobCount": 124,
+                "quoteCount": 35,
+                "quoteAcceptanceRate": 85.7,
+                "averageResponseTime": 2.4,
+                "contractValue": 175000.00
+            },
+            "createdDate": "2018-03-15T10:30:00Z",
+            "createdBy": 202,
+            "lastModifiedDate": "2023-05-20T15:45:00Z",
+            "lastModifiedBy": 201
+        },
+        // Additional customers...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /customers/{id}</h3>
+        <p>Retrieves a specific customer by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/123
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 123,
+    "companyId": 456,
+    "customerNumber": "CUST-001",
+    "type": "Commercial",
+    "status": "Active",
+    "accountManagerId": 201,
+    "salesRepId": 202,
+    "primaryLocationId": 301,
+    "primaryContactId": 401,
+    "billingContactId": 402,
+    "billingLocationId": 301,
+    "notes": "Key account with multiple locations.",
+    "source": "Referral",
+    "industry": "Healthcare",
+    "segment": "Mid-Market",
+    "size": "Medium",
+    "annualRevenue": 5000000.00,
+    "employeeCount": 250,
+    "website": "https://acmehealthcare.example.com",
+    "taxExempt": true,
+    "taxExemptionNumber": "TX-12345-HC",
+    "creditLimit": 50000.00,
+    "paymentTerms": "Net 30",
+    "preferredPaymentMethod": "ACH",
+    "customFields": {
+        "serviceLevel": "Premium",
+        "preferredTechnicianId": 501,
+        "specialInstructions": "Call facilities manager before dispatch"
+    },
+    "tags": ["Healthcare", "Premium", "Multi-Location"],
+    "customerSince": "2018-03-15",
+    "lastServiceDate": "2023-07-12",
+    "lifetime": {
+        "revenue": 450000.00,
+        "jobCount": 124,
+        "quoteCount": 35,
+        "quoteAcceptanceRate": 85.7,
+        "averageResponseTime": 2.4,
+        "contractValue": 175000.00
+    },
+    "createdDate": "2018-03-15T10:30:00Z",
+    "createdBy": 202,
+    "lastModifiedDate": "2023-05-20T15:45:00Z",
+    "lastModifiedBy": 201
+}</code></pre>
+
+        <h3>POST /customers</h3>
+        <p>Creates a new customer.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "companyId": 457,
+    "customerNumber": "CUST-002",
+    "type": "Industrial",
+    "status": "Active",
+    "accountManagerId": 201,
+    "salesRepId": 203,
+    "primaryLocationId": 302,
+    "primaryContactId": 403,
+    "billingContactId": 404,
+    "billingLocationId": 302,
+    "notes": "New manufacturing facility, high service volume expected.",
+    "source": "Trade Show",
+    "industry": "Manufacturing",
+    "segment": "Enterprise",
+    "size": "Large",
+    "website": "https://acmemanufacturing.example.com",
+    "taxExempt": true,
+    "taxExemptionNumber": "TX-67890-MFG",
+    "paymentTerms": "Net 45",
+    "customerSince": "2023-08-01",
+    "tags": ["Manufacturing", "Enterprise", "New Customer"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created customer object (HTTP 201 Created).</p>
+
+        <h3>PUT /customers/{id}</h3>
+        <p>Updates an existing customer.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "status": "Active",
+    "accountManagerId": 204,
+    "primaryContactId": 405,
+    "notes": "Customer has expanded operations. Account transferred to enterprise account manager.",
+    "creditLimit": 75000.00,
+    "paymentTerms": "Net 60"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated customer object.</p>
+
+        <h3>DELETE /customers/{id}</h3>
+        <p>Deletes a customer. This is typically a soft delete that changes the status rather than removing the record.
+        </p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion/deactivation.</p>
+
+        <h3>GET /customers/{id}/locations</h3>
+        <p>Retrieves all locations associated with a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/123/locations
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="location.html">Locations</a> associated with this customer.</p>
+
+        <h3>GET /customers/{id}/contacts</h3>
+        <p>Retrieves all contacts associated with a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/123/contacts
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="contact.html">Contacts</a> associated with this customer.</p>
+
+        <h3>GET /customers/{id}/assets</h3>
+        <p>Retrieves all assets associated with a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/123/assets
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="asset.html">Assets</a> associated with this customer.</p>
+
+        <h3>GET /customers/{id}/contracts</h3>
+        <p>Retrieves all contracts associated with a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/123/contracts
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="contract.html">Contracts</a> associated with this customer.</p>
+
+        <h3>GET /customers/{id}/jobs</h3>
+        <p>Retrieves all jobs (past and current) associated with a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/123/jobs
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of Jobs associated with this customer.</p>
+
+        <h3>GET /customers/{id}/invoices</h3>
+        <p>Retrieves all invoices associated with a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/123/invoices
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of Invoices associated with this customer.</p>
+
+        <h3>POST /customers/{id}/merge</h3>
+        <p>Merges another customer record into this customer, consolidating history and relationships.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "sourceCustomerId": 124,
+    "mergeOptions": {
+        "mergeContacts": true,
+        "mergeLocations": true,
+        "mergeAssets": true,
+        "mergeContracts": true,
+        "retainSourceHistory": true
+    },
+    "notes": "Duplicate customer record created during system migration."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated customer object with merged data.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

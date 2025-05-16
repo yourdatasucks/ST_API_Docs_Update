@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Rule API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('contractrule.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="ContractRule">Contract Rule</h1>
+        <p>The Contract Rule object represents specific terms, conditions, or service level agreements (SLAs) within a
+            <a href="contract.html">Contract</a>. Rules define the specific obligations and requirements such as service
+            frequency, response times, coverage hours, and other contractual terms.
+        </p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the contract rule.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contractId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent <a href="contract.html">Contract</a>.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of rule (e.g., "ServiceFrequency", "ResponseTime", "CoverageHours", "PriceEscalation").
+                    </td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name or title of the rule.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the rule.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether this rule is currently active within the contract.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>startDate</code></td>
+                    <td>date</td>
+                    <td>Date when the rule becomes effective (if different from contract start date).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>endDate</code></td>
+                    <td>date</td>
+                    <td>Date when the rule expires (if different from contract end date).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>serviceTypeIds</code></td>
+                    <td>array</td>
+                    <td>Array of service type IDs this rule applies to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assetIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="asset.html">Asset</a> IDs this rule applies to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>locationIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="location.html">Location</a> IDs this rule applies to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>priority</code></td>
+                    <td>string</td>
+                    <td>Priority level (e.g., "High", "Medium", "Low") if applicable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>parameters</code></td>
+                    <td>object</td>
+                    <td>Type-specific parameters for the rule (structure varies by rule type).</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about the rule.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the rule was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the rule.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the rule was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the rule.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Rule Parameters by Type</h3>
+        <p>The <code>parameters</code> object structure varies based on the rule type:</p>
+
+        <h4>ServiceFrequency Parameters</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>frequency</code></td>
+                    <td>string</td>
+                    <td>Frequency of service (e.g., "Weekly", "Monthly", "Quarterly", "Annually").</td>
+                </tr>
+                <tr>
+                    <td><code>interval</code></td>
+                    <td>integer</td>
+                    <td>Interval value for the frequency (e.g., 2 for bi-weekly when frequency is "Weekly").</td>
+                </tr>
+                <tr>
+                    <td><code>minimumVisits</code></td>
+                    <td>integer</td>
+                    <td>Minimum number of service visits required per term.</td>
+                </tr>
+                <tr>
+                    <td><code>preferredDays</code></td>
+                    <td>array</td>
+                    <td>Array of preferred days for service (e.g., ["Monday", "Wednesday"]).</td>
+                </tr>
+                <tr>
+                    <td><code>preferredTimeRange</code></td>
+                    <td>string</td>
+                    <td>Preferred time range for service (e.g., "Morning", "Afternoon").</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>ResponseTime Parameters</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>responseTimeHours</code></td>
+                    <td>number</td>
+                    <td>Maximum response time in hours.</td>
+                </tr>
+                <tr>
+                    <td><code>severity</code></td>
+                    <td>string</td>
+                    <td>Severity level this response time applies to (e.g., "Emergency", "Critical", "Normal").</td>
+                </tr>
+                <tr>
+                    <td><code>businessHoursOnly</code></td>
+                    <td>boolean</td>
+                    <td>Whether response time applies only during business hours.</td>
+                </tr>
+                <tr>
+                    <td><code>penalty</code></td>
+                    <td>decimal</td>
+                    <td>Financial penalty for missing the response time target.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>CoverageHours Parameters</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>coverage</code></td>
+                    <td>string</td>
+                    <td>Coverage type (e.g., "24x7", "8x5", "12x7").</td>
+                </tr>
+                <tr>
+                    <td><code>businessHoursStart</code></td>
+                    <td>string</td>
+                    <td>Business hours start time (e.g., "08:00").</td>
+                </tr>
+                <tr>
+                    <td><code>businessHoursEnd</code></td>
+                    <td>string</td>
+                    <td>Business hours end time (e.g., "17:00").</td>
+                </tr>
+                <tr>
+                    <td><code>businessDays</code></td>
+                    <td>array</td>
+                    <td>Array of business days (e.g., ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]).</td>
+                </tr>
+                <tr>
+                    <td><code>holidaysIncluded</code></td>
+                    <td>boolean</td>
+                    <td>Whether holidays are included in coverage.</td>
+                </tr>
+                <tr>
+                    <td><code>afterHoursRate</code></td>
+                    <td>decimal</td>
+                    <td>Hourly rate for services outside of covered hours.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /contractrules</h3>
+        <p>Retrieves a list of contract rules. Often filtered by contractId.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contractrules?contractId=456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 701,
+            "contractId": 456,
+            "type": "ServiceFrequency",
+            "name": "Quarterly HVAC Inspection",
+            "description": "Comprehensive inspection and maintenance of all HVAC systems",
+            "isActive": true,
+            "startDate": null,
+            "endDate": null,
+            "serviceTypeIds": [101, 102],
+            "assetIds": [501, 502, 503, 504],
+            "locationIds": [201, 202],
+            "priority": "High",
+            "parameters": {
+                "frequency": "Quarterly",
+                "interval": 1,
+                "minimumVisits": 4,
+                "preferredDays": ["Tuesday", "Wednesday", "Thursday"],
+                "preferredTimeRange": "Morning"
+            },
+            "notes": "Customer requests service team to call 30 minutes before arrival.",
+            "createdDate": "2022-11-30T14:35:00Z",
+            "createdBy": 201,
+            "lastModifiedDate": "2022-11-30T14:35:00Z",
+            "lastModifiedBy": 201
+        },
+        {
+            "id": 702,
+            "contractId": 456,
+            "type": "ResponseTime",
+            "name": "Emergency Response",
+            "description": "Maximum 4-hour response time for emergency calls",
+            "isActive": true,
+            "startDate": null,
+            "endDate": null,
+            "serviceTypeIds": [101, 102, 103],
+            "assetIds": [501, 502, 503, 504],
+            "locationIds": [201, 202],
+            "priority": "Critical",
+            "parameters": {
+                "responseTimeHours": 4,
+                "severity": "Emergency",
+                "businessHoursOnly": false,
+                "penalty": 200.00
+            },
+            "notes": "If response time exceeds 4 hours, customer receives $200 credit on next invoice.",
+            "createdDate": "2022-11-30T14:40:00Z",
+            "createdBy": 201,
+            "lastModifiedDate": "2022-11-30T14:40:00Z",
+            "lastModifiedBy": 201
+        },
+        {
+            "id": 703,
+            "contractId": 456,
+            "type": "CoverageHours",
+            "name": "Standard Business Hours Coverage",
+            "description": "Service covered during normal business hours Monday-Friday",
+            "isActive": true,
+            "startDate": null,
+            "endDate": null,
+            "serviceTypeIds": [101, 102, 103],
+            "assetIds": [501, 502, 503, 504],
+            "locationIds": [201, 202],
+            "priority": "Normal",
+            "parameters": {
+                "coverage": "8x5",
+                "businessHoursStart": "08:00",
+                "businessHoursEnd": "17:00",
+                "businessDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "holidaysIncluded": false,
+                "afterHoursRate": 150.00
+            },
+            "notes": "After-hours service available at $150/hour premium rate.",
+            "createdDate": "2022-11-30T14:45:00Z",
+            "createdBy": 201,
+            "lastModifiedDate": "2022-11-30T14:45:00Z",
+            "lastModifiedBy": 201
+        }
+        // Additional contract rules...
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /contractrules/{id}</h3>
+        <p>Retrieves a specific contract rule by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contractrules/701
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 701,
+    "contractId": 456,
+    "type": "ServiceFrequency",
+    "name": "Quarterly HVAC Inspection",
+    "description": "Comprehensive inspection and maintenance of all HVAC systems",
+    "isActive": true,
+    "startDate": null,
+    "endDate": null,
+    "serviceTypeIds": [101, 102],
+    "assetIds": [501, 502, 503, 504],
+    "locationIds": [201, 202],
+    "priority": "High",
+    "parameters": {
+        "frequency": "Quarterly",
+        "interval": 1,
+        "minimumVisits": 4,
+        "preferredDays": ["Tuesday", "Wednesday", "Thursday"],
+        "preferredTimeRange": "Morning"
+    },
+    "notes": "Customer requests service team to call 30 minutes before arrival.",
+    "createdDate": "2022-11-30T14:35:00Z",
+    "createdBy": 201,
+    "lastModifiedDate": "2022-11-30T14:35:00Z",
+    "lastModifiedBy": 201
+}</code></pre>
+
+        <h3>POST /contractrules</h3>
+        <p>Creates a new contract rule.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "contractId": 456,
+    "type": "ResponseTime",
+    "name": "Standard Response Time",
+    "description": "Maximum 8-hour response time for standard service calls",
+    "isActive": true,
+    "serviceTypeIds": [101, 102, 103],
+    "assetIds": [501, 502, 503, 504],
+    "priority": "Normal",
+    "parameters": {
+        "responseTimeHours": 8,
+        "severity": "Standard",
+        "businessHoursOnly": true,
+        "penalty": 0
+    },
+    "notes": "Applies to non-emergency service calls during business hours"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created contract rule object (HTTP 201 Created).</p>
+
+        <h3>PUT /contractrules/{id}</h3>
+        <p>Updates an existing contract rule.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Standard Response Time - Business Hours",
+    "description": "Maximum 6-hour response time for standard service calls",
+    "parameters": {
+        "responseTimeHours": 6,
+        "businessHoursOnly": true
+    },
+    "notes": "Updated to provide faster response time during business hours"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated contract rule object.</p>
+
+        <h3>DELETE /contractrules/{id}</h3>
+        <p>Deletes a contract rule.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /contracts/{id}/rules</h3>
+        <p>Retrieves all rules for a specific contract. See <a href="contract.html">Contract</a> for details.</p>
+
+        <h3>GET /contractrules/{id}/compliance</h3>
+        <p>Retrieves compliance data for a specific contract rule.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contractrules/701/compliance?startDate=2023-01-01&endDate=2023-07-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "ruleId": 701,
+    "startDate": "2023-01-01",
+    "endDate": "2023-07-31",
+    "compliance": {
+        "requiredVisits": 2,
+        "completedVisits": 2,
+        "compliancePercentage": 100,
+        "status": "Compliant",
+        "visits": [
+            {
+                "jobId": 1001,
+                "date": "2023-01-15T09:30:00Z",
+                "status": "Completed",
+                "onTime": true
+            },
+            {
+                "jobId": 1045,
+                "date": "2023-04-12T10:15:00Z",
+                "status": "Completed",
+                "onTime": true
+            }
+        ]
+    }
+}</code></pre>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

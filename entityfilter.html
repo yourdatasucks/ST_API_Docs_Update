@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Filter API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('entityfilter.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="EntityFilter">Entity Filter</h1>
+        <p>The Entity Filter object represents a saved filter or search condition that can be applied to entities within
+            the system. These filters can be used for reporting, dashboards, views, and other filtering functionalities.
+        </p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the entity filter.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the filter, used for display and reference.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the filter's purpose or criteria.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>entityType</code></td>
+                    <td>string</td>
+                    <td>Type of entity this filter applies to (e.g., "Job", "Invoice", "Customer").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>criteria</code></td>
+                    <td>object</td>
+                    <td>Filter criteria object defining the conditions entities must meet.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>isGlobal</code></td>
+                    <td>boolean</td>
+                    <td>Whether this filter is available to all users.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isDefault</code></td>
+                    <td>boolean</td>
+                    <td>Whether this filter is the default for its entity type.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isSystemDefined</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a system-defined filter that cannot be modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>ownerType</code></td>
+                    <td>string</td>
+                    <td>Type of owner for this filter (e.g., "User", "Role", "System").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>ownerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the owner (depends on ownerType).</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>sortField</code></td>
+                    <td>string</td>
+                    <td>Field to sort results by when this filter is applied.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sortDirection</code></td>
+                    <td>string</td>
+                    <td>Direction to sort ("asc" or "desc").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>itemsPerPage</code></td>
+                    <td>integer</td>
+                    <td>Default number of items to show per page when filter is applied.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>displayColumns</code></td>
+                    <td>array</td>
+                    <td>Array of column names to display when this filter is used in list views.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>usageCount</code></td>
+                    <td>integer</td>
+                    <td>Number of times this filter has been used.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastUsedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the filter was last used.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the filter was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the filter.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the filter was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the filter.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Criteria Object Structure</h3>
+        <p>The criteria object defines the conditions entities must meet to be included in filter results. It has a
+            flexible structure that supports complex queries:</p>
+        <pre><code class="language-json">{
+    "operator": "and",  // Can be "and" or "or"
+    "conditions": [
+        {
+            "field": "status",
+            "operator": "equals",
+            "value": "Active"
+        },
+        {
+            "field": "createdDate",
+            "operator": "greaterThan",
+            "value": "2023-01-01"
+        },
+        {
+            "operator": "or",  // Nested condition group
+            "conditions": [
+                {
+                    "field": "type",
+                    "operator": "equals",
+                    "value": "Commercial"
+                },
+                {
+                    "field": "type",
+                    "operator": "equals",
+                    "value": "Industrial"
+                }
+            ]
+        }
+    ]
+}</code></pre>
+
+        <h3>Supported Operators</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Operator</th>
+                    <th>Description</th>
+                    <th>Applicable Field Types</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>equals</code></td>
+                    <td>Field value exactly matches the specified value.</td>
+                    <td>All types</td>
+                </tr>
+                <tr>
+                    <td><code>notEquals</code></td>
+                    <td>Field value does not match the specified value.</td>
+                    <td>All types</td>
+                </tr>
+                <tr>
+                    <td><code>contains</code></td>
+                    <td>Field value contains the specified value.</td>
+                    <td>String, Array</td>
+                </tr>
+                <tr>
+                    <td><code>notContains</code></td>
+                    <td>Field value does not contain the specified value.</td>
+                    <td>String, Array</td>
+                </tr>
+                <tr>
+                    <td><code>startsWith</code></td>
+                    <td>Field value starts with the specified value.</td>
+                    <td>String</td>
+                </tr>
+                <tr>
+                    <td><code>endsWith</code></td>
+                    <td>Field value ends with the specified value.</td>
+                    <td>String</td>
+                </tr>
+                <tr>
+                    <td><code>greaterThan</code></td>
+                    <td>Field value is greater than the specified value.</td>
+                    <td>Number, Date</td>
+                </tr>
+                <tr>
+                    <td><code>greaterThanOrEqual</code></td>
+                    <td>Field value is greater than or equal to the specified value.</td>
+                    <td>Number, Date</td>
+                </tr>
+                <tr>
+                    <td><code>lessThan</code></td>
+                    <td>Field value is less than the specified value.</td>
+                    <td>Number, Date</td>
+                </tr>
+                <tr>
+                    <td><code>lessThanOrEqual</code></td>
+                    <td>Field value is less than or equal to the specified value.</td>
+                    <td>Number, Date</td>
+                </tr>
+                <tr>
+                    <td><code>between</code></td>
+                    <td>Field value is between two specified values.</td>
+                    <td>Number, Date</td>
+                </tr>
+                <tr>
+                    <td><code>in</code></td>
+                    <td>Field value is in a list of specified values.</td>
+                    <td>All types</td>
+                </tr>
+                <tr>
+                    <td><code>notIn</code></td>
+                    <td>Field value is not in a list of specified values.</td>
+                    <td>All types</td>
+                </tr>
+                <tr>
+                    <td><code>isNull</code></td>
+                    <td>Field value is null or undefined.</td>
+                    <td>All types</td>
+                </tr>
+                <tr>
+                    <td><code>isNotNull</code></td>
+                    <td>Field value is not null and not undefined.</td>
+                    <td>All types</td>
+                </tr>
+                <tr>
+                    <td><code>hasLength</code></td>
+                    <td>Array field has a specific number of items.</td>
+                    <td>Array</td>
+                </tr>
+                <tr>
+                    <td><code>isEmpty</code></td>
+                    <td>Array or string field is empty.</td>
+                    <td>String, Array</td>
+                </tr>
+                <tr>
+                    <td><code>isNotEmpty</code></td>
+                    <td>Array or string field is not empty.</td>
+                    <td>String, Array</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /entityfilters</h3>
+        <p>Retrieves a list of entity filters. Can be filtered by entityType, ownerType, ownerId, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/entityfilters?entityType=Job&ownerType=User&ownerId=123
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 456,
+            "name": "Open Jobs This Month",
+            "description": "All open jobs created this month",
+            "entityType": "Job",
+            "criteria": {
+                "operator": "and",
+                "conditions": [
+                    {
+                        "field": "status",
+                        "operator": "in",
+                        "value": ["Open", "In Progress"]
+                    },
+                    {
+                        "field": "createdDate",
+                        "operator": "greaterThanOrEqual",
+                        "value": "2023-08-01"
+                    }
+                ]
+            },
+            "isGlobal": false,
+            "isDefault": false,
+            "isSystemDefined": false,
+            "ownerType": "User",
+            "ownerId": 123,
+            "sortField": "createdDate",
+            "sortDirection": "desc",
+            "itemsPerPage": 25,
+            "displayColumns": ["id", "title", "customer", "location", "status", "createdDate"],
+            "usageCount": 15,
+            "lastUsedDate": "2023-08-15T13:45:00Z",
+            "createdDate": "2023-08-01T09:30:00Z",
+            "createdBy": 123,
+            "lastModifiedDate": "2023-08-10T16:20:00Z",
+            "lastModifiedBy": 123
+        },
+        // Additional entity filters...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /entityfilters/{id}</h3>
+        <p>Retrieves a specific entity filter by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/entityfilters/456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the entity filter object with the specified ID.</p>
+
+        <h3>GET /entityfilters/defaults</h3>
+        <p>Retrieves the default entity filters for all entity types.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/entityfilters/defaults
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of default entity filter objects.</p>
+
+        <h3>GET /entityfilters/defaults/{entityType}</h3>
+        <p>Retrieves the default entity filter for a specific entity type.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/entityfilters/defaults/Job
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the default entity filter object for the specified entity type.</p>
+
+        <h3>POST /entityfilters</h3>
+        <p>Creates a new entity filter.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "High Value Customers",
+    "description": "Customers with lifetime value over $100,000",
+    "entityType": "Customer",
+    "criteria": {
+        "operator": "and",
+        "conditions": [
+            {
+                "field": "lifetime.revenue",
+                "operator": "greaterThan",
+                "value": 100000
+            },
+            {
+                "field": "status",
+                "operator": "equals",
+                "value": "Active"
+            }
+        ]
+    },
+    "isGlobal": true,
+    "ownerType": "User",
+    "ownerId": 123,
+    "sortField": "lifetime.revenue",
+    "sortDirection": "desc",
+    "displayColumns": ["id", "name", "industry", "lifetime.revenue", "lifetime.jobCount"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created entity filter object (HTTP 201 Created).</p>
+
+        <h3>PUT /entityfilters/{id}</h3>
+        <p>Updates an existing entity filter.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Very High Value Customers",
+    "criteria": {
+        "operator": "and",
+        "conditions": [
+            {
+                "field": "lifetime.revenue",
+                "operator": "greaterThan",
+                "value": 250000
+            },
+            {
+                "field": "status",
+                "operator": "equals",
+                "value": "Active"
+            }
+        ]
+    },
+    "isGlobal": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated entity filter object.</p>
+
+        <h3>DELETE /entityfilters/{id}</h3>
+        <p>Deletes an entity filter.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /entityfilters/{id}/setdefault</h3>
+        <p>Sets an entity filter as the default for its entity type.</p>
+        <h4>Response</h4>
+        <p>Returns the updated entity filter object with isDefault set to true.</p>
+
+        <h3>POST /entityfilters/{id}/clone</h3>
+        <p>Creates a copy of an existing entity filter.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "High Value Industrial Customers",
+    "ownerType": "User",
+    "ownerId": 124
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created entity filter object based on the cloned filter.</p>
+
+        <h3>POST /entityfilters/{id}/apply</h3>
+        <p>Applies an entity filter and returns the matching entities.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "page": 1,
+    "itemsPerPage": 25,
+    "sortField": "name",
+    "sortDirection": "asc",
+    "additionalCriteria": {
+        "operator": "and",
+        "conditions": [
+            {
+                "field": "industry",
+                "operator": "equals",
+                "value": "Healthcare"
+            }
+        ]
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns entities matching the filter criteria, with pagination information.</p>
+
+        <h3>GET /entityfilters/system/{entityType}</h3>
+        <p>Retrieves system-defined filters for a specific entity type.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/entityfilters/system/Job
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of system-defined entity filter objects for the specified entity type.</p>
+
+        <h3>GET /entityfilters/metadata/{entityType}</h3>
+        <p>Retrieves metadata about filterable fields for a specific entity type.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/entityfilters/metadata/Job
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "entityType": "Job",
+    "fields": [
+        {
+            "name": "id",
+            "label": "Job ID",
+            "type": "integer",
+            "filterable": true,
+            "sortable": true,
+            "operators": ["equals", "notEquals", "in", "notIn", "greaterThan", "lessThan", "isNull", "isNotNull"]
+        },
+        {
+            "name": "title",
+            "label": "Job Title",
+            "type": "string",
+            "filterable": true,
+            "sortable": true,
+            "operators": ["equals", "notEquals", "contains", "notContains", "startsWith", "endsWith", "isNull", "isNotNull", "isEmpty", "isNotEmpty"]
+        },
+        // Additional fields...
+    ]
+}</code></pre>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

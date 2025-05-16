@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deficiency API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('deficiency.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Deficiency">Deficiency</h1>
+        <p>The Deficiency object represents a problem, issue, or non-compliance identified during an inspection or
+            assessment of assets, equipment, or facilities. Deficiencies can be tracked, prioritized, and resolved
+            through repair jobs or maintenance activities.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the deficiency.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>reportId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent <a href="deficiencyreport.html">Deficiency Report</a>.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>assetId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="asset.html">Asset</a> with the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>locationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="location.html">Location</a> where the deficiency was found.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>title</code></td>
+                    <td>string</td>
+                    <td>Short title or name for the deficiency.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the deficiency.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>severity</code></td>
+                    <td>string</td>
+                    <td>Severity level of the deficiency (e.g., "Critical", "Major", "Minor", "Cosmetic").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>priority</code></td>
+                    <td>string</td>
+                    <td>Priority for resolution (e.g., "High", "Medium", "Low").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Current status of the deficiency (e.g., "Open", "In Progress", "Resolved", "Waived").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>category</code></td>
+                    <td>string</td>
+                    <td>Category or type of deficiency (e.g., "Mechanical", "Electrical", "Structural", "Safety").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>subCategory</code></td>
+                    <td>string</td>
+                    <td>Sub-category for more specific classification.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>code</code></td>
+                    <td>string</td>
+                    <td>Reference code or identifier for compliance or standard reference.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>identifiedDate</code></td>
+                    <td>date</td>
+                    <td>Date when the deficiency was identified.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>identifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who identified the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>dueDate</code></td>
+                    <td>date</td>
+                    <td>Target date for resolving the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>estimatedCost</code></td>
+                    <td>decimal</td>
+                    <td>Estimated cost to fix the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>estimatedHours</code></td>
+                    <td>decimal</td>
+                    <td>Estimated labor hours to fix the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>resolutionNotes</code></td>
+                    <td>string</td>
+                    <td>Notes about how the deficiency was resolved or should be resolved.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>resolvedDate</code></td>
+                    <td>date</td>
+                    <td>Date when the deficiency was resolved.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>resolvedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who resolved the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>waiveReason</code></td>
+                    <td>string</td>
+                    <td>Reason for waiving the deficiency if not resolved.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>waivedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who approved waiving the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>waivedDate</code></td>
+                    <td>date</td>
+                    <td>Date when the deficiency was waived.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="job.html">Job</a> created to address this deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>quoteId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="quote.html">Quote</a> associated with this deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>imageUrls</code></td>
+                    <td>array</td>
+                    <td>Array of image URLs documenting the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>attachmentIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="attachment.html">Attachment</a> IDs related to this deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom field values for the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>tags</code></td>
+                    <td>array</td>
+                    <td>Array of tags associated with the deficiency.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the deficiency record was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the deficiency record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the deficiency record was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the deficiency record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /deficiencies</h3>
+        <p>Retrieves a list of deficiencies. Supports filtering by report, asset, location, status, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/deficiencies?reportId=123&status=Open
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 456,
+            "reportId": 123,
+            "assetId": 789,
+            "locationId": 201,
+            "title": "Damaged HVAC Condenser Coil",
+            "description": "Condenser coil has visible damage with bent fins affecting approximately 25% of the surface area. This is reducing cooling efficiency and causing higher energy consumption.",
+            "severity": "Major",
+            "priority": "High",
+            "status": "Open",
+            "category": "Mechanical",
+            "subCategory": "HVAC",
+            "code": "M-HVAC-042",
+            "identifiedDate": "2023-07-15",
+            "identifiedBy": 302,
+            "dueDate": "2023-08-15",
+            "estimatedCost": 1250.00,
+            "estimatedHours": 4.5,
+            "imageUrls": [
+                "https://example.com/images/deficiency/456-1.jpg",
+                "https://example.com/images/deficiency/456-2.jpg"
+            ],
+            "attachmentIds": [501, 502],
+            "customFields": {
+                "impactRating": "Medium",
+                "equipmentDowntime": "No",
+                "maintenanceHistory": "Unit was serviced 6 months ago"
+            },
+            "tags": ["HVAC", "Condenser", "Repair Needed"],
+            "createdDate": "2023-07-15T14:30:00Z",
+            "createdBy": 302,
+            "lastModifiedDate": "2023-07-15T14:30:00Z",
+            "lastModifiedBy": 302
+        },
+        // Additional deficiencies...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /deficiencies/{id}</h3>
+        <p>Retrieves a specific deficiency by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/deficiencies/456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 456,
+    "reportId": 123,
+    "assetId": 789,
+    "locationId": 201,
+    "title": "Damaged HVAC Condenser Coil",
+    "description": "Condenser coil has visible damage with bent fins affecting approximately 25% of the surface area. This is reducing cooling efficiency and causing higher energy consumption.",
+    "severity": "Major",
+    "priority": "High",
+    "status": "Open",
+    "category": "Mechanical",
+    "subCategory": "HVAC",
+    "code": "M-HVAC-042",
+    "identifiedDate": "2023-07-15",
+    "identifiedBy": 302,
+    "dueDate": "2023-08-15",
+    "estimatedCost": 1250.00,
+    "estimatedHours": 4.5,
+    "resolutionNotes": "",
+    "resolvedDate": null,
+    "resolvedBy": null,
+    "waiveReason": null,
+    "waivedBy": null,
+    "waivedDate": null,
+    "jobId": null,
+    "quoteId": null,
+    "imageUrls": [
+        "https://example.com/images/deficiency/456-1.jpg",
+        "https://example.com/images/deficiency/456-2.jpg"
+    ],
+    "attachmentIds": [501, 502],
+    "customFields": {
+        "impactRating": "Medium",
+        "equipmentDowntime": "No",
+        "maintenanceHistory": "Unit was serviced 6 months ago"
+    },
+    "tags": ["HVAC", "Condenser", "Repair Needed"],
+    "createdDate": "2023-07-15T14:30:00Z",
+    "createdBy": 302,
+    "lastModifiedDate": "2023-07-15T14:30:00Z",
+    "lastModifiedBy": 302
+}</code></pre>
+
+        <h3>POST /deficiencies</h3>
+        <p>Creates a new deficiency.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "reportId": 123,
+    "assetId": 790,
+    "locationId": 201,
+    "title": "Corroded Electrical Panel",
+    "description": "Main electrical panel shows significant corrosion on the exterior housing and some rust on internal components. Potential safety hazard.",
+    "severity": "Critical",
+    "priority": "High",
+    "status": "Open",
+    "category": "Electrical",
+    "subCategory": "Panel",
+    "code": "E-PNL-003",
+    "identifiedDate": "2023-07-15",
+    "identifiedBy": 302,
+    "dueDate": "2023-07-25",
+    "estimatedCost": 3500.00,
+    "estimatedHours": 8.0,
+    "imageUrls": [
+        "https://example.com/images/deficiency/temp-e1.jpg",
+        "https://example.com/images/deficiency/temp-e2.jpg"
+    ],
+    "tags": ["Electrical", "Safety", "Corrosion"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created deficiency object (HTTP 201 Created).</p>
+
+        <h3>PUT /deficiencies/{id}</h3>
+        <p>Updates an existing deficiency.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "status": "In Progress",
+    "priority": "Critical",
+    "dueDate": "2023-07-20",
+    "estimatedCost": 4200.00,
+    "jobId": 567,
+    "resolutionNotes": "Technician dispatched for emergency replacement of electrical panel."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated deficiency object.</p>
+
+        <h3>DELETE /deficiencies/{id}</h3>
+        <p>Deletes a deficiency.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /deficiencyreports/{id}/deficiencies</h3>
+        <p>Retrieves all deficiencies for a specific deficiency report. See <a href="deficiencyreport.html">Deficiency
+                Report</a> for details.</p>
+
+        <h3>POST /deficiencies/{id}/resolve</h3>
+        <p>Marks a deficiency as resolved.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "resolvedDate": "2023-07-28",
+    "resolvedBy": 401,
+    "resolutionNotes": "Replaced damaged condenser coil with new unit. Tested operation and confirmed proper functioning.",
+    "actualCost": 1375.50,
+    "actualHours": 5.5,
+    "attachmentIds": [503]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated deficiency object with resolved status.</p>
+
+        <h3>POST /deficiencies/{id}/waive</h3>
+        <p>Waives a deficiency (marks it as not requiring resolution).</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "waiveReason": "Equipment scheduled for full replacement within 30 days. Temporary repair not cost-effective.",
+    "waivedBy": 305,
+    "waivedDate": "2023-07-20",
+    "attachmentIds": [504]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated deficiency object with waived status.</p>
+
+        <h3>POST /deficiencies/{id}/createjob</h3>
+        <p>Creates a job to address the deficiency.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "jobTitle": "Repair Damaged HVAC Condenser Coil",
+    "jobDescription": "Replace damaged condenser coil on RTU-03. Repair bent fins where possible.",
+    "scheduledDate": "2023-07-25",
+    "priority": "High",
+    "assignedTechnicianIds": [501, 502],
+    "estimatedDuration": 4.5,
+    "notes": "Bring replacement coil and fin comb toolkit."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an object containing both the deficiency (with updated jobId) and the newly created job.</p>
+
+        <h3>POST /deficiencies/{id}/createquote</h3>
+        <p>Creates a quote for addressing the deficiency.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "quoteTitle": "Quote for HVAC Condenser Coil Replacement",
+    "quoteDescription": "Replacement of damaged condenser coil on RTU-03 including parts and labor.",
+    "expirationDate": "2023-08-15",
+    "items": [
+        {
+            "description": "Replacement condenser coil - 3 ton capacity",
+            "quantity": 1,
+            "unitPrice": 850.00,
+            "taxable": true
+        },
+        {
+            "description": "Labor - HVAC Technician",
+            "quantity": 4.5,
+            "unitPrice": 95.00,
+            "taxable": false
+        }
+    ],
+    "notes": "Quote includes removal and proper disposal of old coil."
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an object containing both the deficiency (with updated quoteId) and the newly created quote.</p>
+
+        <h3>GET /deficiencies/{id}/attachments</h3>
+        <p>Retrieves attachments associated with a specific deficiency.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/deficiencies/456/attachments
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="attachment.html">Attachments</a> associated with this deficiency.</p>
+
+        <h3>POST /deficiencies/{id}/attachments</h3>
+        <p>Adds an attachment to a deficiency.</p>
+        <h4>Request</h4>
+        <p>Multipart form data with file and metadata.</p>
+        <h4>Response</h4>
+        <p>Returns the created <a href="attachment.html">Attachment</a> object and updates the deficiency's
+            attachmentIds.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

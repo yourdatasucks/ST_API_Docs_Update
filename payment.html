@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('payment.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Payment">Payment</h1>
+        <p>The Payment object represents financial transactions received from <a href="customer.html">Customers</a>
+            towards <a href="invoice.html">Invoices</a>. Payments can be applied to one or more invoices, and track
+            important information such as payment method, transaction details, and allocation to specific invoices.
+            This resource enables proper accounting, accounts receivable management, and customer payment history
+            tracking.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the payment.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>referenceNumber</code></td>
+                    <td>string</td>
+                    <td>Reference number for the payment (e.g., check number, transaction ID).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="customer.html">Customer</a> who made the payment.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>amount</code></td>
+                    <td>decimal</td>
+                    <td>Total payment amount.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>currency</code></td>
+                    <td>string</td>
+                    <td>Currency code (e.g., "USD", "EUR", "GBP").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>paymentDate</code></td>
+                    <td>date</td>
+                    <td>Date when the payment was made.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>postDate</code></td>
+                    <td>date</td>
+                    <td>Date when the payment was posted to the accounting system.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>method</code></td>
+                    <td>string</td>
+                    <td>Payment method (e.g., "Check", "Credit Card", "ACH", "Wire Transfer", "Cash").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Status of the payment (e.g., "Pending", "Completed", "Failed", "Voided").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>appliedAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount of the payment that has been applied to invoices.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>unappliedAmount</code></td>
+                    <td>decimal</td>
+                    <td>Amount of the payment that has not yet been applied to invoices.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>transactionId</code></td>
+                    <td>string</td>
+                    <td>External transaction ID for electronic payments.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>gatewayId</code></td>
+                    <td>string</td>
+                    <td>Payment gateway identifier for electronic payments.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>authorizationCode</code></td>
+                    <td>string</td>
+                    <td>Authorization code for credit card transactions.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>paymentProcessor</code></td>
+                    <td>string</td>
+                    <td>Name of the payment processor used (e.g., "Stripe", "PayPal", "Authorize.Net").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>cardType</code></td>
+                    <td>string</td>
+                    <td>Type of credit card used (e.g., "Visa", "Mastercard", "Amex").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>cardLastFour</code></td>
+                    <td>string</td>
+                    <td>Last four digits of the credit card number.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>accountLastFour</code></td>
+                    <td>string</td>
+                    <td>Last four digits of the bank account number for ACH transactions.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about the payment.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>receiptSent</code></td>
+                    <td>boolean</td>
+                    <td>Whether a receipt was sent to the customer.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>receiptSentDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the receipt was sent.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>receiptRecipients</code></td>
+                    <td>array</td>
+                    <td>Array of email addresses the receipt was sent to.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contactId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="contact.html">Contact</a> who made the payment.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>locationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="location.html">Location</a> associated with the payment.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>paidInvoices</code></td>
+                    <td>array</td>
+                    <td>Array of invoice IDs that this payment has been applied to.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this payment record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this payment record was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this payment record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this payment record was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /payments</h3>
+        <p>Retrieves a list of payments. Supports filtering by customer, date range, status, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/payments?customerId=1001&status=Completed&startDate=2023-01-01&endDate=2023-06-30
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 7001,
+            "referenceNumber": "CHK10584",
+            "customerId": 1001,
+            "amount": 2500.00,
+            "paymentDate": "2023-02-15",
+            "method": "Check",
+            "status": "Completed",
+            "appliedAmount": 2500.00,
+            "unappliedAmount": 0.00,
+            "paidInvoices": [5001, 5002],
+            "createdDate": "2023-02-15T10:30:00Z"
+        },
+        {
+            "id": 7002,
+            "referenceNumber": "WIRE455789",
+            "customerId": 1001,
+            "amount": 12750.00,
+            "paymentDate": "2023-04-20",
+            "method": "Wire Transfer",
+            "status": "Completed",
+            "appliedAmount": 12750.00,
+            "unappliedAmount": 0.00,
+            "paidInvoices": [5010, 5011, 5012],
+            "createdDate": "2023-04-20T15:45:00Z"
+        },
+        {
+            "id": 7003,
+            "referenceNumber": "CC-AUTH-78956",
+            "customerId": 1001,
+            "amount": 3250.00,
+            "paymentDate": "2023-06-05",
+            "method": "Credit Card",
+            "status": "Completed",
+            "appliedAmount": 3250.00,
+            "unappliedAmount": 0.00,
+            "paidInvoices": [5020],
+            "createdDate": "2023-06-05T09:15:00Z"
+        }
+        // Additional payments...
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /payments/{id}</h3>
+        <p>Retrieves a specific payment by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/payments/7001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 7001,
+    "referenceNumber": "CHK10584",
+    "customerId": 1001,
+    "amount": 2500.00,
+    "currency": "USD",
+    "paymentDate": "2023-02-15",
+    "postDate": "2023-02-16",
+    "method": "Check",
+    "status": "Completed",
+    "appliedAmount": 2500.00,
+    "unappliedAmount": a.00,
+    "notes": "Payment for January services.",
+    "receiptSent": true,
+    "receiptSentDate": "2023-02-15T10:35:00Z",
+    "receiptRecipients": ["accounting@customer.com"],
+    "contactId": 3001,
+    "locationId": 2001,
+    "paidInvoices": [
+        {
+            "invoiceId": 5001,
+            "invoiceNumber": "INV-2023-0125",
+            "amountApplied": 1500.00,
+            "appliedDate": "2023-02-15T10:32:00Z"
+        },
+        {
+            "invoiceId": 5002,
+            "invoiceNumber": "INV-2023-0142",
+            "amountApplied": 1000.00,
+            "appliedDate": "2023-02-15T10:32:00Z"
+        }
+    ],
+    "createdBy": 101,
+    "createdDate": "2023-02-15T10:30:00Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2023-02-15T10:35:00Z",
+    "customFields": {
+        "checkDate": "2023-02-10",
+        "depositBatch": "DEP-2023-0215-A",
+        "department": "Maintenance"
+    }
+}</code></pre>
+
+        <h3>POST /payments</h3>
+        <p>Creates a new payment record.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "referenceNumber": "ACH45678",
+    "customerId": 1002,
+    "amount": 5750.00,
+    "currency": "USD",
+    "paymentDate": "2023-07-01",
+    "method": "ACH",
+    "status": "Completed",
+    "transactionId": "ACH-TRAN-99872354",
+    "accountLastFour": "4567",
+    "notes": "Monthly service payment",
+    "contactId": 3015,
+    "locationId": 2010,
+    "receiptSent": true,
+    "receiptRecipients": ["ap@customer.com", "facilities@customer.com"],
+    "customFields": {
+        "accountingCode": "AR-12345",
+        "department": "Service"
+    },
+    "invoiceAllocations": [
+        {
+            "invoiceId": 5025,
+            "amount": 3500.00
+        },
+        {
+            "invoiceId": 5026,
+            "amount": 2250.00
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created payment record (HTTP 201 Created).</p>
+
+        <h3>PUT /payments/{id}</h3>
+        <p>Updates an existing payment record.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "referenceNumber": "ACH45678-R",
+    "postDate": "2023-07-02",
+    "notes": "Monthly service payment - corrected reference number",
+    "receiptSent": true,
+    "receiptRecipients": ["ap@customer.com", "facilities@customer.com", "accounting@customer.com"],
+    "customFields": {
+        "accountingCode": "AR-12345",
+        "department": "Service",
+        "approvedBy": "Jane Smith"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated payment record.</p>
+
+        <h3>DELETE /payments/{id}</h3>
+        <p>Deletes a payment record. This is typically only allowed for payments with "Pending" status.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>POST /payments/{id}/void</h3>
+        <p>Voids a payment, reversing any invoice applications.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "voidReason": "Payment reversal requested by customer",
+    "voidDate": "2023-07-05",
+    "notes": "Customer reported incorrect payment amount, will resubmit"
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the voided payment record with updated status.</p>
+
+        <h3>GET /customers/{customerId}/payments</h3>
+        <p>Retrieves all payments for a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/1001/payments
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of payments made by the specified customer.</p>
+
+        <h3>GET /invoices/{invoiceId}/payments</h3>
+        <p>Retrieves all payments applied to a specific invoice.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/invoices/5001/payments
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of payments applied to the specified invoice.</p>
+
+        <h3>POST /payments/{id}/apply</h3>
+        <p>Applies a payment to one or more invoices.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "allocations": [
+        {
+            "invoiceId": 5030,
+            "amount": 1200.00
+        },
+        {
+            "invoiceId": 5031,
+            "amount": 800.00
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated payment record with the new allocations.</p>
+
+        <h3>POST /payments/{id}/unapply</h3>
+        <p>Removes the application of a payment from one or more invoices.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "invoiceIds": [5030, 5031]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated payment record with the allocations removed.</p>
+
+        <h3>POST /payments/{id}/send-receipt</h3>
+        <p>Sends a receipt for a payment to one or more recipients.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "recipients": ["customer@example.com", "accounting@example.com"],
+    "subject": "Payment Receipt - $3,250.00",
+    "message": "Thank you for your payment. Please find your receipt attached.",
+    "includePaymentDetails": true,
+    "includeInvoiceDetails": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns information about the sent receipt.</p>
+
+        <h3>GET /payments/summary</h3>
+        <p>Retrieves summary information about payments for a specified period.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/payments/summary?startDate=2023-01-01&endDate=2023-06-30
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalPayments": 125,
+    "totalAmount": 457850.00,
+    "byMethod": {
+        "Check": {
+            "count": 45,
+            "amount": 165250.00
+        },
+        "Credit Card": {
+            "count": 52,
+            "amount": 98750.00
+        },
+        "ACH": {
+            "count": 18,
+            "amount": 125500.00
+        },
+        "Wire Transfer": {
+            "count": 10,
+            "amount": 68350.00
+        }
+    },
+    "byStatus": {
+        "Completed": {
+            "count": 120,
+            "amount": 445850.00
+        },
+        "Pending": {
+            "count": 3,
+            "amount": 7500.00
+        },
+        "Voided": {
+            "count": 2,
+            "amount": 4500.00
+        }
+    },
+    "byMonth": [
+        {
+            "month": "2023-01",
+            "count": 18,
+            "amount": 72500.00
+        },
+        {
+            "month": "2023-02",
+            "count": 20,
+            "amount": 85250.00
+        },
+        {
+            "month": "2023-03",
+            "count": 25,
+            "amount": 92750.00
+        },
+        {
+            "month": "2023-04",
+            "count": 22,
+            "amount": 76500.00
+        },
+        {
+            "month": "2023-05",
+            "count": 19,
+            "amount": 68350.00
+        },
+        {
+            "month": "2023-06",
+            "count": 21,
+            "amount": 62500.00
+        }
+    ]
+}</code></pre>
+
+        <h3>POST /payments/process-cc</h3>
+        <p>Processes a credit card payment.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "customerId": 1003,
+    "amount": 2750.00,
+    "currency": "USD",
+    "cardToken": "tok_visa_4242",
+    "description": "Payment for June services",
+    "metadata": {
+        "invoiceIds": "5035,5036"
+    },
+    "invoiceAllocations": [
+        {
+            "invoiceId": 5035,
+            "amount": 1750.00
+        },
+        {
+            "invoiceId": 5036,
+            "amount": 1000.00
+        }
+    ],
+    "sendReceipt": true,
+    "receiptRecipients": ["billing@customer.com"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created payment record with transaction details.</p>
+
+        <h3>POST /payments/process-ach</h3>
+        <p>Processes an ACH payment.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "customerId": 1004,
+    "amount": 5250.00,
+    "currency": "USD",
+    "bankAccountToken": "btok_bank_1234",
+    "description": "Payment for quarterly services",
+    "metadata": {
+        "invoiceIds": "5040,5041,5042"
+    },
+    "invoiceAllocations": [
+        {
+            "invoiceId": 5040,
+            "amount": 2000.00
+        },
+        {
+            "invoiceId": 5041,
+            "amount": 1750.00
+        },
+        {
+            "invoiceId": 5042,
+            "amount": 1500.00
+        }
+    ],
+    "sendReceipt": true,
+    "receiptRecipients": ["accounts.payable@customer.com"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the created payment record with transaction details.</p>
+
+        <h3>GET /payment-methods/{customerId}</h3>
+        <p>Retrieves saved payment methods for a customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/payment-methods/1001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of saved payment methods for the specified customer.</p>
+
+        <h3>POST /payments/batch</h3>
+        <p>Creates multiple payment records in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "payments": [
+        {
+            "referenceNumber": "CHK78956",
+            "customerId": 1005,
+            "amount": 2500.00,
+            "paymentDate": "2023-07-01",
+            "method": "Check",
+            "status": "Completed",
+            "invoiceAllocations": [
+                {
+                    "invoiceId": 5045,
+                    "amount": 2500.00
+                }
+            ]
+        },
+        {
+            "referenceNumber": "CHK78957",
+            "customerId": 1006,
+            "amount": 3750.00,
+            "paymentDate": "2023-07-01",
+            "method": "Check",
+            "status": "Completed",
+            "invoiceAllocations": [
+                {
+                    "invoiceId": 5046,
+                    "amount": 3750.00
+                }
+            ]
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created payment records.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

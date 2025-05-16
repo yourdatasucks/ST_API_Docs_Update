@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Type Group Label API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('jobtypegrouplabel.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="JobTypeGroupLabel">Job Type Group Label</h1>
+        <p>The Job Type Group Label object represents a categorization mechanism for organizing jobs by type in
+            ServiceTrade.
+            It allows for grouping and classifying jobs into categories like "Preventative Maintenance", "Inspection",
+            "Emergency Service", etc., providing a way to filter and report on jobs by these categorizations.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the job type group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the job type group label.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the job type group label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isDefault</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a default job type group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isSystem</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a system-defined job type group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the job type group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the job type group label was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the job type group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the job type group label was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>color</code></td>
+                    <td>string</td>
+                    <td>Color code (hex) associated with this job type group label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>icon</code></td>
+                    <td>string</td>
+                    <td>Icon identifier associated with this job type group label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether this job type group label is active.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobTypeIds</code></td>
+                    <td>array</td>
+                    <td>Array of job type IDs associated with this group label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobCount</code></td>
+                    <td>integer</td>
+                    <td>Number of jobs associated with this job type group label.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sequence</code></td>
+                    <td>integer</td>
+                    <td>Display order for the job type group label.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /job-type-group-labels</h3>
+        <p>Retrieves a list of job type group labels.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/job-type-group-labels
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 1001,
+            "name": "Preventative Maintenance",
+            "description": "Regular scheduled maintenance services",
+            "isDefault": false,
+            "isSystem": true,
+            "color": "#4CAF50",
+            "icon": "wrench",
+            "isActive": true,
+            "jobCount": 256,
+            "sequence": 1,
+            "createdDate": "2022-01-01T00:00:00Z"
+        },
+        {
+            "id": 1002,
+            "name": "Inspection",
+            "description": "Routine or code-required inspections",
+            "isDefault": true,
+            "isSystem": true,
+            "color": "#2196F3",
+            "icon": "clipboard-check",
+            "isActive": true,
+            "jobCount": 423,
+            "sequence": 2,
+            "createdDate": "2022-01-01T00:00:00Z"
+        },
+        {
+            "id": 1003,
+            "name": "Emergency Service",
+            "description": "Urgent repair or response services",
+            "isDefault": false,
+            "isSystem": true,
+            "color": "#F44336",
+            "icon": "alert-circle",
+            "isActive": true,
+            "jobCount": 87,
+            "sequence": 3,
+            "createdDate": "2022-01-01T00:00:00Z"
+        }
+        // Additional job type group labels...
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /job-type-group-labels/{id}</h3>
+        <p>Retrieves a specific job type group label by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/job-type-group-labels/1001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 1001,
+    "name": "Preventative Maintenance",
+    "description": "Regular scheduled maintenance services",
+    "isDefault": false,
+    "isSystem": true,
+    "createdBy": 101,
+    "createdDate": "2022-01-01T00:00:00Z",
+    "lastModifiedBy": 101,
+    "lastModifiedDate": "2022-01-01T00:00:00Z",
+    "color": "#4CAF50",
+    "icon": "wrench",
+    "isActive": true,
+    "jobTypeIds": [2001, 2002, 2003, 2004],
+    "jobCount": 256,
+    "sequence": 1
+}</code></pre>
+
+        <h3>POST /job-type-group-labels</h3>
+        <p>Creates a new job type group label.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Custom Installation",
+    "description": "Custom equipment installations",
+    "color": "#9C27B0",
+    "icon": "tools",
+    "isActive": true,
+    "jobTypeIds": [2010, 2011, 2012],
+    "sequence": 4
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created job type group label (HTTP 201 Created).</p>
+
+        <h3>PUT /job-type-group-labels/{id}</h3>
+        <p>Updates an existing job type group label.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Custom Installation & Setup",
+    "description": "Custom equipment installations and initial setup",
+    "color": "#9C27B0",
+    "icon": "tools",
+    "isActive": true,
+    "jobTypeIds": [2010, 2011, 2012, 2013],
+    "sequence": 4
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated job type group label.</p>
+
+        <h3>DELETE /job-type-group-labels/{id}</h3>
+        <p>Deletes a job type group label. System-defined labels cannot be deleted.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /job-type-group-labels/{id}/job-types</h3>
+        <p>Retrieves all job types associated with a specific job type group label.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/job-type-group-labels/1001/job-types
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 2001,
+            "name": "Quarterly Maintenance",
+            "description": "Quarterly preventative maintenance service",
+            "isActive": true
+        },
+        {
+            "id": 2002,
+            "name": "Semi-Annual Maintenance",
+            "description": "Semi-annual preventative maintenance service",
+            "isActive": true
+        },
+        {
+            "id": 2003,
+            "name": "Annual Maintenance",
+            "description": "Annual preventative maintenance service",
+            "isActive": true
+        },
+        {
+            "id": 2004,
+            "name": "Filter Replacement",
+            "description": "Regular filter replacement service",
+            "isActive": true
+        }
+    ],
+    "totalResults": 4,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>POST /job-type-group-labels/{id}/job-types</h3>
+        <p>Associates job types with a job type group label.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "jobTypeIds": [2005, 2006, 2007]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns success message and updates the job type group label.</p>
+
+        <h3>DELETE /job-type-group-labels/{id}/job-types/{jobTypeId}</h3>
+        <p>Removes a job type association from a job type group label.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful removal of the association.</p>
+
+        <h3>GET /jobs/type-group-labels</h3>
+        <p>Retrieves job counts by job type group label.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/jobs/type-group-labels?startDate=2023-01-01&endDate=2023-12-31
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "totalJobs": 766,
+    "byTypeGroupLabel": [
+        {
+            "id": 1002,
+            "name": "Inspection",
+            "count": 423,
+            "percentage": 55.2,
+            "revenue": 634500.00
+        },
+        {
+            "id": 1001,
+            "name": "Preventative Maintenance",
+            "count": 256,
+            "percentage": 33.4,
+            "revenue": 384000.00
+        },
+        {
+            "id": 1003,
+            "name": "Emergency Service",
+            "count": 87,
+            "percentage": 11.4,
+            "revenue": 217500.00
+        }
+    ]
+}</code></pre>
+
+        <h3>PUT /job-type-group-labels/reorder</h3>
+        <p>Reorders job type group labels.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "order": [1003, 1001, 1002, 1004]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns success message and updates the sequence property of the affected labels.</p>
+
+        <h3>POST /job-type-group-labels/default/{id}</h3>
+        <p>Sets a job type group label as the default.</p>
+        <h4>Response</h4>
+        <p>Returns the updated job type group label with isDefault set to true.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

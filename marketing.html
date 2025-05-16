@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('marketing.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Marketing">Marketing</h1>
+        <p>The Marketing object represents marketing-related data and activities in ServiceTrade, including campaigns,
+            leads, referral sources, and marketing analytics. This resource allows companies to track the effectiveness
+            of
+            their marketing efforts, manage marketing campaigns, and attribute new business to specific marketing
+            channels
+            or initiatives.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the marketing record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the marketing campaign or initiative.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>string</td>
+                    <td>Type of marketing activity (e.g., "Campaign", "Lead Source", "Referral", "Event").</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the marketing activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>startDate</code></td>
+                    <td>datetime</td>
+                    <td>Start date and time of the marketing campaign or activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>endDate</code></td>
+                    <td>datetime</td>
+                    <td>End date and time of the marketing campaign or activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Current status of the marketing activity (e.g., "Planned", "Active", "Completed", "Cancelled").
+                    </td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>budget</code></td>
+                    <td>decimal</td>
+                    <td>Budget allocated for the marketing campaign or activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>cost</code></td>
+                    <td>decimal</td>
+                    <td>Actual cost incurred for the marketing campaign or activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>roi</code></td>
+                    <td>decimal</td>
+                    <td>Return on investment calculation (percentage).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>channel</code></td>
+                    <td>string</td>
+                    <td>Marketing channel (e.g., "Email", "Social Media", "Direct Mail", "Trade Show", "Referral").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>targetAudience</code></td>
+                    <td>string</td>
+                    <td>Description of the target audience for the marketing activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>campaignCode</code></td>
+                    <td>string</td>
+                    <td>Unique code used to track the marketing campaign.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>leadCount</code></td>
+                    <td>integer</td>
+                    <td>Number of leads generated by the marketing activity.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>conversionRate</code></td>
+                    <td>decimal</td>
+                    <td>Percentage of leads that converted to customers.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>revenue</code></td>
+                    <td>decimal</td>
+                    <td>Revenue attributed to this marketing activity.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>tags</code></td>
+                    <td>array</td>
+                    <td>Array of tags associated with this marketing activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>responsibleUserId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="user.html">User</a> responsible for this marketing activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>relatedCustomerIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="customer.html">Customer</a> IDs associated with this marketing activity.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this marketing record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this marketing record was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this marketing record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this marketing record was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /marketing</h3>
+        <p>Retrieves a list of marketing records. Supports filtering by type, status, date range, etc.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/marketing?type=Campaign&status=Active
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 5001,
+            "name": "Spring Service Promotion",
+            "type": "Campaign",
+            "description": "Spring maintenance special offer campaign",
+            "startDate": "2023-03-01T00:00:00Z",
+            "endDate": "2023-05-31T23:59:59Z",
+            "status": "Active",
+            "channel": "Email",
+            "leadCount": 37,
+            "conversionRate": 18.9,
+            "createdDate": "2023-02-15T09:30:00Z"
+        },
+        {
+            "id": 5002,
+            "name": "Summer Trade Show",
+            "type": "Event",
+            "description": "Annual industry trade show booth and presentations",
+            "startDate": "2023-07-15T00:00:00Z",
+            "endDate": "2023-07-17T23:59:59Z",
+            "status": "Active",
+            "channel": "Trade Show",
+            "leadCount": 12,
+            "conversionRate": 8.3,
+            "createdDate": "2023-05-02T14:45:00Z"
+        },
+        {
+            "id": 5003,
+            "name": "Customer Referral Program",
+            "type": "Referral",
+            "description": "Ongoing customer referral incentive program",
+            "startDate": "2023-01-01T00:00:00Z",
+            "endDate": "2023-12-31T23:59:59Z",
+            "status": "Active",
+            "channel": "Referral",
+            "leadCount": 45,
+            "conversionRate": 33.3,
+            "createdDate": "2022-12-15T10:15:00Z"
+        }
+        // Additional marketing records...
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /marketing/{id}</h3>
+        <p>Retrieves a specific marketing record by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/marketing/5001
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 5001,
+    "name": "Spring Service Promotion",
+    "type": "Campaign",
+    "description": "Spring maintenance special offer campaign targeting existing customers with service agreements due for renewal.",
+    "startDate": "2023-03-01T00:00:00Z",
+    "endDate": "2023-05-31T23:59:59Z",
+    "status": "Active",
+    "budget": 5000.00,
+    "cost": 4235.75,
+    "roi": 315.2,
+    "channel": "Email",
+    "targetAudience": "Existing customers with equipment over 3 years old",
+    "campaignCode": "SPR-2023-01",
+    "leadCount": 37,
+    "conversionRate": 18.9,
+    "revenue": 13370.00,
+    "tags": ["Spring", "Maintenance", "Email", "Existing Customers"],
+    "responsibleUserId": 101,
+    "relatedCustomerIds": [1001, 1004, 1007, 1012, 1015],
+    "createdBy": 101,
+    "createdDate": "2023-02-15T09:30:00Z",
+    "lastModifiedBy": 102,
+    "lastModifiedDate": "2023-03-05T11:45:00Z",
+    "customFields": {
+        "emailOpenRate": "32.5%",
+        "clickThroughRate": "12.8%",
+        "emailProvider": "Mailchimp",
+        "landingPageUrl": "https://example.com/spring-promo"
+    }
+}</code></pre>
+
+        <h3>POST /marketing</h3>
+        <p>Creates a new marketing record.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Fall Maintenance Special",
+    "type": "Campaign",
+    "description": "Fall maintenance special offer targeting commercial customers",
+    "startDate": "2023-09-15T00:00:00Z",
+    "endDate": "2023-11-30T23:59:59Z",
+    "status": "Planned",
+    "budget": 7500.00,
+    "channel": "Direct Mail",
+    "targetAudience": "Commercial building managers in metro area",
+    "campaignCode": "FALL-2023-01",
+    "tags": ["Fall", "Maintenance", "Direct Mail", "Commercial"],
+    "responsibleUserId": 103,
+    "customFields": {
+        "mailPieceSize": "6x9 Postcard",
+        "mailQuantity": "2500",
+        "targetZipCodes": "27601, 27603, 27605, 27607, 27608"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created marketing record (HTTP 201 Created).</p>
+
+        <h3>PUT /marketing/{id}</h3>
+        <p>Updates an existing marketing record.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Fall Maintenance Special",
+    "description": "Fall maintenance special offer targeting commercial and industrial customers",
+    "endDate": "2023-12-15T23:59:59Z",
+    "status": "Active",
+    "budget": 8250.00,
+    "channel": "Direct Mail + Email Follow-up",
+    "targetAudience": "Commercial and industrial building managers in metro area",
+    "customFields": {
+        "mailPieceSize": "6x9 Postcard",
+        "mailQuantity": "3000",
+        "targetZipCodes": "27601, 27603, 27605, 27607, 27608, 27610, 27612",
+        "emailFollowUpDate": "2023-10-15"
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated marketing record.</p>
+
+        <h3>DELETE /marketing/{id}</h3>
+        <p>Deletes a marketing record.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /marketing/types</h3>
+        <p>Retrieves a list of all marketing activity types.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/marketing/types
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {"name": "Campaign", "count": 18},
+        {"name": "Lead Source", "count": 12},
+        {"name": "Referral", "count": 5},
+        {"name": "Event", "count": 7},
+        {"name": "Advertisement", "count": 9},
+        {"name": "Social Media", "count": 6}
+    ],
+    "totalResults": 6,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /marketing/channels</h3>
+        <p>Retrieves a list of all marketing channels.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/marketing/channels
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {"name": "Email", "count": 15},
+        {"name": "Social Media", "count": 9},
+        {"name": "Direct Mail", "count": 11},
+        {"name": "Trade Show", "count": 7},
+        {"name": "Referral", "count": 5},
+        {"name": "Paid Search", "count": 8},
+        {"name": "Radio", "count": 3},
+        {"name": "TV", "count": 2},
+        {"name": "Print", "count": 6},
+        {"name": "Billboard", "count": 1}
+    ],
+    "totalResults": 10,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>POST /marketing/{id}/track-lead</h3>
+        <p>Records a new lead associated with a marketing activity.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "contactId": 3050,
+    "customerId": 1035,
+    "status": "New",
+    "source": "Direct response",
+    "notes": "Responded to fall maintenance postcard",
+    "value": 2500.00,
+    "conversionProbability": 70
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated marketing record with incremented lead count and additional tracking information.</p>
+
+        <h3>GET /marketing/{id}/leads</h3>
+        <p>Retrieves leads associated with a specific marketing activity.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/marketing/5001/leads
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of leads generated by the specified marketing activity.</p>
+
+        <h3>GET /marketing/{id}/analytics</h3>
+        <p>Retrieves detailed analytics for a specific marketing activity.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/marketing/5001/analytics
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 5001,
+    "name": "Spring Service Promotion",
+    "impressions": 1250,
+    "clicks": 175,
+    "leads": 37,
+    "conversions": 7,
+    "conversionRate": 18.9,
+    "costPerLead": 114.48,
+    "costPerAcquisition": 605.11,
+    "revenue": 13370.00,
+    "roi": 315.2,
+    "timeToConversion": {
+        "average": 12.3,
+        "median": 9.5,
+        "min": 1,
+        "max": 45,
+        "unit": "days"
+    },
+    "conversionsByDate": [
+        {"date": "2023-03-05", "count": 1},
+        {"date": "2023-03-12", "count": 2},
+        {"date": "2023-03-19", "count": 0},
+        {"date": "2023-03-26", "count": 1},
+        {"date": "2023-04-02", "count": 2},
+        {"date": "2023-04-09", "count": 1}
+    ],
+    "channelPerformance": {
+        "email": {
+            "sent": 1250,
+            "opened": 406,
+            "clicked": 160,
+            "converted": 6
+        },
+        "landing page": {
+            "visits": 175,
+            "formSubmissions": 31,
+            "converted": 7
+        }
+    }
+}</code></pre>
+
+        <h3>GET /marketing/performance</h3>
+        <p>Retrieves performance metrics for marketing activities across a specified time period.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/marketing/performance?startDate=2023-01-01&endDate=2023-06-30
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns aggregated performance metrics for marketing activities in the specified period.</p>
+
+        <h3>GET /marketing/roi</h3>
+        <p>Retrieves ROI analysis for marketing activities across a specified time period.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/marketing/roi?startDate=2023-01-01&endDate=2023-06-30
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns ROI analysis for marketing activities in the specified period.</p>
+
+        <h3>GET /customers/{customerId}/marketing</h3>
+        <p>Retrieves marketing activities associated with a specific customer.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/customers/1001/marketing
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of marketing activities associated with the specified customer.</p>
+
+        <h3>POST /marketing/batch</h3>
+        <p>Creates multiple marketing records in a single request.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "name": "Winter Service Special",
+            "type": "Campaign",
+            "description": "Winter maintenance special offer",
+            "startDate": "2023-12-01T00:00:00Z",
+            "endDate": "2024-02-28T23:59:59Z",
+            "status": "Planned",
+            "channel": "Email",
+            "campaignCode": "WIN-2023-01"
+        },
+        {
+            "name": "Quarterly Newsletter Q4",
+            "type": "Campaign",
+            "description": "Q4 customer newsletter",
+            "startDate": "2023-10-15T00:00:00Z",
+            "endDate": "2023-10-15T23:59:59Z",
+            "status": "Planned",
+            "channel": "Email",
+            "campaignCode": "NEWS-Q4-2023"
+        }
+    ]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns an array of the created marketing records.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

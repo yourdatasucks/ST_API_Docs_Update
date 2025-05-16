@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Type API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('contacttype.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="ContactType">Contact Type</h1>
+        <p>The Contact Type object represents classifications or categories of contacts within the system. Examples
+            might include "Decision Maker," "Billing Contact," "Site Manager," etc. Contact types help organize and
+            filter <a href="contact.html">Contacts</a> based on their roles or responsibilities.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the contact type.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the contact type.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the contact type.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isDefault</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a default contact type in the system.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether this contact type is active and available for use.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>color</code></td>
+                    <td>string</td>
+                    <td>Color code (hex) associated with this contact type for visual identification.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>icon</code></td>
+                    <td>string</td>
+                    <td>Icon identifier for this contact type.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>order</code></td>
+                    <td>integer</td>
+                    <td>Display order for the contact type.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>companyId</code></td>
+                    <td>integer</td>
+                    <td>ID of the company this contact type belongs to. Null for system-wide types.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the contact type was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the contact type.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the contact type was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the contact type.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /contacttypes</h3>
+        <p>Retrieves a list of contact types. Can be filtered by company ID or active status.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contacttypes?companyId=123&isActive=true
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 101,
+            "name": "Decision Maker",
+            "description": "Contact with authority to make purchasing decisions",
+            "isDefault": true,
+            "isActive": true,
+            "color": "#4A90E2",
+            "icon": "user-tie",
+            "order": 1,
+            "companyId": null,
+            "createdDate": "2020-01-15T10:30:00Z",
+            "createdBy": 45,
+            "lastModifiedDate": "2020-01-15T10:30:00Z",
+            "lastModifiedBy": 45
+        },
+        {
+            "id": 102,
+            "name": "Billing Contact",
+            "description": "Contact responsible for billing and payments",
+            "isDefault": true,
+            "isActive": true,
+            "color": "#50E3C2",
+            "icon": "file-invoice-dollar",
+            "order": 2,
+            "companyId": null,
+            "createdDate": "2020-01-15T10:35:00Z",
+            "createdBy": 45,
+            "lastModifiedDate": "2020-01-15T10:35:00Z",
+            "lastModifiedBy": 45
+        },
+        {
+            "id": 103,
+            "name": "Site Manager",
+            "description": "Contact responsible for on-site coordination",
+            "isDefault": false,
+            "isActive": true,
+            "color": "#F5A623",
+            "icon": "hard-hat",
+            "order": 3,
+            "companyId": 123,
+            "createdDate": "2022-03-10T14:20:00Z",
+            "createdBy": 67,
+            "lastModifiedDate": "2022-03-10T14:20:00Z",
+            "lastModifiedBy": 67
+        }
+        // Additional contact types...
+    ],
+    "totalResults": 3,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /contacttypes/{id}</h3>
+        <p>Retrieves a specific contact type by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contacttypes/101
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 101,
+    "name": "Decision Maker",
+    "description": "Contact with authority to make purchasing decisions",
+    "isDefault": true,
+    "isActive": true,
+    "color": "#4A90E2",
+    "icon": "user-tie",
+    "order": 1,
+    "companyId": null,
+    "createdDate": "2020-01-15T10:30:00Z",
+    "createdBy": 45,
+    "lastModifiedDate": "2020-01-15T10:30:00Z",
+    "lastModifiedBy": 45
+}</code></pre>
+
+        <h3>POST /contacttypes</h3>
+        <p>Creates a new contact type.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Project Coordinator",
+    "description": "Contact responsible for coordinating project activities",
+    "isActive": true,
+    "color": "#D0021B",
+    "icon": "project-diagram",
+    "order": 4,
+    "companyId": 123
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created contact type object (HTTP 201 Created).</p>
+
+        <h3>PUT /contacttypes/{id}</h3>
+        <p>Updates an existing contact type.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "name": "Project Manager",
+    "description": "Contact responsible for managing project activities and resources",
+    "color": "#CC0000",
+    "order": 3
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated contact type object.</p>
+
+        <h3>DELETE /contacttypes/{id}</h3>
+        <p>Deletes a contact type. This may be disallowed for default types or types that are in use.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /contacttypes/{id}/contacts</h3>
+        <p>Retrieves all contacts associated with a specific contact type.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contacttypes/101/contacts
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <p>Returns a collection of <a href="contact.html">Contacts</a> with this contact type.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

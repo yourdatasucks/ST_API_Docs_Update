@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('contact.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Contact">Contact</h1>
+        <p>The Contact object represents an individual person associated with a company or organization. Contacts can be
+            customers, vendors, employees, or other stakeholders. Each contact can have roles, contact information, and
+            preferences.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the contact.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>firstName</code></td>
+                    <td>string</td>
+                    <td>First name of the contact.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>lastName</code></td>
+                    <td>string</td>
+                    <td>Last name of the contact.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>companyId</code></td>
+                    <td>integer</td>
+                    <td>ID of the <a href="company.html">Company</a> this contact is associated with.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>title</code></td>
+                    <td>string</td>
+                    <td>Job title or position of the contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>department</code></td>
+                    <td>string</td>
+                    <td>Department the contact works in.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>email</code></td>
+                    <td>string</td>
+                    <td>Primary email address of the contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>phone</code></td>
+                    <td>string</td>
+                    <td>Primary phone number of the contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>mobile</code></td>
+                    <td>string</td>
+                    <td>Mobile phone number of the contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>fax</code></td>
+                    <td>string</td>
+                    <td>Fax number of the contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>notes</code></td>
+                    <td>string</td>
+                    <td>Additional notes about the contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isPrimary</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is the primary contact for the company.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether this contact is active.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>preferredContactMethod</code></td>
+                    <td>string</td>
+                    <td>Preferred method of communication (e.g., "Email", "Phone", "Mobile").</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contactTypes</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="contacttype.html">Contact Type</a> IDs associated with this contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>locationIds</code></td>
+                    <td>array</td>
+                    <td>Array of <a href="location.html">Location</a> IDs this contact is associated with.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom field values for the contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>tags</code></td>
+                    <td>array</td>
+                    <td>Array of tags associated with the contact.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>portalAccess</code></td>
+                    <td>boolean</td>
+                    <td>Whether this contact has access to the customer portal.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>portalUsername</code></td>
+                    <td>string</td>
+                    <td>Username for customer portal access.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastLoginDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time of the contact's last portal login.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the contact record was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created the contact record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date the contact record was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified the contact record.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+
+        <h3>GET /contacts</h3>
+        <p>Retrieves a list of contacts. Supports filtering by company, contact type, and more.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contacts?companyId=123&isActive=true
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "items": [
+        {
+            "id": 456,
+            "firstName": "John",
+            "lastName": "Doe",
+            "companyId": 123,
+            "title": "Facilities Manager",
+            "department": "Facilities",
+            "email": "john.doe@acmecorp.example.com",
+            "phone": "555-123-4567",
+            "mobile": "555-987-6543",
+            "fax": null,
+            "notes": "Prefers to be contacted in the mornings.",
+            "isPrimary": true,
+            "isActive": true,
+            "preferredContactMethod": "Email",
+            "contactTypes": [101, 102],
+            "locationIds": [201, 202],
+            "customFields": {
+                "assistantName": "Jane Smith",
+                "assistantPhone": "555-123-5555"
+            },
+            "tags": ["VIP", "Decision Maker"],
+            "portalAccess": true,
+            "portalUsername": "john.doe@acmecorp.example.com",
+            "lastLoginDate": "2023-07-15T10:30:00Z",
+            "createdDate": "2020-05-15T14:30:00Z",
+            "createdBy": 101,
+            "lastModifiedDate": "2023-01-10T15:45:00Z",
+            "lastModifiedBy": 102
+        },
+        // Additional contacts...
+    ],
+    "totalResults": 1,
+    "itemsPerPage": 50,
+    "startIndex": 1
+}</code></pre>
+
+        <h3>GET /contacts/{id}</h3>
+        <p>Retrieves a specific contact by ID.</p>
+        <h4>Request</h4>
+        <pre><code class="language-http">GET /v1.0/contacts/456
+Authorization: Bearer {access_token}</code></pre>
+        <h4>Response</h4>
+        <pre><code class="language-json">{
+    "id": 456,
+    "firstName": "John",
+    "lastName": "Doe",
+    "companyId": 123,
+    "title": "Facilities Manager",
+    "department": "Facilities",
+    "email": "john.doe@acmecorp.example.com",
+    "phone": "555-123-4567",
+    "mobile": "555-987-6543",
+    "fax": null,
+    "notes": "Prefers to be contacted in the mornings.",
+    "isPrimary": true,
+    "isActive": true,
+    "preferredContactMethod": "Email",
+    "contactTypes": [101, 102],
+    "locationIds": [201, 202],
+    "customFields": {
+        "assistantName": "Jane Smith",
+        "assistantPhone": "555-123-5555"
+    },
+    "tags": ["VIP", "Decision Maker"],
+    "portalAccess": true,
+    "portalUsername": "john.doe@acmecorp.example.com",
+    "lastLoginDate": "2023-07-15T10:30:00Z",
+    "createdDate": "2020-05-15T14:30:00Z",
+    "createdBy": 101,
+    "lastModifiedDate": "2023-01-10T15:45:00Z",
+    "lastModifiedBy": 102
+}</code></pre>
+
+        <h3>POST /contacts</h3>
+        <p>Creates a new contact.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "firstName": "Sarah",
+    "lastName": "Johnson",
+    "companyId": 123,
+    "title": "Chief Financial Officer",
+    "department": "Finance",
+    "email": "sarah.johnson@acmecorp.example.com",
+    "phone": "555-123-7890",
+    "mobile": "555-456-7890",
+    "isPrimary": false,
+    "isActive": true,
+    "preferredContactMethod": "Phone",
+    "contactTypes": [101, 103],
+    "locationIds": [201],
+    "tags": ["Finance", "Executive"]
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the newly created contact object (HTTP 201 Created).</p>
+
+        <h3>PUT /contacts/{id}</h3>
+        <p>Updates an existing contact.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "title": "Senior Financial Officer",
+    "email": "sarah.johnson@acmecorp.example.com",
+    "notes": "Promoted to Senior Financial Officer in July 2023.",
+    "portalAccess": true
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated contact object.</p>
+
+        <h3>DELETE /contacts/{id}</h3>
+        <p>Deletes a contact.</p>
+        <h4>Response</h4>
+        <p>HTTP 204 No Content on successful deletion.</p>
+
+        <h3>GET /companies/{id}/contacts</h3>
+        <p>Retrieves all contacts for a specific company. See <a href="company.html">Company</a> for details.</p>
+
+        <h3>POST /contacts/{id}/portalAccess</h3>
+        <p>Grants customer portal access to a contact and sends portal credentials.</p>
+        <h4>Request Body</h4>
+        <pre><code class="language-json">{
+    "sendWelcomeEmail": true,
+    "notificationPreferences": {
+        "receiveJobUpdates": true,
+        "receiveInvoices": true,
+        "receiveQuotes": true
+    }
+}</code></pre>
+        <h4>Response</h4>
+        <p>Returns the updated contact object with portal access details.</p>
+
+        <h3>DELETE /contacts/{id}/portalAccess</h3>
+        <p>Revokes portal access for a contact.</p>
+        <h4>Response</h4>
+        <p>Returns the updated contact object with portal access revoked.</p>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>
