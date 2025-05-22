@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('tag.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Tag">Tag</h1>
+        <p>The Tag object represents a label or keyword that can be associated with various entities in the system to
+            categorize and filter them. Tags provide a flexible way to organize data across different object types and
+            can be applied to jobs, customers, locations, assets, and other entities. This allows for custom
+            categorization beyond the standard fields and properties.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the tag.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the tag.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the tag.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>color</code></td>
+                    <td>string</td>
+                    <td>Color code (hex or named color) for visual representation of the tag.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether the tag is active and available for use.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isSystem</code></td>
+                    <td>boolean</td>
+                    <td>Whether this is a system-defined tag that cannot be modified or deleted.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>categoryId</code></td>
+                    <td>integer</td>
+                    <td>ID of the category this tag belongs to, if any.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>allowedEntityTypes</code></td>
+                    <td>array</td>
+                    <td>Array of entity types that this tag can be applied to (e.g., ["job", "customer", "asset"]).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this tag.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this tag was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this tag.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this tag was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>useCount</code></td>
+                    <td>integer</td>
+                    <td>Number of entities this tag is associated with.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+        <p>API endpoints for tag management...</p>
+
+        <section id="resource-tag" class="resource-section">
+            <h3>Tag</h3>
+            <p>The tag resource is used to manage tags and their associations with other entities.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /tag</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/tag</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/tag/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/tag/123</td>
+                        <td>404</td>
+                        <td>tag not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/tag</td>
+                        <td>200</td>
+                        <td>tag created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/tag</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/tag/123</td>
+                        <td>200</td>
+                        <td>tag updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/tag/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/tag/123</td>
+                        <td>404</td>
+                        <td>tag not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/tag/123</td>
+                        <td>204</td>
+                        <td>tag deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/tag/123</td>
+                        <td>404</td>
+                        <td>tag not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/tag/123</td>
+                        <td>403</td>
+                        <td>cannot delete system tag</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Returned Elements for /tag/[tagId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>tag entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the tag</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the tag</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>description of the tag</td>
+                    </tr>
+                    <tr>
+                        <td>color</td>
+                        <td>string</td>
+                        <td>color code for the tag</td>
+                    </tr>
+                    <tr>
+                        <td>isActive</td>
+                        <td>boolean</td>
+                        <td>whether the tag is active</td>
+                    </tr>
+                    <tr>
+                        <td>isSystem</td>
+                        <td>boolean</td>
+                        <td>whether this is a system tag</td>
+                    </tr>
+                    <tr>
+                        <td>category</td>
+                        <td>object</td>
+                        <td>category information for this tag</td>
+                    </tr>
+                    <tr>
+                        <td>useCount</td>
+                        <td>integer</td>
+                        <td>number of entities using this tag</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Retrieve tags</h4>
+            <pre><code>GET /tag
+
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "tags": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/tag/123",
+                "name": "VIP Customer",
+                "color": "#FF0000",
+                "isActive": true,
+                "isSystem": false,
+                "useCount": 45
+            },
+            {
+                "id": 124,
+                "uri": "https://api.servicetrade.com/api/tag/124",
+                "name": "Warranty Work",
+                "color": "#00FF00",
+                "isActive": true,
+                "isSystem": false,
+                "useCount": 28
+            }
+        ]
+    }
+}
+</code></pre>
+
+            <h4>Retrieve specific tag</h4>
+            <pre><code>GET /tag/123
+
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/tag/123",
+        "name": "VIP Customer",
+        "description": "High-value customers requiring priority service",
+        "color": "#FF0000",
+        "isActive": true,
+        "isSystem": false,
+        "categoryId": 12,
+        "allowedEntityTypes": ["customer", "job", "location"],
+        "createdBy": 101,
+        "createdDate": "2022-03-15T09:30:00Z",
+        "lastModifiedBy": 101,
+        "lastModifiedDate": "2022-07-10T11:45:22Z",
+        "useCount": 45,
+        "category": {
+            "id": 12,
+            "name": "Customer Classifications"
+        }
+    }
+}
+</code></pre>
+        </section>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

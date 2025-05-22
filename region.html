@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Region API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('region.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="Region">Region</h1>
+        <p>The Region object represents a geographical area used for organizing locations, customers, and service
+            operations. Regions can be defined based on sales territories, service coverage areas, or other
+            business-specific divisions. They help streamline operations by allowing users to filter data by
+            geographical boundaries and assign resources efficiently.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the region.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the region.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the region.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>code</code></td>
+                    <td>string</td>
+                    <td>Short code or identifier for the region.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether the region is active in the system.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>managerId</code></td>
+                    <td>integer</td>
+                    <td>User ID of the region manager.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>parentRegionId</code></td>
+                    <td>integer</td>
+                    <td>ID of the parent region if this is a sub-region.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this region.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this region was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this region.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this region was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>boundaries</code></td>
+                    <td>array</td>
+                    <td>Array of geographic coordinates defining the region boundaries.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customFields</code></td>
+                    <td>object</td>
+                    <td>Custom fields and their values for this region.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+        <p>API endpoints for region management...</p>
+
+        <section id="resource-region" class="resource-section">
+            <h3>Region</h3>
+            <p>The region resource is used to manage geographical regions within the organization.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /region</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/region</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/region/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/region/123</td>
+                        <td>404</td>
+                        <td>region not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/region</td>
+                        <td>200</td>
+                        <td>region created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/region</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/region/123</td>
+                        <td>200</td>
+                        <td>region updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/region/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/region/123</td>
+                        <td>404</td>
+                        <td>region not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/region/123</td>
+                        <td>204</td>
+                        <td>region deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/region/123</td>
+                        <td>404</td>
+                        <td>region not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/region/123</td>
+                        <td>409</td>
+                        <td>region has dependent records</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Returned Elements for /region/[regionId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>region entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the region</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the region</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>description of the region</td>
+                    </tr>
+                    <tr>
+                        <td>code</td>
+                        <td>string</td>
+                        <td>short code for the region</td>
+                    </tr>
+                    <tr>
+                        <td>isActive</td>
+                        <td>boolean</td>
+                        <td>whether the region is active</td>
+                    </tr>
+                    <tr>
+                        <td>manager</td>
+                        <td>object</td>
+                        <td>details about the region manager</td>
+                    </tr>
+                    <tr>
+                        <td>parentRegion</td>
+                        <td>object</td>
+                        <td>details about the parent region if applicable</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Retrieve regions</h4>
+            <pre><code>GET /region
+
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "regions": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/region/123",
+                "name": "Northeast",
+                "code": "NE",
+                "isActive": true,
+                "manager": {
+                    "id": 456,
+                    "name": "John Smith"
+                }
+            },
+            {
+                "id": 124,
+                "uri": "https://api.servicetrade.com/api/region/124",
+                "name": "Southeast",
+                "code": "SE",
+                "isActive": true,
+                "manager": {
+                    "id": 457,
+                    "name": "Jane Doe"
+                }
+            }
+        ]
+    }
+}
+</code></pre>
+
+            <h4>Retrieve specific region</h4>
+            <pre><code>GET /region/123
+
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/region/123",
+        "name": "Northeast",
+        "description": "Northeastern United States service territory",
+        "code": "NE",
+        "isActive": true,
+        "managerId": 456,
+        "parentRegionId": null,
+        "createdBy": 101,
+        "createdDate": "2022-01-15T10:30:00Z",
+        "lastModifiedBy": 101,
+        "lastModifiedDate": "2022-05-20T14:45:22Z",
+        "boundaries": [
+            {"lat": 42.5, "lng": -71.2},
+            {"lat": 40.7, "lng": -74.0},
+            {"lat": 39.9, "lng": -75.1},
+            {"lat": 43.2, "lng": -70.5}
+        ],
+        "customFields": {
+            "revenue_target": "5000000",
+            "primary_office": "Boston"
+        },
+        "manager": {
+            "id": 456,
+            "name": "John Smith",
+            "email": "jsmith@example.com"
+        }
+    }
+}
+</code></pre>
+        </section>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Recurrence API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('servicerecurrence.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="ServiceRecurrence">Service Recurrence</h1>
+        <p>The Service Recurrence object represents a recurring service schedule in ServiceTrade. It defines when
+            services should be automatically created on a repeating basis, including the frequency (daily, weekly,
+            monthly, yearly), specific details about the recurrence pattern, and which jobs or services should be
+            generated. Service Recurrences help automate the scheduling of routine maintenance, inspections, and other
+            recurring service work.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>Unique identifier for the service recurrence.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>string</td>
+                    <td>Name of the service recurrence.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the service recurrence.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>isActive</code></td>
+                    <td>boolean</td>
+                    <td>Whether this recurrence is active.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>locationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the location for which services will be created.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>customerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the customer associated with the location.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>frequency</code></td>
+                    <td>string</td>
+                    <td>Recurrence frequency type (daily, weekly, monthly, yearly).</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>interval</code></td>
+                    <td>integer</td>
+                    <td>The interval between recurrences (e.g., every 2 weeks).</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>dayOfWeek</code></td>
+                    <td>integer</td>
+                    <td>For weekly recurrences, the day of the week (1-7, where 1 is Monday).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>dayOfMonth</code></td>
+                    <td>integer</td>
+                    <td>For monthly recurrences, the day of the month (1-31).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>weekOfMonth</code></td>
+                    <td>integer</td>
+                    <td>For monthly recurrences, the week of the month (1-5, where 5 represents the last week).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>monthOfYear</code></td>
+                    <td>integer</td>
+                    <td>For yearly recurrences, the month of the year (1-12).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>startDate</code></td>
+                    <td>date</td>
+                    <td>Date when the recurrence pattern begins.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>endDate</code></td>
+                    <td>date</td>
+                    <td>Date when the recurrence pattern ends (if specified).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>endAfterCount</code></td>
+                    <td>integer</td>
+                    <td>Number of occurrences after which the recurrence ends.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>leadTimeDays</code></td>
+                    <td>integer</td>
+                    <td>Number of days before the service date that jobs should be created.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>jobTypeId</code></td>
+                    <td>integer</td>
+                    <td>Type of job to create for each recurrence.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>serviceTemplateId</code></td>
+                    <td>integer</td>
+                    <td>ID of the service template to use for creating services.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contractId</code></td>
+                    <td>integer</td>
+                    <td>ID of the contract associated with this recurrence.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assignedUserId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user to whom recurring services will be assigned.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastRunDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the recurrence was last processed.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>nextRunDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the recurrence will next be processed.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this service recurrence.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this service recurrence was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this service recurrence.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this service recurrence was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+        <p>API endpoints for service recurrence management...</p>
+
+        <section id="resource-servicerecurrence" class="resource-section">
+            <h3>Service Recurrence</h3>
+            <p>The servicerecurrence resource is used to manage recurring service schedules.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /servicerecurrence</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/servicerecurrence</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/servicerecurrence/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/servicerecurrence/123</td>
+                        <td>404</td>
+                        <td>servicerecurrence not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/servicerecurrence</td>
+                        <td>200</td>
+                        <td>servicerecurrence created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/servicerecurrence</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/servicerecurrence/123</td>
+                        <td>200</td>
+                        <td>servicerecurrence updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/servicerecurrence/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/servicerecurrence/123</td>
+                        <td>404</td>
+                        <td>servicerecurrence not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/servicerecurrence/123</td>
+                        <td>204</td>
+                        <td>servicerecurrence deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/servicerecurrence/123</td>
+                        <td>404</td>
+                        <td>servicerecurrence not found</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Returned Elements for /servicerecurrence/[servicerecurrenceId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>servicerecurrence entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the servicerecurrence</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>name of the servicerecurrence</td>
+                    </tr>
+                    <tr>
+                        <td>isActive</td>
+                        <td>boolean</td>
+                        <td>whether the recurrence is active</td>
+                    </tr>
+                    <tr>
+                        <td>frequency</td>
+                        <td>string</td>
+                        <td>recurrence frequency type</td>
+                    </tr>
+                    <tr>
+                        <td>startDate</td>
+                        <td>date</td>
+                        <td>date when the recurrence begins</td>
+                    </tr>
+                    <tr>
+                        <td>nextRunDate</td>
+                        <td>date</td>
+                        <td>date when next service will be created</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Retrieve service recurrences</h4>
+            <pre><code>GET /servicerecurrence
+
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "servicerecurrences": [
+            {
+                "id": 123,
+                "uri": "https://api.servicetrade.com/api/servicerecurrence/123",
+                "name": "Monthly HVAC Inspection",
+                "isActive": true,
+                "frequency": "monthly",
+                "startDate": "2023-01-15",
+                "nextRunDate": "2023-06-15"
+            }
+        ]
+    }
+}
+</code></pre>
+
+            <h4>Retrieve specific service recurrence</h4>
+            <pre><code>GET /servicerecurrence/123
+
+200
+{
+    "data": {
+        "id": 123,
+        "uri": "https://api.servicetrade.com/api/servicerecurrence/123",
+        "name": "Monthly HVAC Inspection",
+        "description": "Monthly inspection of HVAC systems for preventative maintenance",
+        "isActive": true,
+        "locationId": 456,
+        "customerId": 789,
+        "frequency": "monthly",
+        "interval": 1,
+        "dayOfMonth": 15,
+        "startDate": "2023-01-15",
+        "endDate": null,
+        "endAfterCount": null,
+        "leadTimeDays": 7,
+        "jobTypeId": 3,
+        "serviceTemplateId": 45,
+        "contractId": 12,
+        "assignedUserId": 34,
+        "lastRunDate": "2023-05-15T08:30:00Z",
+        "nextRunDate": "2023-06-15T08:30:00Z",
+        "createdBy": 22,
+        "createdDate": "2023-01-01T14:22:36Z",
+        "lastModifiedBy": 22,
+        "lastModifiedDate": "2023-05-16T09:45:22Z"
+    }
+}
+</code></pre>
+        </section>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

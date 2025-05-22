@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Item API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('quoteitem.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="QuoteItem">Quote Item</h1>
+        <p>The Quote Item object represents individual items that are part of a quote. Quote items can include labor,
+            materials, services, and other billable elements that contribute to the total quote amount.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>The unique identifier for the Quote Item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>quoteId</code></td>
+                    <td>integer</td>
+                    <td>The ID of the quote this item belongs to.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Description of the item.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>quantity</code></td>
+                    <td>number</td>
+                    <td>Quantity of units.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>unitPrice</code></td>
+                    <td>number</td>
+                    <td>Price per unit.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>subtotal</code></td>
+                    <td>number</td>
+                    <td>Calculated subtotal (quantity × unitPrice).</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>taxable</code></td>
+                    <td>boolean</td>
+                    <td>Indicates if the item is taxable.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>sortOrder</code></td>
+                    <td>integer</td>
+                    <td>Order in which the item appears in the quote.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>category</code></td>
+                    <td>string</td>
+                    <td>Category classification of the item.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this item was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this item.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this item was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+        <p>API endpoints for quote items...</p>
+
+        <section id="resource-quoteitem" class="resource-section">
+            <h3>Quote Item</h3>
+            <p>The quote item resource is used to manage individual items within quotes.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /quoteitem</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quoteitem</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quoteitem/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quoteitem/123</td>
+                        <td>404</td>
+                        <td>quote item not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/quoteitem</td>
+                        <td>201</td>
+                        <td>quote item created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/quoteitem</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quoteitem/123</td>
+                        <td>200</td>
+                        <td>quote item updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quoteitem/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quoteitem/123</td>
+                        <td>404</td>
+                        <td>quote item not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/quoteitem/123</td>
+                        <td>204</td>
+                        <td>quote item deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/quoteitem/123</td>
+                        <td>404</td>
+                        <td>quote item not found</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Returned Elements for /quoteitem/[quoteItemId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>quote item entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the quote item</td>
+                    </tr>
+                    <tr>
+                        <td>quote</td>
+                        <td>object</td>
+                        <td>parent quote reference</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>description of the item</td>
+                    </tr>
+                    <tr>
+                        <td>quantity</td>
+                        <td>number</td>
+                        <td>quantity of units</td>
+                    </tr>
+                    <tr>
+                        <td>unitPrice</td>
+                        <td>number</td>
+                        <td>price per unit</td>
+                    </tr>
+                    <tr>
+                        <td>subtotal</td>
+                        <td>number</td>
+                        <td>calculated subtotal (quantity × unitPrice)</td>
+                    </tr>
+                    <tr>
+                        <td>taxable</td>
+                        <td>boolean</td>
+                        <td>indicates if the item is taxable</td>
+                    </tr>
+                    <tr>
+                        <td>sortOrder</td>
+                        <td>integer</td>
+                        <td>item position in the quote</td>
+                    </tr>
+                    <tr>
+                        <td>category</td>
+                        <td>string</td>
+                        <td>category classification</td>
+                    </tr>
+                    <tr>
+                        <td>createdBy</td>
+                        <td>object</td>
+                        <td>user who created the item</td>
+                    </tr>
+                    <tr>
+                        <td>createdDate</td>
+                        <td>datetime</td>
+                        <td>creation timestamp</td>
+                    </tr>
+                    <tr>
+                        <td>lastModifiedBy</td>
+                        <td>object</td>
+                        <td>user who last modified the item</td>
+                    </tr>
+                    <tr>
+                        <td>lastModifiedDate</td>
+                        <td>datetime</td>
+                        <td>last modification timestamp</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Retrieve quote items</h4>
+            <pre><code>GET /quoteitem?quoteId=456
+
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "quoteItems": [
+            {
+                "id": 789,
+                "uri": "https://api.servicetrade.com/api/quoteitem/789",
+                "quote": {
+                    "id": 456,
+                    "uri": "https://api.servicetrade.com/api/quote/456"
+                },
+                "description": "Labor - Install new pump",
+                "quantity": 4,
+                "unitPrice": 95.00,
+                "subtotal": 380.00,
+                "taxable": true,
+                "sortOrder": 1,
+                "category": "Labor",
+                "createdBy": {
+                    "id": 101,
+                    "uri": "https://api.servicetrade.com/api/user/101",
+                    "name": "John Technician"
+                },
+                "createdDate": "2023-04-15T14:30:00Z",
+                "lastModifiedBy": {
+                    "id": 101,
+                    "uri": "https://api.servicetrade.com/api/user/101",
+                    "name": "John Technician"
+                },
+                "lastModifiedDate": "2023-04-15T14:30:00Z"
+            },
+            {
+                "id": 790,
+                "uri": "https://api.servicetrade.com/api/quoteitem/790",
+                "quote": {
+                    "id": 456,
+                    "uri": "https://api.servicetrade.com/api/quote/456"
+                },
+                "description": "Submersible Pump - 1HP",
+                "quantity": 1,
+                "unitPrice": 325.00,
+                "subtotal": 325.00,
+                "taxable": true,
+                "sortOrder": 2,
+                "category": "Materials",
+                "createdBy": {
+                    "id": 101,
+                    "uri": "https://api.servicetrade.com/api/user/101",
+                    "name": "John Technician"
+                },
+                "createdDate": "2023-04-15T14:32:00Z",
+                "lastModifiedBy": {
+                    "id": 101,
+                    "uri": "https://api.servicetrade.com/api/user/101",
+                    "name": "John Technician"
+                },
+                "lastModifiedDate": "2023-04-15T14:32:00Z"
+            }
+        ]
+    }
+}
+</code></pre>
+        </section>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>

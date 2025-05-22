@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Request API</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body onload="loadSidebarAndInit('quoterequest.html')">
+    <div id="back-to-top"><a href="#top-of-page" onclick="scrollToPageTop(); return false;">TOP</a></div>
+
+    <div id="sidebar-placeholder"></div>
+
+    <div id="main-content">
+        <h1 id="QuoteRequest">Quote Request</h1>
+        <p>The Quote Request object represents a customer's formal request for a price quote on services or products.
+            Quote requests typically precede the creation of an actual quote and may include details about the
+            customer's needs, timeline, and specifications.</p>
+
+        <h2>Properties</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Read-Only</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>id</code></td>
+                    <td>integer</td>
+                    <td>The unique identifier for the Quote Request.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>customerId</code></td>
+                    <td>integer</td>
+                    <td>ID of the customer requesting the quote.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>locationId</code></td>
+                    <td>integer</td>
+                    <td>ID of the location where the services will be performed.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>title</code></td>
+                    <td>string</td>
+                    <td>Title or summary of the quote request.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td>string</td>
+                    <td>Detailed description of the requested work or products.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>string</td>
+                    <td>Current status of the quote request (new, in-progress, quoted, canceled).</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>priority</code></td>
+                    <td>string</td>
+                    <td>Priority level of the request (low, medium, high, urgent).</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>requestDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when the quote was requested.</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td><code>needByDate</code></td>
+                    <td>datetime</td>
+                    <td>Date by which the customer needs the quote.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>assignedToId</code></td>
+                    <td>integer</td>
+                    <td>ID of the user assigned to handle this quote request.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>quoteId</code></td>
+                    <td>integer</td>
+                    <td>ID of the quote created from this request, if any.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>contactId</code></td>
+                    <td>integer</td>
+                    <td>ID of the customer contact for this request.</td>
+                    <td>false</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who created this quote request.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>createdDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this quote request was created.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedBy</code></td>
+                    <td>integer</td>
+                    <td>ID of the user who last modified this quote request.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><code>lastModifiedDate</code></td>
+                    <td>datetime</td>
+                    <td>Date and time when this quote request was last modified.</td>
+                    <td>true</td>
+                    <td>false</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Endpoints</h2>
+        <p>API endpoints for quote requests...</p>
+
+        <section id="resource-quoterequest" class="resource-section">
+            <h3>Quote Request</h3>
+            <p>The quote request resource is used to manage customer requests for quotes.</p>
+            <ul>
+                <li><strong>Resource URL</strong>: /quoterequest</li>
+                <li><strong>Available Verbs</strong>: GET, POST, PUT, DELETE</li>
+                <li><strong>Authentication Required</strong>: yes</li>
+            </ul>
+
+            <h4>Response Codes</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Verb</th>
+                        <th>Example URL</th>
+                        <th>Code</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quoterequest</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quoterequest/123</td>
+                        <td>200</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/quoterequest/123</td>
+                        <td>404</td>
+                        <td>quote request not found</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/quoterequest</td>
+                        <td>201</td>
+                        <td>quote request created</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/quoterequest</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quoterequest/123</td>
+                        <td>200</td>
+                        <td>quote request updated</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quoterequest/123</td>
+                        <td>400</td>
+                        <td>invalid data</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/quoterequest/123</td>
+                        <td>404</td>
+                        <td>quote request not found</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/quoterequest/123</td>
+                        <td>204</td>
+                        <td>quote request deleted</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/quoterequest/123</td>
+                        <td>404</td>
+                        <td>quote request not found</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Returned Elements for /quoterequest/[quoteRequestId]</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>quote request entity ID</td>
+                    </tr>
+                    <tr>
+                        <td>uri</td>
+                        <td>string</td>
+                        <td>resource identifier for the quote request</td>
+                    </tr>
+                    <tr>
+                        <td>customer</td>
+                        <td>object</td>
+                        <td>customer who made the request</td>
+                    </tr>
+                    <tr>
+                        <td>location</td>
+                        <td>object</td>
+                        <td>location where services will be performed</td>
+                    </tr>
+                    <tr>
+                        <td>title</td>
+                        <td>string</td>
+                        <td>title of the quote request</td>
+                    </tr>
+                    <tr>
+                        <td>description</td>
+                        <td>string</td>
+                        <td>detailed description of requested work</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>current status of the request</td>
+                    </tr>
+                    <tr>
+                        <td>priority</td>
+                        <td>string</td>
+                        <td>priority level of the request</td>
+                    </tr>
+                    <tr>
+                        <td>requestDate</td>
+                        <td>datetime</td>
+                        <td>date when quote was requested</td>
+                    </tr>
+                    <tr>
+                        <td>needByDate</td>
+                        <td>datetime</td>
+                        <td>deadline for quote completion</td>
+                    </tr>
+                    <tr>
+                        <td>assignedTo</td>
+                        <td>object</td>
+                        <td>user assigned to handle the request</td>
+                    </tr>
+                    <tr>
+                        <td>quote</td>
+                        <td>object</td>
+                        <td>quote created from this request (if any)</td>
+                    </tr>
+                    <tr>
+                        <td>contact</td>
+                        <td>object</td>
+                        <td>customer contact for this request</td>
+                    </tr>
+                    <tr>
+                        <td>createdBy</td>
+                        <td>object</td>
+                        <td>user who created the request</td>
+                    </tr>
+                    <tr>
+                        <td>createdDate</td>
+                        <td>datetime</td>
+                        <td>creation timestamp</td>
+                    </tr>
+                    <tr>
+                        <td>lastModifiedBy</td>
+                        <td>object</td>
+                        <td>user who last modified the request</td>
+                    </tr>
+                    <tr>
+                        <td>lastModifiedDate</td>
+                        <td>datetime</td>
+                        <td>last modification timestamp</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Retrieve quote requests</h4>
+            <pre><code>GET /quoterequest?customerId=789&status=new,in-progress
+
+200
+{
+    "data": {
+        "totalPages": 1,
+        "page": 1,
+        "quoteRequests": [
+            {
+                "id": 456,
+                "uri": "https://api.servicetrade.com/api/quoterequest/456",
+                "customer": {
+                    "id": 789,
+                    "uri": "https://api.servicetrade.com/api/customer/789",
+                    "name": "Acme Industries"
+                },
+                "location": {
+                    "id": 101,
+                    "uri": "https://api.servicetrade.com/api/location/101",
+                    "name": "Acme Industries HQ"
+                },
+                "title": "Emergency HVAC Repair - Building A",
+                "description": "Our main cooling system in Building A has stopped working. Need emergency repair service and possibly replacement quote.",
+                "status": "in-progress",
+                "priority": "high",
+                "requestDate": "2023-07-10T09:14:22Z",
+                "needByDate": "2023-07-11T17:00:00Z",
+                "assignedTo": {
+                    "id": 202,
+                    "uri": "https://api.servicetrade.com/api/user/202",
+                    "name": "Sarah Manager"
+                },
+                "contact": {
+                    "id": 303,
+                    "uri": "https://api.servicetrade.com/api/contact/303",
+                    "name": "John Smith"
+                },
+                "createdBy": {
+                    "id": 202,
+                    "uri": "https://api.servicetrade.com/api/user/202",
+                    "name": "Sarah Manager"
+                },
+                "createdDate": "2023-07-10T09:14:22Z",
+                "lastModifiedBy": {
+                    "id": 202,
+                    "uri": "https://api.servicetrade.com/api/user/202",
+                    "name": "Sarah Manager"
+                },
+                "lastModifiedDate": "2023-07-10T10:30:15Z"
+            }
+        ]
+    }
+}
+</code></pre>
+        </section>
+    </div>
+    <script src="js/shared.js" defer></script>
+</body>
+
+</html>
